@@ -22,6 +22,9 @@ axiosInstance.interceptors.request.use(
   },
 );
 
+axiosInstance.defaults.withCredentials = true;
+axiosInstance.defaults.withXSRFToken = true;
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
