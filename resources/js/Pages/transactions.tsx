@@ -5,6 +5,7 @@ export const TransactionsRoute = () => {
   return (
     <PageLayout>
       <p>TransactionsRoute</p>
+      <p>List of all transactions</p>
     </PageLayout>
   );
 };
