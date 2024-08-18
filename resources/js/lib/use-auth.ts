@@ -12,6 +12,9 @@ import { LoginResponse } from './types';
 import { toast } from '@/hooks';
 import { AxiosError } from 'axios';
 
+const REGISTRATION_ERROR_MESSAGE =
+  'Unexpected error during registration. Please try again';
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
 
@@ -84,11 +87,9 @@ export const useAuth = () => {
         showErrorToast('Registration failed', 'Please try again.');
         return false;
       }
-    } catch (error) {
-      showErrorToast(
-        'Uh oh! Something went wrong.',
-        'Unexpected error during registration. Please try again',
-      );
+    } catch (error: any) {
+      const { data } = error.response;
+      showErrorToast(data.message, data.data[0] || REGISTRATION_ERROR_MESSAGE);
       return false;
     }
   };

@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { RegisterForm } from '@/features/auth/register-form';
-import { APP_ROUTE } from '@/router/routes';
+import { APP_ROUTE, LOGIN_ROUTE } from '@/router/routes';
 import { AuthLayout } from '@/layouts';
 
 export const RegisterRoute = () => {
@@ -14,7 +14,7 @@ export const RegisterRoute = () => {
     <AuthLayout title="Register">
       <RegisterForm
         onSuccess={() =>
-          navigate(`${redirectTo ? `${redirectTo}` : APP_ROUTE}`, {
+          navigate(`${redirectTo ? `${redirectTo}` : LOGIN_ROUTE}`, {
             replace: true,
           })
         }

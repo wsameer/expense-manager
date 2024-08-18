@@ -32,11 +32,8 @@ class AuthController extends BaseController
     ]);
 
     if ($validator->fails()) {
-      return $this->sendError(
-        'The given data was invalid',
-        [$validator->errors()],
-        422
-      );
+      $firstError = $validator->errors()->first();
+      return $this->sendError('The given data was invalid', [$firstError], 422);
     }
 
     $user = User::create([
@@ -46,9 +43,9 @@ class AuthController extends BaseController
     ]);
 
     event(new Registered($user));
-    $token = $user->createToken('auth_token')->plainTextToken;
+
     return $this->sendResponse(
-      ['user' => $user, 'token' => $token],
+      ['user' => $user],
       'User registered successfully',
       201
     );

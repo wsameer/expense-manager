@@ -1,6 +1,8 @@
 export interface User {
+  id?: number;
   name: string;
   email: string;
+  updated_at?: string;
 }
 
 export type PageProps<

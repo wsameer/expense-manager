@@ -11,7 +11,7 @@ import { AxiosResponse } from 'axios';
 
 export const loginFormSchema = z.object({
   email: z.string().min(8, 'Email is required').email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
 });
 
 export const registerFormSchema = z
@@ -21,10 +21,10 @@ export const registerFormSchema = z
       .string()
       .min(8, 'Email is required')
       .email('Invalid email address'),
-    password: z.string().min(6, 'Password must be at least 6 characters'),
+    password: z.string().min(8, 'Password must be at least 8 characters'),
     password_confirmation: z
       .string()
-      .min(6, 'Password must be at least 6 characters'),
+      .min(6, 'Password must be at least 8 characters'),
   })
   .refine((data) => data.password === data.password_confirmation, {
     path: ['password_confirmation'],

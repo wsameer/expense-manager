@@ -17,10 +17,11 @@ import {
 import { Button } from '@/Components/ui/button';
 import { Avatar, AvatarFallback } from '@/Components/ui/avatar';
 import { useAuth } from '@/lib/use-auth';
+import { getInitials } from '@/utils';
 
 export const AppHeader = () => {
   const { isMobile } = useResponsive();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-30 flex h-14 justify-between items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -44,7 +45,7 @@ export const AppHeader = () => {
             asChild
           >
             <Avatar className="cursor-pointer">
-              <AvatarFallback>SW</AvatarFallback>
+              <AvatarFallback>{user ? getInitials(user.name) : '?'}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>

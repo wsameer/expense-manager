@@ -17,6 +17,7 @@ import { Button } from '@/Components/ui/button';
 import { Link } from 'react-router-dom';
 import { LOGIN_ROUTE } from '@/router/routes';
 import { useAuth } from '@/lib/use-auth';
+import { toast } from '@/hooks';
 
 type RegisterFormProps = {
   onSuccess: () => void;
@@ -31,15 +32,20 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
       name: '',
       email: '',
       password: '',
-      confirmPassword: '',
+      password_confirmation: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof registerFormSchema>) => {
-    try {
-      await register(values.name, values.email, values.password);
-    } catch (error) {
-      console.error('Registration failed:', error);
+    const success = await register(values.name, values.email, values.password);
+    if (success) {
+      toast({
+        title: "Registration completed",
+        description: "Your account has been successfully created. Please login to continue.",
+      });
+      return onSuccess();
+    } else {
+      form.reset();
     }
   };
 
