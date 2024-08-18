@@ -5,8 +5,9 @@ import { z } from 'zod';
 import axiosInstance from './api-client';
 import { GET_CSRF_TOKEN_API, GET_USER_API, LOGIN_API, LOGOUT_API, REGISTRATION_API } from '@/types/api';
 import { useAuth } from './use-auth';
-import { LoginResponse } from './types';
+import { LoginResponse, LogoutResponse } from './types';
 import { User } from '@/types';
+import { AxiosResponse } from 'axios';
 
 export const loginFormSchema = z.object({
   email: z.string().min(8, 'Email is required').email('Invalid email address'),
@@ -52,7 +53,7 @@ export const login = async (data: LoginInput): Promise<LoginResponse> => {
   return response.data;
 };
 
-export const logout = (): Promise<void> => {
+export const logout = (): Promise<AxiosResponse<LogoutResponse>> => {
   return axiosInstance.post(LOGOUT_API);
 };
 

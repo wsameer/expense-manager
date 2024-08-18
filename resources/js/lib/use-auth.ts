@@ -94,9 +94,22 @@ export const useAuth = () => {
   };
 
   const logoutUser = async () => {
-    await logout();
-    setUser(null);
-    localStorage.removeItem(TOKEN_KEY);
+    const { data } = await logout();
+    if (data.success) {
+      setUser(null);
+      localStorage.removeItem(TOKEN_KEY);
+      toast({
+        variant: 'default',
+        description: 'Logout successful',
+      });
+      return true;
+    } else {
+      showErrorToast(
+        'Uh oh! Something went wrong.',
+        'Unexpected error during logout. Please try again',
+      );
+      return false;
+    }
   };
 
   const fetchCurrentUser = async () => {

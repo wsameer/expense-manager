@@ -16,9 +16,11 @@ import {
 } from '@/Components/ui/dropdown-menu';
 import { Button } from '@/Components/ui/button';
 import { Avatar, AvatarFallback } from '@/Components/ui/avatar';
+import { useAuth } from '@/lib/use-auth';
 
 export const AppHeader = () => {
   const { isMobile } = useResponsive();
+  const { logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-30 flex h-14 justify-between items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -67,7 +69,7 @@ export const AppHeader = () => {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem onSelect={logout}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
             <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
