@@ -1,5 +1,4 @@
-import React, { ReactElement } from 'react';
-
+import React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '@/Components/ui/button';
 import {
@@ -13,25 +12,21 @@ import {
 import { Input } from '@/Components/ui/input';
 import { loginFormSchema } from '@/lib/auth-api';
 import {
-  ControllerFieldState,
-  ControllerRenderProps,
-  FieldValues,
   useForm,
-  UseFormStateReturn,
 } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FORGOT_PASSWORD, REGISTER_ROUTE } from '@/router/routes';
+import { useAuth } from '@/lib/use-auth';
+import { useToast } from '@/hooks';
 
 type LoginFormProps = {
   onSuccess: () => void;
 };
 
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
-  // const login = useLogin({
-  //   onSuccess,
-  // });
-  const login = true;
+  const { login } = useAuth();
+  const { toast } = useToast();
 
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirectTo');
@@ -44,8 +39,17 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof loginFormSchema>) => {
-    console.log('🚀 ~ onSubmit ~ values:', values);
+  const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
+    await login(values.email, values.password) && onSuccess();
+
+    try {
+      const success = await login(values.email, values.password);
+      if (success) {
+        onSuccess();
+      }
+    } catch (error: any) {
+
+    }
   };
 
   return (

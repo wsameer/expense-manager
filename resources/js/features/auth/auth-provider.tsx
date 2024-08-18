@@ -25,6 +25,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    // Check for stored user data on component mount
     const storedUser = localStorage.getItem(USER_KEY);
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -33,6 +34,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    // Update localStorage and authentication state when user changes
     if (user) {
       localStorage.setItem(USER_KEY, JSON.stringify(user));
       setIsAuthenticated(true);

@@ -13,7 +13,7 @@ export const Welcome = React.memo(() => {
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <Head title="Welcome to Budget Tracker by Sameer" />
+      <Head title="Budget Tracker by Sameer" />
       <main className="flex h-screen items-center bg-white">
         <div className="mx-auto max-w-7xl px-4 py-12 text-center sm:px-6 lg:px-8 lg:py-16">
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
