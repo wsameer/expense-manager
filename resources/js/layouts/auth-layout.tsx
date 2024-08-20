@@ -1,5 +1,6 @@
 import { BrandLogo } from '@/Components/navigation/brand-logo';
 import { Head } from '@/Components/seo';
+import { useAuth } from '@/lib/use-auth';
 import { APP_ROUTE } from '@/router/routes';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,21 +11,17 @@ type LayoutProps = {
 };
 
 export const AuthLayout = ({ title, children }: LayoutProps) => {
-  // TODO
-  // const user = useUser();
-  const user = {
-    data: false,
-  };
+  const user = useAuth();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user.data) {
+    if (user) {
       navigate(APP_ROUTE, {
         replace: true,
       });
     }
-  }, [user.data, navigate]);
+  }, [user, navigate]);
 
   return (
     <>

@@ -8,6 +8,7 @@ import {
   REGISTER_ROUTE,
   BASE_ROUTE,
   TRANSACTIONS_ROUTE,
+  SETTINGS_ROUTE,
 } from './routes';
 import { MainErrorFallback } from '@/Components/errors';
 import { AppRoot } from '@/pages/root';
@@ -58,6 +59,13 @@ export const createRouter = () =>
             const { AccountsRoute } = await import('../pages/accounts');
             return { Component: AccountsRoute };
           },
+        },
+        {
+          path: SETTINGS_ROUTE,
+          lazy: async () => {
+            const { SettingsRoute } = await import('../pages/settings');
+            return { Component: SettingsRoute }
+          }
         },
         {
           path: '',

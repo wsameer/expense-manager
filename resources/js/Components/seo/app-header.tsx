@@ -58,11 +58,11 @@ export const AppHeader = () => {
               <span>Profile</span>
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuItem>
               <Keyboard className="mr-2 h-4 w-4" />
               <span>Shortcuts</span>

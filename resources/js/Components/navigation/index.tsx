@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  BarChart2Icon,
   CreditCardIcon,
+  EllipsisIcon,
   FileTextIcon,
   HomeIcon,
   Settings,
@@ -14,21 +14,21 @@ import { cn } from '@/utils';
 import { BrandLogo } from './brand-logo';
 import { NavItem } from './nav-item';
 import { AddTransaction } from '@/features/add-transaction';
+import { ACCOUNTS_ROUTE, DASHBOARD_ROUTE, MORE_ROUTE, SETTINGS_ROUTE, TRANSACTIONS_ROUTE } from '@/router/routes';
 
 export const Navigation = () => {
   const { isMobile } = useResponsive();
   const navigate = useNavigate();
 
   const navItems = [
-    { icon: HomeIcon, label: 'Dashboard', path: '/app' },
+    { icon: HomeIcon, label: 'Dashboard', path: DASHBOARD_ROUTE },
     {
       icon: FileTextIcon,
       label: 'Transactions',
-      path: '/app/transactions',
+      path: TRANSACTIONS_ROUTE,
     },
-    { icon: CreditCardIcon, label: 'Accounts', path: '/app/accounts' },
-    { icon: BarChart2Icon, label: 'Stats', path: '/app/stats' },
-    { icon: Settings, label: 'Settings', path: '/app/settings' },
+    { icon: CreditCardIcon, label: 'Accounts', path: ACCOUNTS_ROUTE },
+    { icon: Settings, label: 'Settings', path: SETTINGS_ROUTE },
   ].filter(Boolean) as SideNavigationItem[];
 
   if (isMobile) {
@@ -51,6 +51,18 @@ export const Navigation = () => {
             {index === 1 && <AddTransaction />}
           </React.Fragment>
         ))}
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn(
+            location.pathname === navItems[navItems.length - 1].path
+              ? 'text-black'
+              : 'text-gray-400',
+          )}
+          onClick={() => navigate(navItems[navItems.length - 1].path)}
+        >
+          <EllipsisIcon className="h-6 w-6" />
+        </Button>
       </nav>
     );
   }
