@@ -7,7 +7,6 @@ import {
   LOGIN_ROUTE,
   REGISTER_ROUTE,
   BASE_ROUTE,
-  STATS_ROUTE,
   TRANSACTIONS_ROUTE,
 } from './routes';
 import { MainErrorFallback } from '@/Components/errors';
@@ -58,13 +57,6 @@ export const createRouter = () =>
           lazy: async () => {
             const { AccountsRoute } = await import('../pages/accounts');
             return { Component: AccountsRoute };
-          },
-        },
-        {
-          path: STATS_ROUTE,
-          lazy: async () => {
-            const { StatsRoute } = await import('../pages/stats');
-            return { Component: StatsRoute };
           },
         },
         {
