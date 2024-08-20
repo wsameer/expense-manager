@@ -1,6 +1,8 @@
 import React from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import { registerFormSchema } from '@/lib/auth-api';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,7 +16,6 @@ import {
 } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
-import { Link } from 'react-router-dom';
 import { LOGIN_ROUTE } from '@/router/routes';
 import { useAuth } from '@/lib/use-auth';
 import { toast } from '@/hooks';
@@ -25,6 +26,7 @@ type RegisterFormProps = {
 
 export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const { register } = useAuth();
+  const { t } = useTranslation('auth', { keyPrefix: 'forms' });
 
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
@@ -40,8 +42,8 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
     const success = await register(values.name, values.email, values.password);
     if (success) {
       toast({
-        title: "Registration completed",
-        description: "Your account has been successfully created. Please login to continue.",
+        title: t('registration-toast.title'),
+        description: t('registration-toast.message'),
       });
       return onSuccess();
     } else {
@@ -58,7 +60,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
             name="name"
             render={({ field }) => (
               <FormItem className="py-2">
-                <FormLabel htmlFor="name">Name</FormLabel>
+                <FormLabel htmlFor="name">{t('name')}</FormLabel>
                 <FormControl>
                   <Input placeholder="John Doe" {...field} />
                 </FormControl>
@@ -71,7 +73,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
             name="email"
             render={({ field }) => (
               <FormItem className="py-2">
-                <FormLabel htmlFor="email">Email</FormLabel>
+                <FormLabel htmlFor="email">{t('email')}</FormLabel>
                 <FormControl>
                   <Input placeholder="jon@doe.com" {...field} />
                 </FormControl>
@@ -84,7 +86,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
             name="password"
             render={({ field }) => (
               <FormItem className="py-2">
-                <FormLabel htmlFor="password">Password</FormLabel>
+                <FormLabel htmlFor="password">{t('password')}</FormLabel>
                 <FormControl>
                   <Input
                     type="password"
@@ -103,7 +105,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
             render={({ field }) => (
               <FormItem className="py-2">
                 <FormLabel htmlFor="password_confirmation">
-                  Confirm Password
+                  {t('confirm-password')}
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -118,12 +120,13 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
             )}
           />
           <Button className="mt-4 w-full" variant="default" type="submit">
-            Register
+            {t('register')}
           </Button>
         </form>
       </Form>
       <Button className="mt-4 w-full" variant="outline" asChild>
-        <Link to={LOGIN_ROUTE}>Have an account? Log In</Link>
+        <Link to={LOGIN_ROUTE}>
+          {t('have-an-account')}</Link>
       </Button>
     </>
   );

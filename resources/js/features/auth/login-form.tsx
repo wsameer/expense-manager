@@ -18,15 +18,15 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FORGOT_PASSWORD, REGISTER_ROUTE } from '@/router/routes';
 import { useAuth } from '@/lib/use-auth';
-import { useToast } from '@/hooks';
+import { useTranslation } from 'react-i18next';
 
 type LoginFormProps = {
   onSuccess: () => void;
 };
 
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+  const { t } = useTranslation('auth', { keyPrefix: 'forms' });
   const { login } = useAuth();
-  const { toast } = useToast();
 
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirectTo');
@@ -52,9 +52,9 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             name="email"
             render={({ field }) => (
               <FormItem className="py-4">
-                <FormLabel htmlFor="email">Email</FormLabel>
+                <FormLabel htmlFor="email">{t('email')}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your email address" {...field} />
+                  <Input placeholder={t('your-email-address')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -65,7 +65,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="password">Password</FormLabel>
+                <FormLabel htmlFor="password">{t('password')}</FormLabel>
                 <FormControl>
                   <Input type="password" placeholder="*******" {...field} />
                 </FormControl>
@@ -74,7 +74,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             )}
           />
           <Button variant="link" className="p-0" asChild>
-            <Link to={FORGOT_PASSWORD}>Forgot Password?</Link>
+            <Link to={FORGOT_PASSWORD}>{t('forgot-password')}</Link>
           </Button>
           <Button className="mt-4 w-full" variant="default" type="submit">
             Log In
@@ -86,7 +86,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           <Link
             to={`${REGISTER_ROUTE}${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`}
           >
-            Create an account
+            {t('create-an-account')}
           </Link>
         </Button>
       </div>
