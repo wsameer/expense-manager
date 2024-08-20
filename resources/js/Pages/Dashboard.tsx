@@ -3,7 +3,7 @@ import { PageLayout } from '@/layouts';
 
 export const DashboardRoute = () => {
   return (
-    <PageLayout>
+    <PageLayout title='Dashboard'>
       <p>DashboardRoute</p>
     </PageLayout>
   );
