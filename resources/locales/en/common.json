@@ -12,5 +12,13 @@
     "login": "Log In",
     "dashboard": "Dashboard",
     "github-repo": "GitHub Repo"
+  },
+  "settings": {
+    "theme": {
+      "toggle-theme": "Toggle theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
   }
 }
