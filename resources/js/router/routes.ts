@@ -1,5 +1,5 @@
 export const BASE_ROUTE = '/';
-export const AUTH_ROUTE = 'auth/';
+export const AUTH_ROUTE = 'auth';
 export const APP_ROUTE = BASE_ROUTE + 'app';
 
 export const REGISTER_ROUTE = BASE_ROUTE + AUTH_ROUTE + '/register';

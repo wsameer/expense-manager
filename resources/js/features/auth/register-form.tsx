@@ -75,7 +75,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               <FormItem className="py-2">
                 <FormLabel htmlFor="email">{t('email')}</FormLabel>
                 <FormControl>
-                  <Input placeholder="jon@doe.com" {...field} />
+                  <Input placeholder="jon@doe.com" autoComplete='username' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

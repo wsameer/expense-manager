@@ -54,7 +54,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               <FormItem className="py-4">
                 <FormLabel htmlFor="email">{t('email')}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t('your-email-address')} {...field} />
+                  <Input placeholder={t('your-email-address')} autoComplete='username' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -67,7 +67,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               <FormItem>
                 <FormLabel htmlFor="password">{t('password')}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="*******" {...field} />
+                  <Input type="password" placeholder="*******" autoComplete="current-password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

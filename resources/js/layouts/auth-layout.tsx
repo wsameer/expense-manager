@@ -11,7 +11,7 @@ type LayoutProps = {
 };
 
 export const AuthLayout = ({ title, children }: LayoutProps) => {
-  const user = useAuth();
+  const { user } = useAuth();
 
   const navigate = useNavigate();
 
