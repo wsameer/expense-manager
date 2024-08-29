@@ -19,15 +19,23 @@ import { Avatar, AvatarFallback } from '@/Components/ui/avatar';
 import { useAuth } from '@/lib/use-auth';
 import { getInitials } from '@/utils';
 import { ModeToggle } from '@/features/theme/mode-toggle';
+import { useLocation } from 'react-router-dom';
+import { DASHBOARD_ROUTE } from '@/router/routes';
 
-export const AppHeader = () => {
+export type AppHeaderProps = {
+  backButton?: React.ReactElement;
+  actionButton?: React.ReactElement;
+};
+
+export const AppHeader = ({ backButton, actionButton }: AppHeaderProps) => {
   const { isMobile } = useResponsive();
   const { user, logout } = useAuth();
+  const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 justify-between items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+    <header className="sticky top-0 z-30 flex h-14 justify-between items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto ̰ sm:border-0 sm:bg-transparent sm:px-6">
       {isMobile ? (
-        <BrandLogo />
+        backButton ?? <BrandLogo />
       ) : (
         <div className="relative ml-auto flex-1 md:grow-0">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -39,7 +47,8 @@ export const AppHeader = () => {
         </div>
       )}
       <div className='flex justify-end gap-3'>
-        <ModeToggle />
+        {location.pathname === DASHBOARD_ROUTE && <ModeToggle />}
+        {actionButton}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
