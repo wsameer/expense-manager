@@ -1,8 +1,6 @@
 import React from 'react';
-import { Keyboard, LogOut, Search, Settings, User } from 'lucide-react';
+import { LogOut, Search, User } from 'lucide-react';
 
-import { useResponsive } from '@/hooks';
-import { BrandLogo } from '@/Components/navigation/brand-logo';
 import { Input } from '@/Components/ui/input';
 import {
   DropdownMenu,
@@ -11,7 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
 import { Button } from '@/Components/ui/button';
@@ -28,24 +25,19 @@ export type AppHeaderProps = {
 };
 
 export const AppHeader = ({ backButton, actionButton }: AppHeaderProps) => {
-  const { isMobile } = useResponsive();
   const { user, logout } = useAuth();
   const location = useLocation();
 
   return (
     <header className="sticky top-0 z-30 flex h-14 justify-between items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto ̰ sm:border-0 sm:bg-transparent sm:px-6">
-      {isMobile ? (
-        backButton ?? <BrandLogo />
-      ) : (
-        <div className="relative ml-auto flex-1 md:grow-0">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search..."
-            className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-          />
-        </div>
-      )}
+      <div className="relative ml-auto flex-1 md:grow-0">
+        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Input
+          type="search"
+          placeholder="Search..."
+          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+        />
+      </div>
       <div className='flex justify-end gap-3'>
         {location.pathname === DASHBOARD_ROUTE && <ModeToggle />}
         {actionButton}
