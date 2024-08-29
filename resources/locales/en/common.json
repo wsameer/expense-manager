@@ -20,5 +20,7 @@
       "dark": "Dark",
       "system": "System"
     }
-  }
+  },
+  "add": "Add",
+  "back": "Back"
 }
