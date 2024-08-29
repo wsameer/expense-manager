@@ -19,12 +19,8 @@ import { ModeToggle } from '@/features/theme/mode-toggle';
 import { useLocation } from 'react-router-dom';
 import { DASHBOARD_ROUTE } from '@/router/routes';
 
-export type AppHeaderProps = {
-  backButton?: React.ReactElement;
-  actionButton?: React.ReactElement;
-};
 
-export const AppHeader = ({ backButton, actionButton }: AppHeaderProps) => {
+export const AppNavbar = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
 
@@ -40,7 +36,6 @@ export const AppHeader = ({ backButton, actionButton }: AppHeaderProps) => {
       </div>
       <div className='flex justify-end gap-3'>
         {location.pathname === DASHBOARD_ROUTE && <ModeToggle />}
-        {actionButton}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

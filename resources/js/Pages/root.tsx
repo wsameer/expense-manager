@@ -5,7 +5,6 @@ import { Spinner } from '@/Components/ui/spinner';
 import { Navigation } from '@/Components/navigation';
 import { useResponsive } from '@/hooks';
 import { AddTransaction } from '@/features/add-transaction';
-import { Toaster } from '@/Components/ui/toaster';
 
 export const AppRoot = () => {
   const location = useLocation();

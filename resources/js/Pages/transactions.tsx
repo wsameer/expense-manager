@@ -4,8 +4,7 @@ import { Head } from '@/Components/seo';
 
 export const TransactionsRoute = () => {
   return (
-    <PageLayout>
-      <Head title='Transactions' />
+    <PageLayout title='Transactions'>
       <p>TransactionsRoute</p>
       <p>List of all transactions</p>
     </PageLayout>
