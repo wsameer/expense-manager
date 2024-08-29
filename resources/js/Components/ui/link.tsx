@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Link as RouterLink, LinkProps } from 'react-router-dom'
-import { cn } from '@/utils'
+import { Link as RouterLink, LinkProps } from 'react-router-dom';
+import { cn } from '@/utils';
 
 export const Link = ({ className, children, ...props }: LinkProps) => {
   return (
@@ -11,5 +11,5 @@ export const Link = ({ className, children, ...props }: LinkProps) => {
     >
       {children}
     </RouterLink>
-  )
-}
+  );
+};

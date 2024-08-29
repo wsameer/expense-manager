@@ -30,7 +30,10 @@ export const AccountSelector = React.memo<Props>(({ selected, onSelect }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   return (
-    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+    <Popover
+      open={isPopoverOpen}
+      onOpenChange={setIsPopoverOpen}
+    >
       <PopoverTrigger asChild>
         <FormControl>
           <Button

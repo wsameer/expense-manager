@@ -8,7 +8,10 @@ import { Toaster } from '@/Components/ui/toaster';
 
 export const App = () => {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider
+      defaultTheme="dark"
+      storageKey="vite-ui-theme"
+    >
       <AppProvider>
         <AuthProvider>
           <Toaster />

@@ -8,7 +8,13 @@ import { useAuth } from './use-auth';
 import { LoginResponse, LogoutResponse } from './types';
 import { User } from '@/types';
 import { AxiosResponse } from 'axios';
-import { GET_CSRF_TOKEN_API, GET_USER_API, LOGIN_API, LOGOUT_API, REGISTRATION_API } from '@/utils/constants';
+import {
+  GET_CSRF_TOKEN_API,
+  GET_USER_API,
+  LOGIN_API,
+  LOGOUT_API,
+  REGISTRATION_API,
+} from '@/utils/constants';
 
 // api call definitions for auth (types, schemas, requests):
 // these are not part of features as this is a module shared across features
@@ -39,16 +45,15 @@ export const registerFormSchema = z
 
 export type RegisterInput = z.infer<typeof registerFormSchema>;
 
-export const getCsrfCookie = async () => await axiosInstance.get(GET_CSRF_TOKEN_API);
+export const getCsrfCookie = async () =>
+  await axiosInstance.get(GET_CSRF_TOKEN_API);
 
 export const getCurrentUser = async (): Promise<User> => {
   const response = await axiosInstance.get(GET_USER_API);
   return response.data;
 };
 
-export const register = async (
-  data: RegisterInput,
-): Promise<LoginResponse> => {
+export const register = async (data: RegisterInput): Promise<LoginResponse> => {
   const response = await axiosInstance.post(REGISTRATION_API, data);
   return response.data;
 };
@@ -63,7 +68,7 @@ export const logout = (): Promise<AxiosResponse<LogoutResponse>> => {
 };
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth()
+  const { user } = useAuth();
   const location = useLocation();
 
   if (!user) {

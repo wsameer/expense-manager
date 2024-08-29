@@ -29,20 +29,27 @@ export const Welcome = React.memo(() => {
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
             {t('welcome.app-name')}
           </h1>
-          <p className="mt-2 px-6 sm:px-2">
-            {t('welcome.app-description')}
-          </p>
+          <p className="mt-2 px-6 sm:px-2">{t('welcome.app-description')}</p>
           <div className="mt-8 flex justify-center">
             {user ? (
-              <Button variant="default" asChild>
+              <Button
+                variant="default"
+                asChild
+              >
                 <Link to={DASHBOARD_ROUTE}>{t('welcome.dashboard')}</Link>
               </Button>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <Button variant="default" asChild>
+                <Button
+                  variant="default"
+                  asChild
+                >
                   <Link to={LOGIN_ROUTE}>{t('welcome.login')}</Link>
                 </Button>
-                <Button variant="destructive" onClick={handleStart}>
+                <Button
+                  variant="destructive"
+                  onClick={handleStart}
+                >
                   {t('welcome.get-started')}
                 </Button>
                 <a
@@ -51,7 +58,8 @@ export const Welcome = React.memo(() => {
                   rel="noreferrer"
                 >
                   <Button variant="outline">
-                    <Github className="mr-2 h-4 w-4" /> {t('welcome.github-repo')}
+                    <Github className="mr-2 h-4 w-4" />{' '}
+                    {t('welcome.github-repo')}
                   </Button>
                 </a>
               </div>

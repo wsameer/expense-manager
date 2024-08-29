@@ -37,7 +37,10 @@ export const Transactions: React.FC<TransactionsProps> = React.memo(
           ))}
         </TabsList>
         {transactionTypes.map((type) => (
-          <TabsContent key={type} value={type}>
+          <TabsContent
+            key={type}
+            value={type}
+          >
             {renderContent(type as TransactionTypes)}
           </TabsContent>
         ))}

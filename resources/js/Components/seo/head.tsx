@@ -14,7 +14,10 @@ export const Head = ({ title = '', description = '' }: HeadProps = {}) => {
       title={title ? `${title} | Budget Tracker` : undefined}
       defaultTitle="Budget Tracker"
     >
-      <meta name="description" content={description} />
+      <meta
+        name="description"
+        content={description}
+      />
     </Helmet>
   );
 };

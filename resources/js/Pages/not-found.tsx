@@ -17,7 +17,11 @@ export const NotFoundRoute = () => {
         {t('errors.page-does-not-exist')}
       </p>
       <Button variant="outline">
-        <Link to="/" className="flex items-center" replace>
+        <Link
+          to="/"
+          className="flex items-center"
+          replace
+        >
           <Home className="mr-2 h-4 w-4" />
           {t('errors.go-to-home')}
         </Link>

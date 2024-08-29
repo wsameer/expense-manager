@@ -64,8 +64,8 @@ export const createRouter = () =>
           path: SETTINGS_ROUTE,
           lazy: async () => {
             const { SettingsRoute } = await import('../pages/settings');
-            return { Component: SettingsRoute }
-          }
+            return { Component: SettingsRoute };
+          },
         },
         {
           path: '',

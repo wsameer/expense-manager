@@ -54,7 +54,10 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   return (
     <>
       <Form {...form}>
-        <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          id="login-form"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
             name="name"
@@ -62,7 +65,10 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               <FormItem className="py-2">
                 <FormLabel htmlFor="name">{t('name')}</FormLabel>
                 <FormControl>
-                  <Input placeholder="John Doe" {...field} />
+                  <Input
+                    placeholder="John Doe"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -75,7 +81,11 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               <FormItem className="py-2">
                 <FormLabel htmlFor="email">{t('email')}</FormLabel>
                 <FormControl>
-                  <Input placeholder="jon@doe.com" autoComplete='username' {...field} />
+                  <Input
+                    placeholder="jon@doe.com"
+                    autoComplete="username"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -119,14 +129,21 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               </FormItem>
             )}
           />
-          <Button className="mt-4 w-full" variant="default" type="submit">
+          <Button
+            className="mt-4 w-full"
+            variant="default"
+            type="submit"
+          >
             {t('register')}
           </Button>
         </form>
       </Form>
-      <Button className="mt-4 w-full" variant="outline" asChild>
-        <Link to={LOGIN_ROUTE}>
-          {t('have-an-account')}</Link>
+      <Button
+        className="mt-4 w-full"
+        variant="outline"
+        asChild
+      >
+        <Link to={LOGIN_ROUTE}>{t('have-an-account')}</Link>
       </Button>
     </>
   );

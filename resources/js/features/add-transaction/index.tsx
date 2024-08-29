@@ -32,7 +32,10 @@ export const AddTransaction = () => {
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={setOpen}>
+      <Drawer
+        open={open}
+        onOpenChange={setOpen}
+      >
         <DrawerTrigger asChild>
           <Button
             className="rounded-full h-12 w-12"
@@ -69,7 +72,10 @@ export const AddTransaction = () => {
 
   return (
     <div className={'fixed bottom-6 right-6'}>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+      >
         <DialogTrigger asChild>
           <Button
             className="rounded-full h-12 w-12"
@@ -97,7 +103,10 @@ export const AddTransaction = () => {
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button className="w-full" variant="secondary">
+              <Button
+                className="w-full"
+                variant="secondary"
+              >
                 Cancel
               </Button>
             </DialogClose>

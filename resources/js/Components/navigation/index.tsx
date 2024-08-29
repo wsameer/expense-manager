@@ -14,7 +14,13 @@ import { cn } from '@/utils';
 import { BrandLogo } from './brand-logo';
 import { NavItem } from './nav-item';
 import { AddTransaction } from '@/features/add-transaction';
-import { ACCOUNTS_ROUTE, DASHBOARD_ROUTE, MORE_ROUTE, SETTINGS_ROUTE, TRANSACTIONS_ROUTE } from '@/router/routes';
+import {
+  ACCOUNTS_ROUTE,
+  DASHBOARD_ROUTE,
+  MORE_ROUTE,
+  SETTINGS_ROUTE,
+  TRANSACTIONS_ROUTE,
+} from '@/router/routes';
 
 export const Navigation = () => {
   const { isMobile } = useResponsive();
@@ -39,16 +45,17 @@ export const Navigation = () => {
             <Button
               variant="ghost"
               size="sm"
-              className={cn('p-0',
+              className={cn(
+                'p-0',
                 location.pathname === item.path
                   ? 'text-black'
                   : 'text-gray-400',
               )}
               onClick={() => navigate(item.path)}
             >
-              <div className='flex flex-col items-center justify-center'>
+              <div className="flex flex-col items-center justify-center">
                 <item.icon className="h-5 w-5" />
-                <p className='text-xs'>{item.label}</p>
+                <p className="text-xs">{item.label}</p>
               </div>
             </Button>
             {index === 1 && <AddTransaction />}
@@ -64,9 +71,9 @@ export const Navigation = () => {
           )}
           onClick={() => navigate(navItems[navItems.length - 1].path)}
         >
-          <div className='flex flex-col items-center justify-center'>
+          <div className="flex flex-col items-center justify-center">
             <EllipsisIcon className="h-5 w-5" />
-            <p className='text-xs'>{navItems[navItems.length - 1].label}</p>
+            <p className="text-xs">{navItems[navItems.length - 1].label}</p>
           </div>
         </Button>
       </nav>
@@ -78,7 +85,10 @@ export const Navigation = () => {
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <BrandLogo />
         {navItems.slice(0, -1).map((item) => (
-          <NavItem key={item.label} item={item} />
+          <NavItem
+            key={item.label}
+            item={item}
+          />
         ))}
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">

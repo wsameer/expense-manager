@@ -11,9 +11,7 @@ import {
 } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
 import { loginFormSchema } from '@/lib/auth-api';
-import {
-  useForm,
-} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FORGOT_PASSWORD, REGISTER_ROUTE } from '@/router/routes';
@@ -40,13 +38,16 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   });
 
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
-    await login(values.email, values.password) && onSuccess();
-  }
+    (await login(values.email, values.password)) && onSuccess();
+  };
 
   return (
     <>
       <Form {...form}>
-        <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          id="login-form"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
             name="email"
@@ -54,7 +55,11 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               <FormItem className="py-4">
                 <FormLabel htmlFor="email">{t('email')}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t('your-email-address')} autoComplete='username' {...field} />
+                  <Input
+                    placeholder={t('your-email-address')}
+                    autoComplete="username"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -67,22 +72,39 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               <FormItem>
                 <FormLabel htmlFor="password">{t('password')}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="*******" autoComplete="current-password" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="*******"
+                    autoComplete="current-password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button variant="link" className="p-0" asChild>
+          <Button
+            variant="link"
+            className="p-0"
+            asChild
+          >
             <Link to={FORGOT_PASSWORD}>{t('forgot-password')}</Link>
           </Button>
-          <Button className="mt-4 w-full" variant="default" type="submit">
+          <Button
+            className="mt-4 w-full"
+            variant="default"
+            type="submit"
+          >
             Log In
           </Button>
         </form>
       </Form>
       <div className="mt-4 flex items-center justify-end">
-        <Button variant="outline" className="w-full" asChild>
+        <Button
+          variant="outline"
+          className="w-full"
+          asChild
+        >
           <Link
             to={`${REGISTER_ROUTE}${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`}
           >

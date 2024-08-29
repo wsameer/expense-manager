@@ -19,7 +19,6 @@ import { ModeToggle } from '@/features/theme/mode-toggle';
 import { useLocation } from 'react-router-dom';
 import { DASHBOARD_ROUTE } from '@/router/routes';
 
-
 export const AppNavbar = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
@@ -34,7 +33,7 @@ export const AppNavbar = () => {
           className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
         />
       </div>
-      <div className='flex justify-end gap-3'>
+      <div className="flex justify-end gap-3">
         {location.pathname === DASHBOARD_ROUTE && <ModeToggle />}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -44,11 +43,16 @@ export const AppNavbar = () => {
               asChild
             >
               <Avatar className="cursor-pointer">
-                <AvatarFallback>{user ? getInitials(user.name) : '?'}</AvatarFallback>
+                <AvatarFallback>
+                  {user ? getInitials(user.name) : '?'}
+                </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className='w-36' align="end">
+          <DropdownMenuContent
+            className="w-36"
+            align="end"
+          >
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>

@@ -58,14 +58,20 @@ export const IncomeForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4"
+      >
         <FormField
           name="transactionDate"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
-                <FormLabel htmlFor="transactionDate" className="w-1/4">
+                <FormLabel
+                  htmlFor="transactionDate"
+                  className="w-1/4"
+                >
                   Date
                 </FormLabel>
                 <DateSelector
@@ -85,7 +91,10 @@ export const IncomeForm = () => {
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
-                <FormLabel htmlFor="amount" className="w-1/4">
+                <FormLabel
+                  htmlFor="amount"
+                  className="w-1/4"
+                >
                   Amount
                 </FormLabel>
                 <FormControl className="m-0">
@@ -108,7 +117,10 @@ export const IncomeForm = () => {
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
-                <FormLabel htmlFor="category" className="w-1/4">
+                <FormLabel
+                  htmlFor="category"
+                  className="w-1/4"
+                >
                   Category
                 </FormLabel>
                 <CategorySelector
@@ -129,7 +141,10 @@ export const IncomeForm = () => {
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
-                <FormLabel htmlFor="account" className="w-1/4">
+                <FormLabel
+                  htmlFor="account"
+                  className="w-1/4"
+                >
                   Account
                 </FormLabel>
                 <AccountSelector
@@ -150,11 +165,17 @@ export const IncomeForm = () => {
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
-                <FormLabel htmlFor="note" className="w-1/4">
+                <FormLabel
+                  htmlFor="note"
+                  className="w-1/4"
+                >
                   Note
                 </FormLabel>
                 <FormControl className="m-0">
-                  <Input className="w-3/4" {...field} />
+                  <Input
+                    className="w-3/4"
+                    {...field}
+                  />
                 </FormControl>
               </div>
               <FormMessage role="alert" />
@@ -164,7 +185,11 @@ export const IncomeForm = () => {
 
         <div className=""></div>
 
-        <Button className="w-full" variant="destructive" type="submit">
+        <Button
+          className="w-full"
+          variant="destructive"
+          type="submit"
+        >
           Submit
         </Button>
       </form>

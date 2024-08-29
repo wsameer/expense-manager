@@ -28,7 +28,10 @@ export const DateSelector = React.memo(
     };
 
     return (
-      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+      <Popover
+        open={isPopoverOpen}
+        onOpenChange={setIsPopoverOpen}
+      >
         <PopoverTrigger asChild>
           <FormControl>
             <Button
@@ -43,7 +46,10 @@ export const DateSelector = React.memo(
             </Button>
           </FormControl>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent
+          className="w-auto p-0"
+          align="start"
+        >
           <Calendar
             mode="single"
             selected={selected}
