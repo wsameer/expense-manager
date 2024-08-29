@@ -1,8 +1,8 @@
 import { LOGIN_ROUTE } from '@/router/routes';
 import { TOKEN_KEY, API_BASE_URL, USER_KEY } from '@/utils/constants';
-import axios from 'axios';
+import Axios from 'axios';
 
-const axiosInstance = axios.create({
+const axiosInstance = Axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',

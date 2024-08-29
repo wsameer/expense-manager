@@ -1,24 +1,11 @@
 import React from 'react';
+import { ChevronLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
 import { PageLayout } from '@/layouts';
-
-type Props = {
-  id: number;
-  label: string;
-  value: number;
-};
-
-const AccountOverviewStat = ({ id, label, value }: Props) => {
-  let CAD = new Intl.NumberFormat('en-CA', {
-    style: 'currency',
-    currency: 'CAD',
-  });
-  return (
-    <div className="flex-1 bg-white border rounded-lg border-gray-300 shadow-lg h-16 flex flex-col items-center justify-center">
-      <p className="">{label}</p>
-      < p className="" > {CAD.format(value)}</p >
-    </div >
-  );
-};
+import { Button } from '@/Components/ui/button';
+import { ACCOUNTS_ROUTE } from '@/router/routes';
+import { AccountOverviewStat } from '@/features/accounts/components/account-overview-stat';
 
 export const AccountsRoute = () => {
   const data = [
@@ -39,14 +26,32 @@ export const AccountsRoute = () => {
     }
   ];
 
+  const renderBackButton = () => (
+    <Button className='p-0' size="default" variant="link" asChild>
+      <Link to={ACCOUNTS_ROUTE}>
+        <ChevronLeft className="h-4 w-4" /> Back
+      </Link>
+    </Button>
+  );
+
+  const renderAddButton = () => (
+    <Button variant="destructive" asChild>
+      <Link to={''}>
+        Add
+      </Link>
+    </Button>
+  )
+
   return (
-    <PageLayout>
+    <PageLayout headerProps={{
+      backButton: renderBackButton(),
+      actionButton: renderAddButton(),
+    }}>
       <div className="flex justify-between items-center space-x-3">
         {data.map((item) => (
           <AccountOverviewStat key={item.id} {...item} />
         ))}
       </div>
-      <p>A table displaying category wise your bank accounts and the total balance left</p>
     </PageLayout>
   );
 };

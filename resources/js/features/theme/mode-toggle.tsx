@@ -13,7 +13,7 @@ export function ModeToggle() {
   const { setTheme } = useTheme()
   const { t } = useTranslation('common', {
     keyPrefix: 'settings.theme'
-  })
+  });
 
   return (
     <DropdownMenu>

@@ -1,9 +1,28 @@
-import { API_BASE_URL } from '@/utils/constants';
+export type BaseEntity = {
+  id: string;
+  createdAt: number;
+};
 
-const AUTH = API_BASE_URL + 'auth/';
+export type Entity<T> = {
+  [K in keyof T]: T[K];
+} & BaseEntity;
 
-export const GET_CSRF_TOKEN_API = API_BASE_URL + 'sanctum/csrf-cookie';
-export const REGISTRATION_API = AUTH + 'register';
-export const LOGIN_API = AUTH + 'login';
-export const LOGOUT_API = AUTH + 'logout';
-export const GET_USER_API = AUTH + 'me';
+export enum AccountType {
+  CASH = 'cash',
+  CHEQUING = 'chequing',
+  CREDIT_CARD = 'credit card',
+  SAVINGS = 'savings',
+  INVESTMENTS = 'investments',
+}
+
+export type Account = Entity<{
+  name: string;
+  type: typeof AccountType;
+  balance: number;
+  description: string;
+  payment_account_id: number | null;
+  id: number;
+  user_id: number;
+  updated_at: string; // date time
+  created_at: string; // date time
+}>;

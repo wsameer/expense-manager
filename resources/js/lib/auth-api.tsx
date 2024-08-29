@@ -3,16 +3,22 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { z } from 'zod';
 
 import axiosInstance from './api-client';
-import { GET_CSRF_TOKEN_API, GET_USER_API, LOGIN_API, LOGOUT_API, REGISTRATION_API } from '@/types/api';
+
 import { useAuth } from './use-auth';
 import { LoginResponse, LogoutResponse } from './types';
 import { User } from '@/types';
 import { AxiosResponse } from 'axios';
+import { GET_CSRF_TOKEN_API, GET_USER_API, LOGIN_API, LOGOUT_API, REGISTRATION_API } from '@/utils/constants';
+
+// api call definitions for auth (types, schemas, requests):
+// these are not part of features as this is a module shared across features
 
 export const loginFormSchema = z.object({
   email: z.string().min(8, 'Email is required').email('Invalid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
 });
+
+export type LoginInput = z.infer<typeof loginFormSchema>;
 
 export const registerFormSchema = z
   .object({
@@ -31,7 +37,6 @@ export const registerFormSchema = z
     message: 'Passwords do not match',
   });
 
-export type LoginInput = z.infer<typeof loginFormSchema>;
 export type RegisterInput = z.infer<typeof registerFormSchema>;
 
 export const getCsrfCookie = async () => await axiosInstance.get(GET_CSRF_TOKEN_API);
