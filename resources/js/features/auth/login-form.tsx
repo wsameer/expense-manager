@@ -17,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FORGOT_PASSWORD, REGISTER_ROUTE } from '@/router/routes';
 import { useAuth } from '@/lib/use-auth';
 import { useTranslation } from 'react-i18next';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
 
 type LoginFormProps = {
   onSuccess: () => void;
@@ -42,76 +43,83 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   };
 
   return (
-    <>
-      <Form {...form}>
-        <form
-          id="login-form"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="py-4">
-                <FormLabel htmlFor="email">{t('email')}</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder={t('your-email-address')}
-                    autoComplete="username"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="password">{t('password')}</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="*******"
-                    autoComplete="current-password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            variant="link"
-            className="p-0"
-            asChild
+    <Card className="mx-auto max-w-sm">
+      <CardHeader>
+        <CardTitle className="text-2xl">{t('login')}</CardTitle>
+        <CardDescription>
+          {t('your-email-address')}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form
+            id="login-form"
+            className="grid gap-4"
+            onSubmit={form.handleSubmit(onSubmit)}
           >
-            <Link to={FORGOT_PASSWORD}>{t('forgot-password')}</Link>
-          </Button>
-          <Button
-            className="mt-4 w-full"
-            variant="default"
-            type="submit"
-          >
-            Log In
-          </Button>
-        </form>
-      </Form>
-      <div className="mt-4 flex items-center justify-end">
-        <Button
-          variant="outline"
-          className="w-full"
-          asChild
-        >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="grid gap-2">
+                  <FormLabel htmlFor="email">{t('email')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t('email-placeholder')}
+                      autoComplete="username"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="grid gap-2">
+                  <div className="flex items-center">
+                    <FormLabel htmlFor="password">{t('password')}</FormLabel>
+                    <Button
+                      variant="link"
+                      className="ml-auto inline-block text-sm underline"
+                      asChild
+                    >
+                      <Link to={FORGOT_PASSWORD} >
+                        {t('forgot-your-password')}
+                      </Link>
+                    </Button>
+                  </div>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="*******"
+                      autoComplete="current-password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full">
+              {t('login')}
+            </Button>
+          </form>
+        </Form>
+        <div className="mt-4 text-center text-sm">
+          {t('dont-have-an-account')}{" "}
           <Link
             to={`${REGISTER_ROUTE}${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`}
+            className="underline"
           >
-            {t('create-an-account')}
+            {t('sign-up')}
           </Link>
-        </Button>
-      </div>
-    </>
-  );
+        </div>
+      </CardContent>
+    </Card>
+  )
+
 };

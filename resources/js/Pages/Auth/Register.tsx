@@ -13,7 +13,7 @@ export const RegisterRoute = () => {
   const redirectTo = searchParams.get('redirectTo');
 
   return (
-    <AuthLayout title={t('register')}>
+    <AuthLayout title={t('sign-up')}>
       <RegisterForm
         onSuccess={() =>
           navigate(`${redirectTo ? `${redirectTo}` : LOGIN_ROUTE}`, {
