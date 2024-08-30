@@ -12,7 +12,6 @@ export const TransactionsRoute = () => {
   return (
     <PageLayout
       title="Transactions"
-      pageTitle={pageTitle}
     >
     </PageLayout>
   );

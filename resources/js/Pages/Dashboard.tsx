@@ -14,7 +14,6 @@ export const DashboardRoute = () => {
   return (
     <PageLayout
       title="Dashboard"
-      pageTitle={pageTitle}
     ></PageLayout>
   );
 };

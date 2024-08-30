@@ -12,19 +12,16 @@ type Props = {
 
 export const MobileHeader = ({ title, backUrl, showStickyHeader }: Props) => {
   return (
-    <div
+    <header
       id="mobile-header"
-      className={cn('bg-white', {
-        'h-16 px-4 py-2': showStickyHeader,
-        'h-12': !showStickyHeader,
-      })}
+      className="sticky top-0 h-14 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
     >
       {showStickyHeader ? (
-        <div className="flex items-center">
+        <div className="container flex h-14 max-w-screen-2xl items-center">
           <div className="flex-1 text-left">
             {backUrl && (
               <Button
-                className="p-0 rounded-full justify-center"
+                className="p-0 h-8 rounded-full justify-center"
                 variant="ghost"
                 size="icon"
                 asChild
@@ -42,10 +39,10 @@ export const MobileHeader = ({ title, backUrl, showStickyHeader }: Props) => {
             <small className="text-sm font-medium leading-none">{title}</small>
           </div>
           <div className="flex-1 text-right">
-            <Button size={'sm'}>CTA</Button>
+            <Button className="h-8" variant="outline" size={'sm'}>CTA</Button>
           </div>
         </div>
       ) : null}
-    </div>
+    </header>
   );
 };

@@ -1,17 +1,16 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import { AppNavbar, Head, MobileHeader } from '@/Components/seo';
+import { AppHeader, Head, MobileHeader } from '@/Components/seo';
 import { useResponsive } from '@/hooks';
-import { cn } from '@/utils';
 
 interface PageLayoutProps {
   title?: string;
+  subTitle?: string;
   children?: ReactNode;
-  pageTitle: ReactNode;
   hideNavbar?: boolean;
 }
 
 export const PageLayout = React.memo<PageLayoutProps>(
-  ({ title, pageTitle, children, hideNavbar = false }) => {
+  ({ title, children, subTitle, hideNavbar = false }) => {
     const { isMobile } = useResponsive();
     const pageTitleRef = useRef<HTMLDivElement>(null);
     const [showStickyHeader, setShowStickyHeader] = useState(false);
@@ -24,7 +23,7 @@ export const PageLayout = React.memo<PageLayoutProps>(
             pageTitleRef.current.getBoundingClientRect().bottom;
 
           // Adjust when to show the sticky header based on the header height
-          const headerHeight = 54; // 46px because h-12 is 48px
+          const headerHeight = 58; // because h-14 is 56px
           setShowStickyHeader(titleBottom < headerHeight);
         }
       };
@@ -34,25 +33,34 @@ export const PageLayout = React.memo<PageLayoutProps>(
     }, []);
 
     return (
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+      <div className="flex flex-col sm:gap-2 md:pt-0 sm:pl-14">
         <Head title={title} />
-        <div className="sticky top-0 z-10">
+        {isMobile ?
           <MobileHeader
             title={title}
             showStickyHeader={showStickyHeader}
           />
-        </div>
+          : <AppHeader />
+        }
 
-        <main className="flex-1 overflow-y-auto py-2 px-4">
-          <div
-            ref={pageTitleRef}
-            id="page-title pt-4"
-          >
-            {pageTitle}
+        <main className="flex-1 overflow-y-auto">
+          <div className="container flex-1 items-start">
+            <div className="mx-auto w-full min-w-0">
+              <div className="space-y-2">
+                <h1 ref={pageTitleRef} className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl" id="page-title">
+                  {title}
+                </h1>
+                {subTitle &&
+                  (<p className="text-base text-muted-foreground">
+                    A vertically stacked set of interactive headings that each reveal a section of content.
+                  </p>)
+                }
+              </div>
+              <div className='pt-6'>
+                {children}
+              </div>
+            </div>
           </div>
-
-          <div className="h-6"></div>
-          {children}
         </main>
       </div>
     );

@@ -30,7 +30,6 @@ export const AccountsRoute = () => {
   return (
     <PageLayout
       title="Accounts"
-      pageTitle={pageTitle}
     >
       <div className="flex justify-between items-center space-x-3">
         {data.map((item) => (

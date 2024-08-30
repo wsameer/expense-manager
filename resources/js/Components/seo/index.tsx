@@ -1,3 +1,3 @@
 export * from './head';
-export * from './app-navbar';
+export * from './app-header';
 export * from './mobile-header';
