@@ -9,10 +9,5 @@ export const TransactionsRoute = () => {
     </h2>
   );
 
-  return (
-    <PageLayout
-      title="Transactions"
-    >
-    </PageLayout>
-  );
+  return <PageLayout title="Transactions"></PageLayout>;
 };

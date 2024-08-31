@@ -19,7 +19,13 @@ import { Button } from '@/Components/ui/button';
 import { LOGIN_ROUTE } from '@/router/routes';
 import { useAuth } from '@/lib/use-auth';
 import { toast } from '@/hooks';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/Components/ui/card';
 
 type RegisterFormProps = {
   onSuccess: () => void;
@@ -146,8 +152,11 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
           </form>
         </Form>
         <div className="mt-4 text-center text-sm">
-          {t('have-an-account')}{" "}
-          <Link to={LOGIN_ROUTE} className='underline'>
+          {t('have-an-account')}{' '}
+          <Link
+            to={LOGIN_ROUTE}
+            className="underline"
+          >
             {t('sign-in')}
           </Link>
         </div>

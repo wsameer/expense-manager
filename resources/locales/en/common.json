@@ -19,7 +19,8 @@
       "light": "Light",
       "dark": "Dark",
       "system": "System"
-    }
+    },
+    "logout": "Log out"
   },
   "add": "Add",
   "back": "Back"

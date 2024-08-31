@@ -17,7 +17,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FORGOT_PASSWORD, REGISTER_ROUTE } from '@/router/routes';
 import { useAuth } from '@/lib/use-auth';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/Components/ui/card';
 
 type LoginFormProps = {
   onSuccess: () => void;
@@ -46,9 +52,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     <Card className="mx-auto max-w-sm">
       <CardHeader>
         <CardTitle className="text-2xl">{t('login')}</CardTitle>
-        <CardDescription>
-          {t('your-email-address')}
-        </CardDescription>
+        <CardDescription>{t('your-email-address')}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -87,7 +91,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                       className="ml-auto inline-block text-sm underline"
                       asChild
                     >
-                      <Link to={FORGOT_PASSWORD} >
+                      <Link to={FORGOT_PASSWORD}>
                         {t('forgot-your-password')}
                       </Link>
                     </Button>
@@ -104,13 +108,16 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
+            <Button
+              type="submit"
+              className="w-full"
+            >
               {t('login')}
             </Button>
           </form>
         </Form>
         <div className="mt-4 text-center text-sm">
-          {t('dont-have-an-account')}{" "}
+          {t('dont-have-an-account')}{' '}
           <Link
             to={`${REGISTER_ROUTE}${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`}
             className="underline"
@@ -120,6 +127,5 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         </div>
       </CardContent>
     </Card>
-  )
-
+  );
 };

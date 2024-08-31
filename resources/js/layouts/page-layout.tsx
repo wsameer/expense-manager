@@ -35,30 +35,31 @@ export const PageLayout = React.memo<PageLayoutProps>(
     return (
       <div className="flex flex-col sm:gap-2 md:pt-0 sm:pl-14">
         <Head title={title} />
-        {isMobile ?
+        {isMobile ? (
           <MobileHeader
             title={title}
             showStickyHeader={showStickyHeader}
           />
-          : <AppHeader />
-        }
+        ) : (
+          <AppHeader />
+        )}
 
         <main className="flex-1 overflow-y-auto">
           <div className="container flex-1 items-start">
             <div className="mx-auto w-full min-w-0">
               <div className="space-y-2">
-                <h1 ref={pageTitleRef} className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl" id="page-title">
+                <h1
+                  ref={pageTitleRef}
+                  className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl"
+                  id="page-title"
+                >
                   {title}
                 </h1>
-                {subTitle &&
-                  (<p className="text-base text-muted-foreground">
-                    A vertically stacked set of interactive headings that each reveal a section of content.
-                  </p>)
-                }
+                {subTitle && (
+                  <p className="text-sm text-muted-foreground">{subTitle}</p>
+                )}
               </div>
-              <div className='pt-6'>
-                {children}
-              </div>
+              <div className="pt-6">{children}</div>
             </div>
           </div>
         </main>

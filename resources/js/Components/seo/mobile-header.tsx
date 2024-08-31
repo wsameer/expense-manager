@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from '../ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { cn } from '@/utils';
 
 type Props = {
   title?: string;
@@ -39,7 +38,13 @@ export const MobileHeader = ({ title, backUrl, showStickyHeader }: Props) => {
             <small className="text-sm font-medium leading-none">{title}</small>
           </div>
           <div className="flex-1 text-right">
-            <Button className="h-8" variant="outline" size={'sm'}>CTA</Button>
+            <Button
+              className="h-8"
+              variant="outline"
+              size={'sm'}
+            >
+              CTA
+            </Button>
           </div>
         </div>
       ) : null}

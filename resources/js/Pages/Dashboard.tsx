@@ -11,9 +11,5 @@ export const DashboardRoute = () => {
     </h2>
   );
 
-  return (
-    <PageLayout
-      title="Dashboard"
-    ></PageLayout>
-  );
+  return <PageLayout title="Dashboard"></PageLayout>;
 };
