@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Enums\AccountType;
+use App\Enums\AccountGroup;
 use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
@@ -21,13 +21,13 @@ class AccountController extends Controller
 
     $validatedData = $request->validate([
       'name' => 'required|string|max:255',
-      'type' => 'required|string|in:' . implode(',', array_column(AccountType::cases(), 'value')),
+      'group' => 'required|string|in:' . implode(',', array_column(AccountGroup::cases(), 'value')),
       'balance' => 'required|numeric',
       'description' => 'nullable|string',
       'payment_account_id' => 'nullable|exists:accounts,id',
     ]);
 
-    if ($validatedData['type'] === AccountType::CREDIT_CARD->value && !$validatedData['payment_account_id']) {
+    if ($validatedData['group'] === AccountGroup::CREDIT_CARD->value && !$validatedData['payment_account_id']) {
       return response()->json(['error' => 'Credit card accounts must have a payment account.'], 422);
     }
     /** @var \App\Models\User $user **/
@@ -51,13 +51,13 @@ class AccountController extends Controller
 
     $validatedData = $request->validate([
       'name' => 'sometimes|required|string|max:255',
-      'type' => 'sometimes|required|string|in:' . implode(',', array_column(AccountType::cases(), 'value')),
+      'group' => 'sometimes|required|string|in:' . implode(',', array_column(AccountGroup::cases(), 'value')),
       'balance' => 'sometimes|required|numeric',
       'description' => 'nullable|string',
       'payment_account_id' => 'nullable|exists:accounts,id',
     ]);
 
-    if (isset($validatedData['type']) && $validatedData['type'] === AccountType::CREDIT_CARD->value && !isset($validatedData['payment_account_id']) && !$account->payment_account_id) {
+    if (isset($validatedData['group']) && $validatedData['group'] === AccountGroup::CREDIT_CARD->value && !isset($validatedData['payment_account_id']) && !$account->payment_account_id) {
       return response()->json(['error' => 'Credit card accounts must have a payment account.'], 422);
     }
 

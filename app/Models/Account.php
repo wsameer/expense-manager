@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\AccountType;
+use App\Enums\AccountGroup;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +13,7 @@ class Account extends Model
 
   protected $fillable = [
     'name',
-    'type',
+    'group',
     'balance',
     'description',
     'payment_account_id',
@@ -23,7 +23,7 @@ class Account extends Model
   ];
 
   protected $casts = [
-    'type' => AccountType::class,
+    'group' => AccountGroup::class,
     'balance' => 'decimal:2',
   ];
 

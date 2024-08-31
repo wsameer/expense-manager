@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum AccountType: string
+enum AccountGroup: string
 {
   case CASH = 'cash';
   case CHEQUING = 'chequing';
