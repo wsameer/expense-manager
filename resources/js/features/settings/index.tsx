@@ -60,7 +60,7 @@ export const Settings = () => {
               <Sun className="h-4 w-4 text-gray-600 dark:text-gray-300" />
             )
           }
-          label="Dark Mode"
+          label="Dark Mode (Beta)"
           rightElement={
             <Switch
               className="w-10"

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
@@ -12,10 +13,6 @@ import {
 } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
 
-import {
-  CreateAccountForm,
-  CreateAccountFormSchema,
-} from './api/create-account';
 import { AccountGroup } from '@/types/api';
 import { capitalize, cn } from '@/utils';
 import { Button } from '@/Components/ui/button';
@@ -32,6 +29,29 @@ type Props = React.ComponentProps<'form'> & {
   description?: string | undefined;
   paymentAccountId?: string | undefined;
 };
+
+const AccountGroupEnum = z.enum([
+  'cash',
+  'chequing',
+  'savings',
+  'credit card',
+  'investments',
+]);
+type AccountGroupEnum = z.infer<typeof AccountGroupEnum>;
+
+const CreateAccountFormSchema = z.object({
+  name: z
+    .coerce
+    .string()
+    .min(3, { message: 'Must be 3 or more characters long' })
+    .max(48, { message: 'Must be 48 or fewer characters long' }),
+  group: AccountGroupEnum,
+  balance: z.number().int().nonnegative(),
+  description: z.optional(z.string().max(148, { message: 'Must be 148 or fewer characters long' })),
+  payment_account_id: z.optional(z.number()),
+});
+
+type CreateAccountForm = z.infer<typeof CreateAccountFormSchema>;
 
 export const AccountForm = ({
   className,

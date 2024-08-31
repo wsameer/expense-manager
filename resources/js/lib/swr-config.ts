@@ -13,10 +13,10 @@ interface Return<Data, Error>
   response: AxiosResponse<Data> | undefined;
 }
 
-export interface Config<Data = unknown, Error = unknown>
+export interface Config<Data = any, Error = any>
   extends Omit<SWRConfiguration<AxiosResponse<Data>, Error>, 'fetcher'> {}
 
-export default function useRequest<Data = unknown, Error = AxiosError>(
+export default function useRequest<Data = any, Error = AxiosError>(
   request: GetRequest,
   { fallbackData, ...config }: Config<Data, Error> = {},
 ): Return<Data, Error> {

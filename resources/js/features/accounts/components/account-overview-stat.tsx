@@ -14,7 +14,7 @@ export const AccountOverviewStat = ({ id, label, value }: Props) => {
   });
 
   return (
-    <div className="flex-1 bg-white border rounded-xl h-14 flex flex-col items-center justify-center">
+    <div className="flex-1 bg-white dark:bg-gray-800 border rounded-xl h-14 flex flex-col items-center justify-center">
       {/* <Skeleton className="h-4 w-16 mb-2 rounded-full" /> */}
       {/* <Skeleton className="h-4 w-20 rounded-full" /> */}
       <small className="text-sm font-medium leading-none">{label}</small>

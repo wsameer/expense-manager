@@ -17,7 +17,7 @@ export enum AccountGroup {
 
 export type Account = Entity<{
   name: string;
-  group: typeof AccountGroup;
+  group: AccountGroup;
   balance: number;
   description: string;
   payment_account_id: number | null;

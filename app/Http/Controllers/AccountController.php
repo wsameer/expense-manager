@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
+  /**
+   * GET all users
+   */
   public function index()
   {
     $user = Auth::user();
@@ -15,6 +18,10 @@ class AccountController extends Controller
     return response()->json($accounts);
   }
 
+  /**
+   * POST
+   * Create a new user
+   */
   public function store(Request $request)
   {
     $user = Auth::user();
@@ -35,6 +42,9 @@ class AccountController extends Controller
     return response()->json($account, 201);
   }
 
+  /**
+   * GET user by id
+   */
   public function show($id)
   {
     $user = Auth::user();
@@ -43,6 +53,10 @@ class AccountController extends Controller
     return response()->json($account);
   }
 
+  /**
+   * PUT
+   * Update existing user
+   */
   public function update(Request $request, $id)
   {
     $user = Auth::user();
@@ -65,6 +79,9 @@ class AccountController extends Controller
     return response()->json($account);
   }
 
+  /**
+   * DELETE a user
+   */
   public function destroy($id)
   {
     $user = Auth::user();
