@@ -7,7 +7,7 @@ export type Entity<T> = {
   [K in keyof T]: T[K];
 } & BaseEntity;
 
-export enum AccountType {
+export enum AccountGroup {
   CASH = 'cash',
   CHEQUING = 'chequing',
   CREDIT_CARD = 'credit card',
@@ -17,7 +17,7 @@ export enum AccountType {
 
 export type Account = Entity<{
   name: string;
-  type: typeof AccountType;
+  group: typeof AccountGroup;
   balance: number;
   description: string;
   payment_account_id: number | null;

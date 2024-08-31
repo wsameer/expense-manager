@@ -9,8 +9,13 @@ export const getInitials = (name: string): string => {
     return '';
   }
   return name
-    .split(' ') // Split the string by spaces into an array of words
-    .map((word) => word[0]) // Map each word to its first character
-    .join('') // Join all the first characters together
-    .toUpperCase(); // Convert the result to uppercase
+    .split(' ')
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase();
 };
+
+export function capitalize(input: string): string {
+  if (!input) return '';
+  return input.charAt(0).toUpperCase() + input.slice(1);
+}

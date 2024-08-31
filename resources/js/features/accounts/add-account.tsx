@@ -25,7 +25,7 @@ import { useTranslation } from 'react-i18next';
 
 export const AddAccount = ({ group }: { group: AccountGroup }) => {
   const { t } = useTranslation('account', {
-    keyPrefix: 'create-account',
+    keyPrefix: 'create-account-form',
   });
   const [open, setOpen] = React.useState(false);
   const { isMobile } = useResponsive();

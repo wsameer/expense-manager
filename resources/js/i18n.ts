@@ -6,12 +6,14 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 import common from '../locales/en/common.json';
 import auth from '../locales/en/auth.json';
+import account from '../locales/en/account.json';
 
 export const defaultNS = 'ns1';
 export const resources = {
   en: {
     common,
     auth,
+    account,
   },
 } as const;
 

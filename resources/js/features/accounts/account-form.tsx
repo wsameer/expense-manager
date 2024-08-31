@@ -42,7 +42,7 @@ export const AccountForm = ({
   balance = 0.00,
 }: Props) => {
   const { t } = useTranslation('account', {
-    keyPrefix: 'create-account',
+    keyPrefix: 'create-account-form',
   });
 
   const form = useForm<CreateAccountForm>({
@@ -82,9 +82,6 @@ export const AccountForm = ({
                   {...field}
                 />
               </div>
-              <FormDescription>
-                {t('name-hint')}
-              </FormDescription>
               <FormMessage role="alert" />
             </FormItem>
           )}
@@ -95,26 +92,28 @@ export const AccountForm = ({
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Group</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a group type" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {ACCOUNT_GROUPS.map((account, index) =>
-                    <SelectItem
-                      key={index}
-                      value={account}
-                    >
-                      {capitalize(account)}
-                    </SelectItem>)}
-                </SelectContent>
-              </Select>
+              <div className="flex items-center mt-4 space-y-0 space-x-2">
+                <FormLabel htmlFor="group" className="w-1/4">{t('group')}</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a group type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {ACCOUNT_GROUPS.map((account, index) =>
+                      <SelectItem
+                        key={index}
+                        value={account}
+                      >
+                        {capitalize(account)}
+                      </SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
               <FormDescription>
                 You can manage account groups in your{" "}
-                <Link to={SETTINGS_ROUTE}>account settings</Link>.
+                <Link className='underline' to={SETTINGS_ROUTE}>account settings</Link>
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -138,9 +137,6 @@ export const AccountForm = ({
                   {...field}
                 />
               </div>
-              <FormDescription>
-                {t('balance-hint')}
-              </FormDescription>
               <FormMessage role="alert" />
             </FormItem>
           )}
@@ -174,7 +170,7 @@ export const AccountForm = ({
           variant="destructive"
           type="submit"
         >
-          {t('submit-button')}
+          {t('create-account')}
         </Button>
       </form>
     </Form>

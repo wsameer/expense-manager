@@ -4,7 +4,9 @@ import { AccountOverviewStat } from '@/features/accounts/components/account-over
 import { ListGroup } from '@/Components/list-group';
 import { ListItem } from '@/Components/list-group/list-item';
 import { AddAccount } from '@/features/accounts/add-account';
-import { AccountType } from '@/types/api';
+import { AccountGroup } from '@/types/api';
+import { ACCOUNT_GROUPS } from '@/features/accounts/constants';
+import { capitalize } from '@/utils';
 
 export const AccountsRoute = () => {
   const data = [
@@ -25,18 +27,14 @@ export const AccountsRoute = () => {
     },
   ];
 
-  const TotalBalance = (
-    <p className="text-sm">
-      $14,000.00
-    </p>
-  )
+  const TotalBalance = <p className="text-sm">$14,000.00</p>;
 
   return (
     <PageLayout
       title="Accounts"
       subTitle="Your accounts with its latest balance"
     >
-      <div className='grid grid-cols-1 gap-6'>
+      <div className="grid grid-cols-1 gap-6">
         <div className="flex justify-between items-center space-x-3">
           {data.map((item) => (
             <AccountOverviewStat
@@ -45,19 +43,16 @@ export const AccountsRoute = () => {
             />
           ))}
         </div>
-        <div className='grid grid-cols-1 gap-4'>
-          <ListGroup title={'Cash'}>
-            <ListItem label={'Cash'} rightElement={TotalBalance} />
-            <AddAccount type={AccountType.CASH} />
-          </ListGroup>
-
-          <ListGroup title="Chequing">
-            <ListItem label="TD Unlimited Chequing" rightElement={TotalBalance} />
-            <ListItem label="Wealth Simple Cash" rightElement={TotalBalance} />
-            <ListItem label="Neo Financial Money" rightElement={TotalBalance} />
-            <ListItem label="Simplii Financial" rightElement={TotalBalance} />
-            <AddAccount type={AccountType.CHEQUING} />
-          </ListGroup>
+        <div className="grid grid-cols-1 gap-4">
+          {ACCOUNT_GROUPS.map((account, index) => (
+            <ListGroup key={account + index} title={capitalize(account)}>
+              <ListItem
+                label={capitalize(account)}
+                rightElement={TotalBalance}
+              />
+              <AddAccount group={account as unknown as AccountGroup} />
+            </ListGroup>
+          ))}
         </div>
       </div>
     </PageLayout>
