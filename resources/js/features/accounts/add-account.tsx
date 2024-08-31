@@ -1,0 +1,90 @@
+import * as React from 'react';
+
+import { Button } from '@/Components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/Components/ui/dialog';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+  DrawerHeader,
+  DrawerTrigger,
+  DrawerFooter,
+  DrawerClose,
+} from '@/Components/ui/drawer';
+import { useResponsive } from '@/hooks';
+import { PlusCircle } from 'lucide-react';
+import { AccountForm } from './account-form';
+import { AccountGroup } from '@/types/api';
+import { useTranslation } from 'react-i18next';
+
+export const AddAccount = ({ group }: { group: AccountGroup }) => {
+  const { t } = useTranslation('account', {
+    keyPrefix: 'create-account',
+  });
+  const [open, setOpen] = React.useState(false);
+  const { isMobile } = useResponsive();
+
+  if (isMobile) {
+    return (
+      <Drawer
+        open={open}
+        onOpenChange={setOpen}
+      >
+        <DrawerTrigger asChild>
+          <Button
+            className="w-full"
+            variant="secondary"
+          >
+            <PlusCircle className="h-5 w-5 mr-2" />
+            <p>{t('add-new-account')}</p>
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader className="text-left">
+            <DrawerTitle>{t('add-new-account')}</DrawerTitle>
+          </DrawerHeader>
+
+          <AccountForm
+            className="px-4"
+            group={group}
+          />
+
+          <DrawerFooter className="pt-2">
+            <DrawerClose asChild>
+              <Button variant="outline">{t('cancel')}</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+    >
+      <DialogTrigger asChild>
+        <Button
+          className="w-full"
+          variant="secondary"
+        >
+          <PlusCircle className="h-5 w-5 mr-2" />
+          <p>{t('add-new-account')}</p>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>{t('add-new-account')}</DialogTitle>
+        </DialogHeader>
+        <AccountForm group={group} />
+      </DialogContent>
+    </Dialog>
+  );
+};

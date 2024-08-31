@@ -4,24 +4,27 @@ import { z } from 'zod';
 
 import { CREATE_ACCOUNT } from '../constants';
 
-const AccountTypeEnum = z.enum([
+const AccountGroupEnum = z.enum([
   'cash',
   'chequing',
   'savings',
   'credit card',
   'investments',
 ]);
-type AccountTypeEnum = z.infer<typeof AccountTypeEnum>;
+type AccountGroupEnum = z.infer<typeof AccountGroupEnum>;
 
-export const createAccountFormSchema = z.object({
-  name: z.string().min(3, { message: "Must be 3 or more characters long" }).max(48, { message: "Must be 48 or fewer characters long" }),
-  type: AccountTypeEnum,
+export const CreateAccountFormSchema = z.object({
+  name: z
+    .string()
+    .min(3, { message: 'Must be 3 or more characters long' })
+    .max(48, { message: 'Must be 48 or fewer characters long' }),
+  group: AccountGroupEnum,
   balance: z.number(),
-  description: z.optional(z.string()),
+  description: z.optional(z.string().max(148, { message: 'Must be 148 or fewer characters long' })),
   payment_account_id: z.optional(z.number()),
 });
 
-export type CreateAccountForm = z.infer<typeof createAccountFormSchema>;
+export type CreateAccountForm = z.infer<typeof CreateAccountFormSchema>;
 
 export const createAccount = ({
   data,

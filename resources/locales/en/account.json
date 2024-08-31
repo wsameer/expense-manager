@@ -1,0 +1,13 @@
+{
+  "create-account": {
+    "add-new-account": "Add new account",
+    "cancel": "Cancel",
+    "name": "Name",
+    "name-hint": "This is the name of your bank, credit/debit card",
+    "balance": "Balance",
+    "balance-hint": "This is the current / initial balance in your account",
+    "description": "Description",
+    "type": "Type",
+    "submit-button": "Create account"
+  }
+}
