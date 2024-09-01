@@ -20,10 +20,10 @@ import {
 import { useResponsive } from '@/hooks';
 import { PlusCircle } from 'lucide-react';
 import { AccountForm } from './account-form';
-import { AccountGroup } from '@/types/api';
 import { useTranslation } from 'react-i18next';
+import { AccountGroupEnum } from '../types';
 
-export const AddAccount = ({ group }: { group: AccountGroup }) => {
+export const AddAccount = ({ group }: { group: AccountGroupEnum }) => {
   const { t } = useTranslation('account', {
     keyPrefix: 'create-account-form',
   });
@@ -53,6 +53,7 @@ export const AddAccount = ({ group }: { group: AccountGroup }) => {
           <AccountForm
             className="px-4"
             group={group}
+            setOpen={setOpen}
           />
 
           <DrawerFooter className="pt-2">
@@ -83,7 +84,10 @@ export const AddAccount = ({ group }: { group: AccountGroup }) => {
         <DialogHeader>
           <DialogTitle>{t('add-new-account')}</DialogTitle>
         </DialogHeader>
-        <AccountForm group={group} />
+        <AccountForm
+          group={group}
+          setOpen={setOpen}
+        />
       </DialogContent>
     </Dialog>
   );

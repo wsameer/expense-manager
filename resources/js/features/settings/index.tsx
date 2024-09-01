@@ -13,10 +13,10 @@ import {
   Sun,
   WalletCards,
 } from 'lucide-react';
+import { z } from 'zod';
 import { Button } from '@/Components/ui/button';
 import { useAuth } from '@/lib/use-auth';
 import { Input } from '@/Components/ui/input';
-import { z } from 'zod';
 import { Link } from 'react-router-dom';
 import { ListGroup } from '@/Components/list-group';
 import { ListItem } from '@/Components/list-group/list-item';
@@ -28,6 +28,9 @@ export const Settings = () => {
     keyPrefix: 'settings',
   });
 
+  /**
+   * @TODO
+   */
   const searchFormSchema = z.object({
     query: z
       .string()

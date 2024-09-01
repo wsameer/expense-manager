@@ -1,8 +1,7 @@
 import { API_BASE_URL } from '@/utils/constants';
 
-export const CREATE_ACCOUNT = API_BASE_URL + 'account';
+export const ACCOUNTS_API = API_BASE_URL + 'accounts';
 export const DELETE_ACCOUNT = API_BASE_URL + 'accounts/:id';
-export const GET_All_ACCOUNTS_API = API_BASE_URL + 'accounts';
 
 export const ACCOUNT_GROUPS = [
   { key: 'CASH', label: 'cash', id: 1 },
