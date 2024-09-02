@@ -6,6 +6,7 @@
     "balance": "Balance",
     "description": "Description",
     "create-account": "Create account",
-    "group": "Group"
+    "group": "Group",
+    "payment": "Payment"
   }
 }

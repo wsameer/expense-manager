@@ -17,7 +17,6 @@ import { AddTransaction } from '@/features/add-transaction';
 import {
   ACCOUNTS_ROUTE,
   DASHBOARD_ROUTE,
-  MORE_ROUTE,
   SETTINGS_ROUTE,
   TRANSACTIONS_ROUTE,
 } from '@/router/routes';

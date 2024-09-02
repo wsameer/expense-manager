@@ -24,8 +24,16 @@ export const useBankAccounts = () => {
   ): Promise<Account | null> => {
     setIsCreating(true);
 
+    /**
+     * TODO: write an interceptor to do this
+     */
+    const cleanData = {
+      ...data,
+      payment_account_id: data.paymentAccountId
+    };
+
     try {
-      const response = await axiosInstance.post<Account>(ACCOUNTS_API, data);
+      const response = await axiosInstance.post<Account>(ACCOUNTS_API, cleanData);
       const newAccount = response.data;
 
       // Update the accounts list in the cache

@@ -15,6 +15,12 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
+    // if (config.data) {
+    //   config.data = toSnakeCase(config.data);
+    // }
+    // if (config.params) {
+    //   config.params = toSnakeCase(config.params);
+    // }
     return config;
   },
   (error) => {

@@ -17,10 +17,10 @@ export const CreateAccountFormSchema = z.object({
     .max(48, { message: 'Must be 48 or fewer characters long' }),
   group: AccountGroupEnum,
   balance: z.coerce.number().nonnegative(),
+  paymentAccountId: z.optional(z.coerce.number()),
   description: z.optional(
     z.string().max(148, { message: 'Must be 148 or fewer characters long' }),
   ),
-  payment_account_id: z.optional(z.number()),
 });
 
 export type CreateAccountForm = z.infer<typeof CreateAccountFormSchema>;
