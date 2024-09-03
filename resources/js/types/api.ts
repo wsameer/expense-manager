@@ -8,11 +8,11 @@ export type Entity<T> = {
 } & BaseEntity;
 
 export enum AccountGroup {
-  CASH = 'cash',
-  CHEQUING = 'chequing',
-  CREDIT_CARD = 'credit card',
-  SAVINGS = 'savings',
-  INVESTMENTS = 'investments',
+  CASH = 'CASH',
+  CHEQUING = 'CHEQUING',
+  CREDIT_CARD = 'CREDIT_CARD',
+  SAVINGS = 'SAVINGS',
+  INVESTMENTS = 'INVESTMENTS',
 }
 
 export type Account = Entity<{

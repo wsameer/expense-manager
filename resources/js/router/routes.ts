@@ -11,6 +11,5 @@ export const DASHBOARD_ROUTE = APP_ROUTE;
 export const TRANSACTIONS_ROUTE = APP_ROUTE + '/transactions';
 
 export const ACCOUNTS_ROUTE = APP_ROUTE + '/accounts';
-export const ACCOUNT_DETAILS_ROUTE = ACCOUNTS_ROUTE + '/:accountId';
 
 export const SETTINGS_ROUTE = APP_ROUTE + '/settings';

@@ -9,7 +9,6 @@ import {
   BASE_ROUTE,
   TRANSACTIONS_ROUTE,
   SETTINGS_ROUTE,
-  ACCOUNT_DETAILS_ROUTE,
 } from './routes';
 import { MainErrorFallback } from '@/Components/errors';
 import { AppRoot } from '@/pages/root';
@@ -60,13 +59,15 @@ export const createRouter = () =>
             const { AccountsRoute } = await import('../pages/accounts/accounts');
             return { Component: AccountsRoute };
           },
-          children: [{
-            path: ACCOUNT_DETAILS_ROUTE,
-            lazy: async () => {
-              const { AccountDetailsRoute } = await import('../pages/accounts/account');
-              return { Component: AccountDetailsRoute }
+          children: [
+            {
+              path: `${ACCOUNTS_ROUTE}/:id`,
+              lazy: async () => {
+                const { AccountDetailsRoute } = await import('../pages/accounts/account');
+                return { Component: AccountDetailsRoute }
+              }
             }
-          }]
+          ]
         },
         {
           path: SETTINGS_ROUTE,

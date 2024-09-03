@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -67,12 +67,11 @@ export const AccountForm = ({
       balance,
       group,
       description: description ?? '',
-      paymentAccountId
+      paymentAccountId,
     },
   });
 
   const handleCreateAccount = async (values: CreateAccountForm) => {
-    console.log("🚀 ~ handleCreateAccount ~ values:", values)
     if (!values) return false;
     const result = await createAccount(values);
     if (result) {
@@ -130,11 +129,10 @@ export const AccountForm = ({
                     if (value === 'CREDIT_CARD') {
                       setShowPaymentOptions(true);
                     } else {
-                      form.setValue("paymentAccountId", undefined);
+                      form.setValue('paymentAccountId', undefined);
                       setShowPaymentOptions(false);
                     }
-
-                    field.onChange(value)
+                    field.onChange(value);
                   }}
                   defaultValue={field.value}
                 >
@@ -169,50 +167,54 @@ export const AccountForm = ({
           )}
         />
 
-        {
-          form.getValues('group') === "CREDIT_CARD" ? (
-            <FormField
-              name="paymentAccountId"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center mt-4 space-y-0 space-x-2">
-                    <FormLabel
-                      htmlFor="paymentAccountId"
-                      className="w-1/4"
-                    >
-                      {t('payment')}
-                    </FormLabel>
-                    <Select
-                      onValueChange={(value) => field.onChange(Number(value))}
-                      value={field.value?.toString()}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a payment account">
-                            {allAccounts?.find(option => option.id === field.value)?.name}
-                          </SelectValue>
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {allAccounts?.map(({ id, name }) => (
+        {showPaymentOptions ? (
+          <FormField
+            name="paymentAccountId"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center mt-4 space-y-0 space-x-2">
+                  <FormLabel
+                    htmlFor="paymentAccountId"
+                    className="w-1/4"
+                  >
+                    {t('payment')}
+                  </FormLabel>
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                    value={field.value?.toString()}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a payment account">
+                          {
+                            allAccounts?.find(
+                              (option) => option.id === field.value,
+                            )?.name
+                          }
+                        </SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {allAccounts?.map(({ id, group, name }) =>
+                        group === AccountGroup.CHEQUING ||
+                        group === AccountGroup.SAVINGS ? (
                           <SelectItem
                             key={id}
                             value={id}
                           >
                             {capitalize(name)}
                           </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )
-              }
-            />
-          ) : null
-        }
+                        ) : null,
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ) : null}
 
         <FormField
           name="balance"

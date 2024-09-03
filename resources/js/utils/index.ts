@@ -19,3 +19,10 @@ export function capitalize(input: string): string {
   if (!input) return '';
   return input.charAt(0).toUpperCase() + input.slice(1);
 }
+
+export const formattedAmount = (amount: number): string => {
+  return amount.toLocaleString('en-CA', {
+    style: 'currency',
+    currency: 'CAD',
+  });
+};

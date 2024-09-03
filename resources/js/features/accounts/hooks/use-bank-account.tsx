@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ACCOUNTS_API } from '../constants';
-import { Account } from '@/types/api';
+import { Account, AccountGroup } from '@/types/api';
 import { CreateAccountForm } from '../types';
 import useSWR from 'swr';
 import axiosInstance from '@/lib/api-client';
@@ -15,7 +15,12 @@ export const useBankAccounts = () => {
     error: accountsError,
     mutate: mutateAccounts,
   } = useSWR<Account[]>(ACCOUNTS_API, (url: string) =>
-    axiosInstance.get(url).then((res) => res.data),
+    axiosInstance.get(url).then((res) => {
+      res.data.forEach((account: any) => {
+        account.balance = parseFloat(account.balance);
+      });
+      return res.data;
+    }),
   );
 
   // Create a new bank account
@@ -29,11 +34,14 @@ export const useBankAccounts = () => {
      */
     const cleanData = {
       ...data,
-      payment_account_id: data.paymentAccountId
+      payment_account_id: data.paymentAccountId,
     };
 
     try {
-      const response = await axiosInstance.post<Account>(ACCOUNTS_API, cleanData);
+      const response = await axiosInstance.post<Account>(
+        ACCOUNTS_API,
+        cleanData,
+      );
       const newAccount = response.data;
 
       // Update the accounts list in the cache
@@ -51,11 +59,20 @@ export const useBankAccounts = () => {
     }
   };
 
+  function getBalanceSumByGroup(group: AccountGroup): number {
+    if (!allAccounts) return 0;
+
+    return allAccounts
+      .filter(account => account.group === group)
+      .reduce((sum, account) => sum + parseFloat(account.balance as any), 0);
+  }
+
   return {
     allAccounts,
     accountsError,
-    createAccount,
     isCreating,
     isUpdating,
+    createAccount,
+    getBalanceSumByGroup
   };
 };

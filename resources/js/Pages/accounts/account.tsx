@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import { PageLayout } from '@/layouts'
+import { PageLayout } from '@/layouts';
 import { useParams } from 'react-router-dom';
 
 export const AccountDetailsRoute = () => {
@@ -8,10 +8,8 @@ export const AccountDetailsRoute = () => {
   const accountId = params.accountId as string;
 
   return (
-    <PageLayout
-      title="Account"
-    >
+    <PageLayout title="Account">
       <h1>Details of your account</h1>
     </PageLayout>
-  )
-}
+  );
+};

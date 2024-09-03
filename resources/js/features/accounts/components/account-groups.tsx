@@ -1,13 +1,15 @@
 import React from 'react';
 import { ListGroup } from '@/Components/list-group';
 import { ListItem } from '@/Components/list-group/list-item';
-import { Account } from '@/types/api';
-import { capitalize } from '@/utils';
+import { Account, AccountGroup } from '@/types/api';
+import { capitalize, formattedAmount } from '@/utils';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { ACCOUNT_GROUPS } from '../constants';
 import { useBankAccounts } from '../hooks/use-bank-account';
 import { AddAccount } from './add-account';
 import { AccountGroupEnum } from '../types';
+import { useNavigate } from 'react-router-dom';
+import { ACCOUNTS_ROUTE } from '@/router/routes';
 
 const displaySkeletonLoader = () => (
   <div>
@@ -18,6 +20,7 @@ const displaySkeletonLoader = () => (
 
 export const AccountGroups = () => {
   const { allAccounts } = useBankAccounts();
+  const navigate = useNavigate();
 
   if (!allAccounts) {
     return (
@@ -39,16 +42,18 @@ export const AccountGroups = () => {
         return (
           <ListGroup
             key={id}
+            group={key as unknown as AccountGroup}
             title={capitalize(label)}
           >
-            {allAccounts.map((account: Account) => {
-              if (key === account.group) {
+            {allAccounts.map(({ id, name, group, balance }) => {
+              if (key === group) {
                 return (
                   <ListItem
-                    key={account.id}
-                    label={account.name}
+                    key={id}
+                    label={name}
+                    onClick={() => navigate(`${ACCOUNTS_ROUTE}/${id}`)}
                     rightElement={
-                      <p className="text-sm">{`$${account.balance}`}</p>
+                      <p className="text-sm">{formattedAmount(balance)}</p>
                     }
                   />
                 );
