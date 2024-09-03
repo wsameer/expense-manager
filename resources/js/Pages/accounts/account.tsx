@@ -4,12 +4,11 @@ import { PageLayout } from '@/layouts';
 import { useParams } from 'react-router-dom';
 
 export const AccountDetailsRoute = () => {
-  const params = useParams();
-  const accountId = params.accountId as string;
-
+  const { id } = useParams();
   return (
-    <PageLayout title="Account">
+    <PageLayout title="Dynamic Name" showHeader={true}>
       <h1>Details of your account</h1>
+      <p>Account ID: {id}</p>
     </PageLayout>
   );
 };

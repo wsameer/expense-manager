@@ -51,23 +51,25 @@ export const createRouter = () =>
           lazy: async () => {
             const { TransactionsRoute } = await import('../pages/transactions');
             return { Component: TransactionsRoute };
-          }
+          },
         },
         {
           path: ACCOUNTS_ROUTE,
           lazy: async () => {
-            const { AccountsRoute } = await import('../pages/accounts/accounts');
+            const { AccountsRoute } = await import(
+              '../pages/accounts/accounts'
+            );
             return { Component: AccountsRoute };
           },
-          children: [
-            {
-              path: `${ACCOUNTS_ROUTE}/:id`,
-              lazy: async () => {
-                const { AccountDetailsRoute } = await import('../pages/accounts/account');
-                return { Component: AccountDetailsRoute }
-              }
-            }
-          ]
+        },
+        {
+          path: `${ACCOUNTS_ROUTE}/:id`,
+          lazy: async () => {
+            const { AccountDetailsRoute } = await import(
+              '../pages/accounts/account'
+            );
+            return { Component: AccountDetailsRoute };
+          },
         },
         {
           path: SETTINGS_ROUTE,

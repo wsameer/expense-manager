@@ -1,7 +1,7 @@
 import React from 'react';
 import { ListGroup } from '@/Components/list-group';
 import { ListItem } from '@/Components/list-group/list-item';
-import { Account, AccountGroup } from '@/types/api';
+import { AccountGroup } from '@/types/api';
 import { capitalize, formattedAmount } from '@/utils';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { ACCOUNT_GROUPS } from '../constants';
