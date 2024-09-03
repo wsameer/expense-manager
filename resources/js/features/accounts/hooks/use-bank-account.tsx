@@ -63,7 +63,7 @@ export const useBankAccounts = () => {
     if (!allAccounts) return 0;
 
     return allAccounts
-      .filter(account => account.group === group)
+      .filter((account) => account.group === group)
       .reduce((sum, account) => sum + parseFloat(account.balance as any), 0);
   }
 
@@ -73,6 +73,6 @@ export const useBankAccounts = () => {
     isCreating,
     isUpdating,
     createAccount,
-    getBalanceSumByGroup
+    getBalanceSumByGroup,
   };
 };
