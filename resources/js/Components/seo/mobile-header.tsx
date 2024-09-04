@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Button } from '../ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -7,9 +7,10 @@ type Props = {
   title?: string;
   showStickyHeader: boolean;
   backUrl?: string;
+  rightElement?: ReactElement;
 };
 
-export const MobileHeader = ({ title, backUrl, showStickyHeader }: Props) => {
+export const MobileHeader = ({ title, backUrl, showStickyHeader, rightElement }: Props) => {
   return (
     <header
       id="mobile-header"
@@ -26,25 +27,18 @@ export const MobileHeader = ({ title, backUrl, showStickyHeader }: Props) => {
                 asChild
               >
                 <Link
-                  className=""
-                  to={''}
+                  to={backUrl}
                 >
                   <ArrowLeft className="h-5 w-5" />
                 </Link>
               </Button>
             )}
           </div>
-          <div className="flex-1 text-center">
+          <div className="flex text-center">
             <small className="text-sm font-medium leading-none">{title}</small>
           </div>
           <div className="flex-1 text-right">
-            <Button
-              className="h-8"
-              variant="outline"
-              size={'sm'}
-            >
-              CTA
-            </Button>
+            {rightElement}
           </div>
         </div>
       ) : null}
