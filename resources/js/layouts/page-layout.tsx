@@ -1,16 +1,19 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
 import { AppHeader, Head, MobileHeader } from '@/Components/seo';
 import { useResponsive } from '@/hooks';
+import { cn } from '@/utils';
 
 interface PageLayoutProps {
   title?: string;
   subTitle?: string;
+  backUrl?: string;
   children?: ReactNode;
   showHeader?: boolean;
+  rightElement?: ReactElement;
 }
 
 export const PageLayout = React.memo<PageLayoutProps>(
-  ({ title, children, subTitle, showHeader = false }) => {
+  ({ title, children, subTitle, backUrl, rightElement, showHeader = false }) => {
     const { isMobile } = useResponsive();
     const pageTitleRef = useRef<HTMLDivElement>(null);
     const [showStickyHeader, setShowStickyHeader] = useState(showHeader);
@@ -39,6 +42,8 @@ export const PageLayout = React.memo<PageLayoutProps>(
           <MobileHeader
             title={title}
             showStickyHeader={showStickyHeader}
+            backUrl={backUrl}
+            rightElement={rightElement}
           />
         ) : (
           <AppHeader />
@@ -61,7 +66,9 @@ export const PageLayout = React.memo<PageLayoutProps>(
                   <p className="text-sm text-muted-foreground">{subTitle}</p>
                 )}
               </div>
-              <div className="pt-6">{children}</div>
+              <div className={cn({
+                'pt-6': !showHeader
+              })}>{children}</div>
             </div>
           </div>
         </main>
