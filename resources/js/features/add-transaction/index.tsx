@@ -38,7 +38,7 @@ export const AddTransaction = () => {
       >
         <DrawerTrigger asChild>
           <Button
-            className="rounded-full h-12 w-12"
+            className="rounded-full h-14 w-14"
             variant="destructive"
             size="icon"
           >

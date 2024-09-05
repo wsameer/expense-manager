@@ -51,7 +51,11 @@ export const AccountGroups = () => {
                   <ListItem
                     key={id}
                     label={name}
-                    onClick={() => navigate(`${ACCOUNTS_ROUTE}/${id}`)}
+                    onClick={() => navigate(`${ACCOUNTS_ROUTE}/${id}`, {
+                      state: {
+                        fromAccountsPage: true
+                      }
+                    })}
                     rightElement={
                       <p className="text-sm">{formattedAmount(balance)}</p>
                     }

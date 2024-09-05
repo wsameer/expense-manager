@@ -34,7 +34,7 @@ export const AccountDetailsRoute = () => {
   }
 
   return (
-    <PageLayout title={accountDetails[0].group} showHeader={true} backUrl={ACCOUNTS_ROUTE}>
+    <PageLayout title={accountDetails[0].name} showHeader={true} backUrl={ACCOUNTS_ROUTE}>
       <AccountDetails data={accountDetails[0]} />
     </PageLayout>
   );
