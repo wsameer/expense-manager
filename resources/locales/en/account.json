@@ -1,11 +1,16 @@
 {
   "create-account-form": {
     "add-new-account": "Add new account",
+    "edit": "Edit",
+    "edit-an-account": "Edit an account",
+    "save-changes": "Save changes",
     "cancel": "Cancel",
     "name": "Name",
     "balance": "Balance",
     "description": "Description",
     "create-account": "Create account",
+    "save": "Save",
+    "delete-account": "Delete account",
     "group": "Group",
     "payment": "Payment"
   }

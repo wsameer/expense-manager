@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import { ACCOUNTS_ROUTE } from '@/router/routes';
 import { useBankAccounts } from '@/features/accounts/hooks/use-bank-account';
 import { AccountDetails } from '@/features/accounts/components/account-details';
+import { EditAccount } from '@/features/accounts/components/edit-account';
+import { Account } from '@/types/api';
 
 export const AccountDetailsRoute = () => {
   const { id } = useParams();
@@ -27,7 +29,7 @@ export const AccountDetailsRoute = () => {
   }
 
   const accountDetails = allAccounts?.filter(
-    (account) => account.id == parseInt(id, 10),
+    (account: Account) => account.id == parseInt(id, 10),
   );
 
   if (!accountDetails || accountDetails.length === 0) {
@@ -51,6 +53,14 @@ export const AccountDetailsRoute = () => {
       title={accountDetails[0].name}
       showHeader={true}
       backUrl={ACCOUNTS_ROUTE}
+      rightElement={(
+        <EditAccount group={accountDetails[0].group} name={accountDetails[0].name}
+          paymentAccountId={accountDetails[0].payment_account_id ?? undefined}
+          description={accountDetails[0].description}
+          balance={accountDetails[0].balance}
+          accountId={accountDetails[0].id}
+        />
+      )}
     >
       <AccountDetails data={accountDetails[0]} />
     </PageLayout>

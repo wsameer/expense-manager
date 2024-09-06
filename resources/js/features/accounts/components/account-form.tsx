@@ -42,6 +42,7 @@ type Props = React.ComponentProps<'form'> & {
   description?: string | undefined;
   paymentAccountId?: number | undefined;
   setOpen: (value: boolean) => void;
+  editMode?: number; // this is actually the id of the account 
 };
 
 export const AccountForm = ({
@@ -49,11 +50,12 @@ export const AccountForm = ({
   name,
   group,
   paymentAccountId,
+  setOpen,
   description,
   balance = 0.0,
-  setOpen,
+  editMode = undefined,
 }: Props) => {
-  const { allAccounts, createAccount } = useBankAccounts();
+  const { allAccounts, createAccount, updateAccount } = useBankAccounts();
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
   const { t } = useTranslation('account', {
@@ -84,10 +86,23 @@ export const AccountForm = ({
     }
   };
 
+  const handleEditAccount = async (values: CreateAccountForm) => {
+    if (!values || !editMode) return false;
+    const result = await updateAccount(values, editMode);
+    if (result) {
+      form.reset();
+      toast({
+        title: 'Account Updated',
+        description: `Your account named "${values.name}" has been updated`,
+      });
+      return setOpen(false);
+    }
+  };
+
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleCreateAccount)}
+        onSubmit={form.handleSubmit(editMode ? handleEditAccount : handleCreateAccount)}
         className={cn('space-y-4', className)}
       >
         <FormField
@@ -198,7 +213,7 @@ export const AccountForm = ({
                     <SelectContent>
                       {allAccounts?.map(({ id, group, name }) =>
                         group === AccountGroup.CHEQUING ||
-                        group === AccountGroup.SAVINGS ? (
+                          group === AccountGroup.SAVINGS ? (
                           <SelectItem
                             key={id}
                             value={id}
@@ -261,7 +276,7 @@ export const AccountForm = ({
           variant="destructive"
           type="submit"
         >
-          {t('create-account')}
+          {editMode ? t('save-changes') : t('create-account')}
         </Button>
       </form>
     </Form>
