@@ -1,7 +1,5 @@
 import React from 'react';
-import { Switch } from '@/Components/ui/switch';
-
-import { useTheme } from '../theme/theme-provider';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   ChevronRight,
@@ -14,12 +12,15 @@ import {
   WalletCards,
 } from 'lucide-react';
 import { z } from 'zod';
+
+import { Switch } from '@/Components/ui/switch';
 import { Button } from '@/Components/ui/button';
 import { useAuth } from '@/lib/use-auth';
 import { Input } from '@/Components/ui/input';
-import { Link } from 'react-router-dom';
 import { ListGroup } from '@/Components/list-group';
 import { ListItem } from '@/Components/list-group/list-item';
+
+import { useTheme } from '../theme/theme-provider';
 
 export const Settings = () => {
   const { theme, setTheme } = useTheme();

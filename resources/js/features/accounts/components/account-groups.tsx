@@ -19,7 +19,7 @@ const displaySkeletonLoader = () => (
 );
 
 export const AccountGroups = () => {
-  const { allAccounts } = useBankAccounts();
+  const { allAccounts, getBalanceSumByGroup } = useBankAccounts();
   const navigate = useNavigate();
 
   if (!allAccounts) {
@@ -42,8 +42,12 @@ export const AccountGroups = () => {
         return (
           <ListGroup
             key={id}
-            group={key as unknown as AccountGroup}
             title={capitalize(label)}
+            rightSideElement={(
+              <p className="text-base text-muted-foreground">
+                {formattedAmount(getBalanceSumByGroup(key as AccountGroup))}
+              </p>
+            )}
           >
             {allAccounts.map(({ id, name, group, balance }) => {
               if (key === group) {
