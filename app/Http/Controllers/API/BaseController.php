@@ -17,14 +17,17 @@ class BaseController extends Controller
    */
   public function sendResponse(
     array $payload,
-    string $message,
+    string $message = null,
     int $code = 200
   ): JsonResponse {
     $response = [
       'success' => true,
       'data'    => $payload,
-      'message' => $message,
     ];
+
+    if (!is_null($message)) {
+      $response['message'] = $message;
+    }
 
     return response()->json($response, $code);
   }
