@@ -6,17 +6,17 @@ export const AccountsPage = () => {
   const statsData = [
     {
       id: 1,
-      value: 1000,
       label: 'Assets',
+      queryKey: 'asset',
     },
     {
       id: 2,
-      value: 1000,
       label: 'Liabilities',
+      queryKey: 'debt',
     },
     {
       id: 3,
-      value: 100.01,
+      queryKey: 'debt',
       label: 'Total',
     },
   ];
