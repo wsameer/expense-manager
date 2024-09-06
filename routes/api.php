@@ -24,5 +24,5 @@ Route::middleware('auth:sanctum')->group(function () {
   // Route::put('/accounts/{account}', [AccountController::class, 'update'])->name('accounts.update');
   // Route::delete('/accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
 
-  Route::get('/accounts-stat', [AccountStatController::class, 'index'])->name('accountstat.index');
+  Route::get('/accounts-stats', [AccountStatController::class, 'index'])->name('accountstat.index');
 });
