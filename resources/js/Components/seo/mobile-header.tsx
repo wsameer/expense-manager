@@ -10,7 +10,12 @@ type Props = {
   rightElement?: ReactElement;
 };
 
-export const MobileHeader = ({ title, backUrl, showStickyHeader, rightElement }: Props) => {
+export const MobileHeader = ({
+  title,
+  backUrl,
+  showStickyHeader,
+  rightElement,
+}: Props) => {
   return (
     <header
       id="mobile-header"
@@ -26,9 +31,7 @@ export const MobileHeader = ({ title, backUrl, showStickyHeader, rightElement }:
                 size="icon"
                 asChild
               >
-                <Link
-                  to={backUrl}
-                >
+                <Link to={backUrl}>
                   <ArrowLeft className="h-5 w-5" />
                 </Link>
               </Button>
@@ -37,9 +40,7 @@ export const MobileHeader = ({ title, backUrl, showStickyHeader, rightElement }:
           <div className="flex text-center">
             <small className="text-sm font-medium leading-none">{title}</small>
           </div>
-          <div className="flex-1 text-right">
-            {rightElement}
-          </div>
+          <div className="flex-1 text-right">{rightElement}</div>
         </div>
       ) : null}
     </header>
