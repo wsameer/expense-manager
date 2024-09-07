@@ -19,7 +19,7 @@ import {
 
 import { cn } from '@/utils';
 
-import { ACCOUNTS } from '../types';
+import { ACCOUNTS } from '../../types';
 
 type Props = {
   selected: string;

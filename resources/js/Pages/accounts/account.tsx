@@ -7,6 +7,8 @@ import { useBankAccounts } from '@/features/accounts/hooks/use-bank-account';
 import { AccountDetails } from '@/features/accounts/components/account-details';
 import { EditAccount } from '@/features/accounts/components/edit-account';
 import { Account } from '@/types/api';
+import { Button } from '@/Components/ui/button';
+import { Trash } from 'lucide-react';
 
 export const AccountDetailsRoute = () => {
   const { id } = useParams();
@@ -54,14 +56,19 @@ export const AccountDetailsRoute = () => {
       showHeader={true}
       backUrl={ACCOUNTS_ROUTE}
       rightElement={
-        <EditAccount
-          group={accountDetails[0].group}
-          name={accountDetails[0].name}
-          paymentAccountId={accountDetails[0].payment_account_id ?? undefined}
-          description={accountDetails[0].description}
-          balance={accountDetails[0].balance}
-          accountId={accountDetails[0].id}
-        />
+        <div className="d-flex">
+          <Button variant="ghost" size="icon">
+            <Trash className='h-4 w-4' />
+          </Button>
+          <EditAccount
+            group={accountDetails[0].group}
+            name={accountDetails[0].name}
+            paymentAccountId={accountDetails[0].payment_account_id ?? undefined}
+            description={accountDetails[0].description}
+            balance={accountDetails[0].balance}
+            accountId={accountDetails[0].id}
+          />
+        </div>
       }
     >
       <AccountDetails data={accountDetails[0]} />

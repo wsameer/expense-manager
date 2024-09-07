@@ -21,6 +21,7 @@ import { useResponsive } from '@/hooks';
 import { AccountForm } from './account-form';
 import { useTranslation } from 'react-i18next';
 import { AccountGroupEnum } from '../types';
+import { Pencil } from 'lucide-react';
 
 type Props = {
   group: AccountGroupEnum;
@@ -53,10 +54,10 @@ export const EditAccount = ({
       >
         <DrawerTrigger asChild>
           <Button
-            variant="outline"
-            size="sm"
+            variant="ghost"
+            size="icon"
           >
-            {t('edit')}
+            <Pencil className='h-4 w-4' />
           </Button>
         </DrawerTrigger>
         <DrawerContent>

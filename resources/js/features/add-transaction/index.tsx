@@ -22,7 +22,7 @@ import {
   DialogTrigger,
 } from '@/Components/ui/dialog';
 
-import { Transactions } from './transactions';
+import { Transactions } from './components/transactions';
 import { TransactionTypes } from './types';
 
 export const AddTransaction = () => {

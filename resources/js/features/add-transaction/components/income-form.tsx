@@ -13,12 +13,11 @@ import {
 } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
-
 import {
-  DateSelector,
-  CategorySelector,
   AccountSelector,
-} from '../form-fields';
+  CategorySelector,
+  DateSelector,
+} from './form-fields';
 
 const formSchema = z.object({
   transactionDate: z.date({
@@ -41,7 +40,7 @@ const formSchema = z.object({
   ),
 });
 
-export const ExpenseForm = () => {
+export const IncomeForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

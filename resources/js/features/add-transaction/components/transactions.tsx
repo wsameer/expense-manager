@@ -1,7 +1,10 @@
 import React, { useCallback, useMemo } from 'react';
-import { TransactionsProps, TransactionTypes } from './types';
-import { ExpenseForm, IncomeForm, TransferForm } from './forms';
+import { TransactionsProps, TransactionTypes } from '../types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
+
+import { ExpenseForm } from './expense-form';
+import { IncomeForm } from './income-form';
+import { TransferForm } from './transfer-form';
 
 export const Transactions: React.FC<TransactionsProps> = React.memo(
   ({ selectedTab, setSelectedTab }) => {
