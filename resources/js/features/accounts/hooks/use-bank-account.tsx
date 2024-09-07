@@ -55,6 +55,7 @@ export const useBankAccounts = () => {
     [mutateAccounts],
   );
 
+  // update an existing bank account
   const updateAccount = useCallback(
     async (data: CreateAccountForm, accountId: number): Promise<any> => {
       setIsCreating(true);
@@ -85,6 +86,26 @@ export const useBankAccounts = () => {
     [mutateAccounts],
   );
 
+  // delete an account
+  const deleteAccount = useCallback(
+    async (accountId: number) => {
+      try {
+        const response = await axiosInstance.delete(
+          `${ACCOUNTS_API}/${accountId}`,
+        );
+        if (response.status === 204) {
+          mutateAccounts();
+          return true;
+        }
+        throw new Error("Unable to delete account");
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        return false;
+      }
+    },
+    [mutateAccounts],
+  )
+
   const getBalanceSumByGroup = useCallback(
     (group: AccountGroup): number => {
       if (!allAccounts) return 0;
@@ -95,10 +116,6 @@ export const useBankAccounts = () => {
     [allAccounts],
   );
 
-  const fetchAccounts = useCallback(() => {
-    mutateAccounts();
-  }, [mutateAccounts]);
-
   return useMemo(
     () => ({
       allAccounts,
@@ -107,7 +124,7 @@ export const useBankAccounts = () => {
       createAccount,
       updateAccount,
       getBalanceSumByGroup,
-      fetchAccounts,
+      deleteAccount,
     }),
     [
       allAccounts,
@@ -116,7 +133,7 @@ export const useBankAccounts = () => {
       createAccount,
       updateAccount,
       getBalanceSumByGroup,
-      fetchAccounts,
+      deleteAccount,
     ],
   );
 };

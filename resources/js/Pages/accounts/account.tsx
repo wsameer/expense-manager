@@ -1,18 +1,45 @@
 import React from 'react';
+import { Trash } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 
 import { PageLayout } from '@/layouts';
-import { useParams } from 'react-router-dom';
 import { ACCOUNTS_ROUTE } from '@/router/routes';
+import { Account } from '@/types/api';
+import { Button } from '@/Components/ui/button';
+import { useConfirmDialog } from '@/Components/ui/confirmable';
+
 import { useBankAccounts } from '@/features/accounts/hooks/use-bank-account';
 import { AccountDetails } from '@/features/accounts/components/account-details';
 import { EditAccount } from '@/features/accounts/components/edit-account';
-import { Account } from '@/types/api';
-import { Button } from '@/Components/ui/button';
-import { Trash } from 'lucide-react';
+import { toast } from '@/hooks';
 
 export const AccountDetailsRoute = () => {
   const { id } = useParams();
-  const { allAccounts } = useBankAccounts();
+  const { openConfirmDialog } = useConfirmDialog();
+  const { allAccounts, deleteAccount } = useBankAccounts();
+
+  const handleDeleteAccount = () => {
+    if (!id) return;
+
+    openConfirmDialog({
+      title: "Are you absolutely sure?",
+      message: "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
+      onConfirm: async () => {
+        const res = await deleteAccount(parseInt(id, 10));
+        if (res) {
+          toast({
+            title: 'Deleted!',
+            description: 'Your account has been deleted.',
+          });
+        } else {
+          toast({
+            title: 'Operation failed',
+            description: "Your account cannot be deleted at the moment. Please try again.",
+          });
+        }
+      }
+    })
+  }
 
   if (!id) {
     return (
@@ -57,7 +84,7 @@ export const AccountDetailsRoute = () => {
       backUrl={ACCOUNTS_ROUTE}
       rightElement={
         <div className="d-flex">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" onClick={handleDeleteAccount}>
             <Trash className='h-4 w-4' />
           </Button>
           <EditAccount

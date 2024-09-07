@@ -7,6 +7,7 @@ import { TooltipProvider } from '@/Components/ui/tooltip';
 import { Spinner } from '@/Components/ui/spinner';
 import { AuthProvider } from '@/features/auth/auth-provider';
 import { Toaster } from '@/Components/ui/toaster';
+import { ConfirmDialogProvider } from '@/Components/ui/confirmable';
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -25,9 +26,10 @@ const AppProvider = ({ children }: AppProviderProps) => {
         <HelmetProvider>
           <TooltipProvider>
             <AuthProvider>
-              <Toaster />
-
-              {children}
+              <ConfirmDialogProvider>
+                <Toaster />
+                {children}
+              </ConfirmDialogProvider>
             </AuthProvider>
           </TooltipProvider>
         </HelmetProvider>
