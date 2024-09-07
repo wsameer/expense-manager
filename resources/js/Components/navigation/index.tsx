@@ -38,7 +38,7 @@ export const Navigation = () => {
 
   if (isMobile) {
     return (
-      <nav className="fixed px-3 bottom-0 left-0 right-0 grid grid-cols-5 gap-3 justify-items-center items-center bg-white border-t border-gray-200 h-20">
+      <nav className="fixed px-3 bottom-0 left-0 right-0 grid grid-cols-5 gap-3 justify-items-center items-center bg-white border-t border-gray-200 h-20 z-10">
         {navItems.slice(0, -1).map((item, index) => (
           <React.Fragment key={item.path}>
             <Button
