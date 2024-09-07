@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Enums\AccountGroup;
 use App\Models\Account;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -98,10 +99,25 @@ class AccountController extends Controller
    */
   public function destroy($id): JsonResponse
   {
-    $user = Auth::user();
-    /** @var \App\Models\User $user **/
-    $account = $user->accounts()->findOrFail($id);
-    $account->delete();
-    return response()->json(null, 204);
+    try {
+      $user = Auth::user();
+
+      /** @var \App\Models\User $user **/
+      $account = $user->accounts()->findOrFail($id);
+
+      $account->delete();
+
+      return response()->json(null, 204);
+    } catch (ModelNotFoundException $e) {
+      return response()->json([
+        'error' => 'Account not found',
+        'message' => 'The requested account does not exist or does not belong to you.'
+      ], 404);
+    } catch (\Exception $e) {
+      return response()->json([
+        'error' => 'Internal Server Error',
+        'message' => 'An unexpected error occurred while processing your request.'
+      ], 500);
+    }
   }
 }
