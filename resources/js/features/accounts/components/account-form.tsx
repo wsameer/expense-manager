@@ -42,7 +42,7 @@ type Props = React.ComponentProps<'form'> & {
   description?: string | undefined;
   paymentAccountId?: number | undefined;
   setOpen: (value: boolean) => void;
-  editMode?: number; // this is actually the id of the account 
+  editMode?: number; // this is actually the id of the account
 };
 
 export const AccountForm = ({
@@ -102,7 +102,9 @@ export const AccountForm = ({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(editMode ? handleEditAccount : handleCreateAccount)}
+        onSubmit={form.handleSubmit(
+          editMode ? handleEditAccount : handleCreateAccount,
+        )}
         className={cn('space-y-4', className)}
       >
         <FormField
@@ -213,7 +215,7 @@ export const AccountForm = ({
                     <SelectContent>
                       {allAccounts?.map(({ id, group, name }) =>
                         group === AccountGroup.CHEQUING ||
-                          group === AccountGroup.SAVINGS ? (
+                        group === AccountGroup.SAVINGS ? (
                           <SelectItem
                             key={id}
                             value={id}

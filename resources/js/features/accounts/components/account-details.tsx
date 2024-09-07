@@ -7,7 +7,6 @@ type Props = {
 };
 
 export const AccountDetails = React.memo(({ data }: Props) => {
-  console.log('🚀 ~ AccountDetails ~ data:', data);
   return (
     <div>
       <Tabs defaultValue="daily">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ListGroup } from '@/Components/list-group';
 import { ListItem } from '@/Components/list-group/list-item';
 import { AccountGroup } from '@/types/api';
@@ -19,8 +19,19 @@ const displaySkeletonLoader = () => (
 );
 
 export const AccountGroups = () => {
-  const { allAccounts, getBalanceSumByGroup } = useBankAccounts();
+  const { allAccounts, accountsError, getBalanceSumByGroup } =
+    useBankAccounts();
   const navigate = useNavigate();
+
+  if (accountsError) {
+    return (
+      <div className="grid grid-cols-1 gap-4">
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+          Error in getting Accounts. Please try again.
+        </h3>
+      </div>
+    );
+  }
 
   if (!allAccounts) {
     return (
@@ -43,11 +54,11 @@ export const AccountGroups = () => {
           <ListGroup
             key={id}
             title={capitalize(label)}
-            rightSideElement={(
+            rightSideElement={
               <p className="text-base text-muted-foreground">
                 {formattedAmount(getBalanceSumByGroup(key as AccountGroup))}
               </p>
-            )}
+            }
           >
             {allAccounts.map(({ id, name, group, balance }) => {
               if (key === group) {

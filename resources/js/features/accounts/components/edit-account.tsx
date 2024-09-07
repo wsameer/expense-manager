@@ -22,9 +22,23 @@ import { AccountForm } from './account-form';
 import { useTranslation } from 'react-i18next';
 import { AccountGroupEnum } from '../types';
 
-type Props = { group: AccountGroupEnum, name: string, description: string, paymentAccountId?: number | undefined, balance: number; accountId: number };
+type Props = {
+  group: AccountGroupEnum;
+  name: string;
+  description: string;
+  paymentAccountId?: number | undefined;
+  balance: number;
+  accountId: number;
+};
 
-export const EditAccount = ({ group, name, description, paymentAccountId, balance, accountId }: Props) => {
+export const EditAccount = ({
+  group,
+  name,
+  description,
+  paymentAccountId,
+  balance,
+  accountId,
+}: Props) => {
   const { t } = useTranslation('account', {
     keyPrefix: 'create-account-form',
   });
@@ -38,7 +52,10 @@ export const EditAccount = ({ group, name, description, paymentAccountId, balanc
         onOpenChange={setOpen}
       >
         <DrawerTrigger asChild>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+          >
             {t('edit')}
           </Button>
         </DrawerTrigger>

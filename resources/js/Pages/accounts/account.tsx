@@ -53,14 +53,16 @@ export const AccountDetailsRoute = () => {
       title={accountDetails[0].name}
       showHeader={true}
       backUrl={ACCOUNTS_ROUTE}
-      rightElement={(
-        <EditAccount group={accountDetails[0].group} name={accountDetails[0].name}
+      rightElement={
+        <EditAccount
+          group={accountDetails[0].group}
+          name={accountDetails[0].name}
           paymentAccountId={accountDetails[0].payment_account_id ?? undefined}
           description={accountDetails[0].description}
           balance={accountDetails[0].balance}
           accountId={accountDetails[0].id}
         />
-      )}
+      }
     >
       <AccountDetails data={accountDetails[0]} />
     </PageLayout>
