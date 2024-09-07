@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trash } from 'lucide-react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { PageLayout } from '@/layouts';
 import { ACCOUNTS_ROUTE } from '@/router/routes';
@@ -15,6 +15,7 @@ import { toast } from '@/hooks';
 
 export const AccountDetailsRoute = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { openConfirmDialog } = useConfirmDialog();
   const { allAccounts, deleteAccount } = useBankAccounts();
 
@@ -31,6 +32,7 @@ export const AccountDetailsRoute = () => {
             title: 'Deleted!',
             description: 'Your account has been deleted.',
           });
+          navigate(ACCOUNTS_ROUTE);
         } else {
           toast({
             title: 'Operation failed',
