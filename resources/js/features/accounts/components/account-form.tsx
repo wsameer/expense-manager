@@ -32,8 +32,10 @@ import {
   CreateAccountForm,
   CreateAccountFormSchema,
 } from '../types';
-import { useBankAccounts } from '../hooks/use-bank-account';
 import { toast } from '@/hooks';
+import { useAccounts } from '../api/get-accounts';
+import { useCreateAccount } from '../api/create-account';
+import { useUpdateAccount } from '../api/update-account';
 
 type Props = React.ComponentProps<'form'> & {
   name?: string;
@@ -55,7 +57,9 @@ export const AccountForm = ({
   balance = 0.0,
   editMode = undefined,
 }: Props) => {
-  const { allAccounts, createAccount, updateAccount } = useBankAccounts();
+  const { allAccounts } = useAccounts();
+  const { createAccount, isCreating } = useCreateAccount();
+  const { updateAccount, isUpdating } = useUpdateAccount();
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
   const { t } = useTranslation('account', {
@@ -75,14 +79,20 @@ export const AccountForm = ({
 
   const handleCreateAccount = async (values: CreateAccountForm) => {
     if (!values) return false;
-    const result = await createAccount(values);
-    if (result) {
+
+    try {
+      await createAccount(values);
       form.reset();
       toast({
         title: 'New Account Created',
         description: `Your account named "${values.name}" has been created`,
       });
       return setOpen(false);
+    } catch (error: any) {
+      toast({
+        title: 'Operation failed!',
+        description: error.message
+      });
     }
   };
 
@@ -215,7 +225,7 @@ export const AccountForm = ({
                     <SelectContent>
                       {allAccounts?.map(({ id, group, name }) =>
                         group === AccountGroup.CHEQUING ||
-                        group === AccountGroup.SAVINGS ? (
+                          group === AccountGroup.SAVINGS ? (
                           <SelectItem
                             key={id}
                             value={id}
@@ -277,6 +287,7 @@ export const AccountForm = ({
           className="w-full"
           variant="destructive"
           type="submit"
+          disabled={isCreating || isUpdating}
         >
           {editMode ? t('save-changes') : t('create-account')}
         </Button>

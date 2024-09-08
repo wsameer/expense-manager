@@ -5,11 +5,11 @@ import { AccountGroup } from '@/types/api';
 import { capitalize, formattedAmount } from '@/utils';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { ACCOUNT_GROUPS } from '../constants';
-import { useBankAccounts } from '../hooks/use-bank-account';
 import { AddAccount } from './add-account';
 import { AccountGroupEnum } from '../types';
 import { useNavigate } from 'react-router-dom';
 import { ACCOUNTS_ROUTE } from '@/router/routes';
+import { useAccounts } from '../api/get-accounts';
 
 const displaySkeletonLoader = () => (
   <div>
@@ -19,11 +19,10 @@ const displaySkeletonLoader = () => (
 );
 
 export const AccountGroups = () => {
-  const { allAccounts, accountsError, getBalanceSumByGroup } =
-    useBankAccounts();
+  const { allAccounts, isError, isLoading, getBalanceSumByGroup } = useAccounts();
   const navigate = useNavigate();
 
-  if (accountsError) {
+  if (isError) {
     return (
       <div className="grid grid-cols-1 gap-4">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
@@ -33,7 +32,7 @@ export const AccountGroups = () => {
     );
   }
 
-  if (!allAccounts) {
+  if (isLoading) {
     return (
       <div className="grid grid-cols-1 gap-4">
         {displaySkeletonLoader()}
@@ -60,7 +59,7 @@ export const AccountGroups = () => {
               </p>
             }
           >
-            {allAccounts.map(({ id, name, group, balance }) => {
+            {allAccounts?.map(({ id, name, group, balance }) => {
               if (key === group) {
                 return (
                   <ListItem

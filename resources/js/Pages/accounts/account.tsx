@@ -1,42 +1,45 @@
 import React from 'react';
 import { Trash } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { PageLayout } from '@/layouts';
+import { toast } from '@/hooks';
 import { ACCOUNTS_ROUTE } from '@/router/routes';
-import { Account } from '@/types/api';
 import { Button } from '@/Components/ui/button';
 import { useConfirmDialog } from '@/Components/ui/confirmable';
-
-import { useBankAccounts } from '@/features/accounts/hooks/use-bank-account';
 import { AccountDetails } from '@/features/accounts/components/account-details';
 import { EditAccount } from '@/features/accounts/components/edit-account';
-import { toast } from '@/hooks';
+import { useAccountById } from '@/features/accounts/api/get-account';
+import { useDeleteAccount } from '@/features/accounts/api/delete-account';
 
 export const AccountDetailsRoute = () => {
   const { id } = useParams();
+  const { t } = useTranslation('account');
   const navigate = useNavigate();
   const { openConfirmDialog } = useConfirmDialog();
-  const { allAccounts, deleteAccount } = useBankAccounts();
+  const { deleteAccount, isDeleting } = useDeleteAccount();
+  const { account } = useAccountById(id ?? null);
 
   const handleDeleteAccount = () => {
     if (!id) return;
 
     openConfirmDialog({
-      title: "Are you absolutely sure?",
-      message: "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
+      title: t('are-you-sure'),
+      message: t('this-action-cannot-be-undone'),
       onConfirm: async () => {
-        const res = await deleteAccount(parseInt(id, 10));
-        if (res) {
+        try {
+          await deleteAccount(id);
           toast({
-            title: 'Deleted!',
-            description: 'Your account has been deleted.',
+            title: t('deleted'),
+            description: t('your-account-has-been-deleted'),
           });
           navigate(ACCOUNTS_ROUTE);
-        } else {
+        } catch (error) {
+          console.error('Error deleting account:', error);
           toast({
-            title: 'Operation failed',
-            description: "Your account cannot be deleted at the moment. Please try again.",
+            title: t('operation-failed'),
+            description: t('account-failed-to-delete'),
           });
         }
       }
@@ -46,33 +49,29 @@ export const AccountDetailsRoute = () => {
   if (!id) {
     return (
       <PageLayout
-        title="Bruh"
+        title={t('invalid-request')}
         showHeader={true}
         backUrl={ACCOUNTS_ROUTE}
       >
         <div className="grid justify-center">
           <p className="text-xl text-muted-foreground mt-72">
-            Select an account first to see the details
+            {t('select-account-first')}
           </p>
         </div>
       </PageLayout>
     );
   }
 
-  const accountDetails = allAccounts?.filter(
-    (account: Account) => account.id == parseInt(id, 10),
-  );
-
-  if (!accountDetails || accountDetails.length === 0) {
+  if (!account) {
     return (
       <PageLayout
-        title="Invalid Request"
+        title={t('invalid-request')}
         showHeader={true}
         backUrl={ACCOUNTS_ROUTE}
       >
         <div className="grid justify-center">
           <p className="text-xl text-muted-foreground mt-72">
-            This account doesn't exist
+            {t('account-does-not-exist')}
           </p>
         </div>
       </PageLayout>
@@ -81,7 +80,7 @@ export const AccountDetailsRoute = () => {
 
   return (
     <PageLayout
-      title={accountDetails[0].name}
+      title={account.name}
       showHeader={true}
       backUrl={ACCOUNTS_ROUTE}
       rightElement={
@@ -90,17 +89,17 @@ export const AccountDetailsRoute = () => {
             <Trash className='h-4 w-4' />
           </Button>
           <EditAccount
-            group={accountDetails[0].group}
-            name={accountDetails[0].name}
-            paymentAccountId={accountDetails[0].payment_account_id ?? undefined}
-            description={accountDetails[0].description}
-            balance={accountDetails[0].balance}
-            accountId={accountDetails[0].id}
+            group={account.group}
+            name={account.name}
+            paymentAccountId={account.payment_account_id ?? undefined}
+            description={account.description}
+            balance={account.balance}
+            accountId={account.id}
           />
         </div>
       }
     >
-      <AccountDetails data={accountDetails[0]} />
+      <AccountDetails data={account} />
     </PageLayout>
   );
 };
