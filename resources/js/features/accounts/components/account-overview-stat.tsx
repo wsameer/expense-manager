@@ -19,13 +19,15 @@ export const AccountOverviewStat = React.memo(({ label, queryKey }: Props) => {
   const { data, isLoading } = useSWR(
     ACCOUNTS_STATS_API + queryKey,
     async () => {
-      const res = await axiosInstance.get(ACCOUNTS_STATS_API, { params: { type: queryKey } })
+      const res = await axiosInstance.get(ACCOUNTS_STATS_API, {
+        params: { type: queryKey },
+      });
       return res.data;
     },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-    }
+    },
   );
 
   const formattedBalance = useMemo(() => {
@@ -51,7 +53,9 @@ export const AccountOverviewStat = React.memo(({ label, queryKey }: Props) => {
       ) : (
         <>
           <small className="text-sm font-medium leading-none">{label}</small>
-          <small className={cn('text-sm mt-2 font-medium leading-none', labelColor)}>
+          <small
+            className={cn('text-sm mt-2 font-medium leading-none', labelColor)}
+          >
             {formattedBalance}
           </small>
         </>

@@ -19,7 +19,8 @@ const displaySkeletonLoader = () => (
 );
 
 export const AccountGroups = () => {
-  const { allAccounts, isError, isLoading, getBalanceSumByGroup } = useAccounts();
+  const { allAccounts, isError, isLoading, getBalanceSumByGroup } =
+    useAccounts();
   const navigate = useNavigate();
 
   if (isError) {

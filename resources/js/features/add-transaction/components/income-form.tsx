@@ -13,11 +13,7 @@ import {
 } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
-import {
-  AccountSelector,
-  CategorySelector,
-  DateSelector,
-} from './form-fields';
+import { AccountSelector, CategorySelector, DateSelector } from './form-fields';
 
 const formSchema = z.object({
   transactionDate: z.date({

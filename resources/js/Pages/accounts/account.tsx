@@ -42,9 +42,9 @@ export const AccountDetailsRoute = () => {
             description: t('account-failed-to-delete'),
           });
         }
-      }
-    })
-  }
+      },
+    });
+  };
 
   if (!id) {
     return (
@@ -85,8 +85,13 @@ export const AccountDetailsRoute = () => {
       backUrl={ACCOUNTS_ROUTE}
       rightElement={
         <div className="d-flex">
-          <Button variant="ghost" size="icon" onClick={handleDeleteAccount}>
-            <Trash className='h-4 w-4' />
+          <Button
+            variant="ghost"
+            className="text-red-600"
+            size="icon"
+            onClick={handleDeleteAccount}
+          >
+            <Trash className="h-4 w-4" />
           </Button>
           <EditAccount
             group={account.group}

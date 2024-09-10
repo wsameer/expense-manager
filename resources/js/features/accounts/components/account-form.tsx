@@ -91,7 +91,7 @@ export const AccountForm = ({
     } catch (error: any) {
       toast({
         title: 'Operation failed!',
-        description: error.message
+        description: error.message,
       });
     }
   };
@@ -225,7 +225,7 @@ export const AccountForm = ({
                     <SelectContent>
                       {allAccounts?.map(({ id, group, name }) =>
                         group === AccountGroup.CHEQUING ||
-                          group === AccountGroup.SAVINGS ? (
+                        group === AccountGroup.SAVINGS ? (
                           <SelectItem
                             key={id}
                             value={id}

@@ -57,7 +57,7 @@ export const EditAccount = ({
             variant="ghost"
             size="icon"
           >
-            <Pencil className='h-4 w-4' />
+            <Pencil className="h-4 w-4" />
           </Button>
         </DrawerTrigger>
         <DrawerContent>
