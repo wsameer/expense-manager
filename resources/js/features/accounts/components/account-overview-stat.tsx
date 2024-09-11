@@ -31,11 +31,11 @@ export const AccountOverviewStat = React.memo(({ label, queryKey }: Props) => {
   );
 
   const formattedBalance = useMemo(() => {
-    if (data?.data?.total_balance != null) {
-      return CAD.format(data.data.total_balance);
+    if (data?.data?.totalBalance != null) {
+      return CAD.format(data.data.totalBalance);
     }
     return '';
-  }, [data?.data?.total_balance]);
+  }, [data?.data?.totalBalance]);
 
   const labelColor = useMemo(() => {
     if (label === 'Liabilities') return 'text-red-700';

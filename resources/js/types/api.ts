@@ -20,7 +20,7 @@ export type Account = Entity<{
   group: AccountGroup;
   balance: number;
   description: string;
-  payment_account_id: number | null;
+  paymentAccountId: number | null;
   id: number;
   user_id: number;
   updated_at: string; // date time

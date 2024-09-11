@@ -60,7 +60,7 @@ export const AccountForm = ({
   const { allAccounts } = useAccounts();
   const { createAccount, isCreating } = useCreateAccount();
   const { updateAccount, isUpdating } = useUpdateAccount();
-  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+  const [showPaymentOptions, setShowPaymentOptions] = useState(group === "CREDIT_CARD");
 
   const { t } = useTranslation('account', {
     keyPrefix: 'create-account-form',
@@ -225,7 +225,7 @@ export const AccountForm = ({
                     <SelectContent>
                       {allAccounts?.map(({ id, group, name }) =>
                         group === AccountGroup.CHEQUING ||
-                        group === AccountGroup.SAVINGS ? (
+                          group === AccountGroup.SAVINGS ? (
                           <SelectItem
                             key={id}
                             value={id}

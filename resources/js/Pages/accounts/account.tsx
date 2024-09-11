@@ -96,7 +96,7 @@ export const AccountDetailsRoute = () => {
           <EditAccount
             group={account.group}
             name={account.name}
-            paymentAccountId={account.payment_account_id ?? undefined}
+            paymentAccountId={account.paymentAccountId ?? undefined}
             description={account.description}
             balance={account.balance}
             accountId={account.id}
