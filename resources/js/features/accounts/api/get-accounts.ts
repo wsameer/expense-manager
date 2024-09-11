@@ -30,7 +30,7 @@ export const useAccounts = () => {
       if (!data) return 0;
       return data
         .filter((account) => account.group === group)
-        .reduce((sum, account) => sum + account.balance, 0);
+        .reduce((sum, account) => sum + +account.balance, 0);
     },
     [data],
   );
