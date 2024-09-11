@@ -36,4 +36,9 @@ class Account extends Model
   {
     return $this->belongsTo(Account::class, 'payment_account_id');
   }
+
+  public function transactions()
+  {
+    return $this->hasMany(Transaction::class);
+  }
 }
