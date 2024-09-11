@@ -26,10 +26,10 @@ const formSchema = z.object({
       invalid_type_error: 'Amount must be a number',
     })
     .nonnegative(),
-  fromAccount: z.string({
+  fromAccountId: z.coerce.number({
     required_error: 'Please select an account',
   }),
-  toAccount: z.string({
+  toAccountId: z.coerce.number({
     required_error: 'Please select an account',
   }),
   note: z.optional(
@@ -109,21 +109,21 @@ export const TransferForm = () => {
         />
 
         <FormField
-          name="fromAccount"
+          name="fromAccountId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
-                  htmlFor="fromAccount"
+                  htmlFor="fromAccountId"
                   className="w-1/4"
                 >
                   From
                 </FormLabel>
                 <AccountSelector
                   selected={field.value}
-                  onSelect={(value: string) => {
-                    form.setValue('fromAccount', value);
+                  onSelect={(value: number) => {
+                    form.setValue('fromAccountId', value);
                   }}
                 />
               </div>
@@ -133,21 +133,21 @@ export const TransferForm = () => {
         />
 
         <FormField
-          name="toAccount"
+          name="toAccountId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
-                  htmlFor="toAccount"
+                  htmlFor="toAccountId"
                   className="w-1/4"
                 >
                   To
                 </FormLabel>
                 <AccountSelector
                   selected={field.value}
-                  onSelect={(value: string) => {
-                    form.setValue('toAccount', value);
+                  onSelect={(value: number) => {
+                    form.setValue('toAccountId', value);
                   }}
                 />
               </div>

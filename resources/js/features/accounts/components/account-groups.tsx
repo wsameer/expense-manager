@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ListGroup } from '@/Components/list-group';
 import { ListItem } from '@/Components/list-group/list-item';
 import { AccountGroup } from '@/types/api';
@@ -47,9 +47,6 @@ export const AccountGroups = () => {
   return (
     <div className="grid grid-cols-1 gap-4">
       {ACCOUNT_GROUPS.map(({ id, label, key }) => {
-        /** Cash accounts are hidden for now */
-        if (key === 'CASH') return null;
-
         return (
           <ListGroup
             key={id}
@@ -80,7 +77,7 @@ export const AccountGroups = () => {
                 );
               }
             })}
-            <AddAccount group={key as unknown as AccountGroupEnum} />
+            {(key !== 'CASH') && <AddAccount group={key as unknown as AccountGroupEnum} />}
           </ListGroup>
         );
       })}

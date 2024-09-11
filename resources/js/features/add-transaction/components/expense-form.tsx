@@ -29,7 +29,7 @@ const formSchema = z.object({
   category: z.string({
     required_error: 'Please select a category',
   }),
-  account: z.string({
+  accountId: z.coerce.number({
     required_error: 'Please select an account',
   }),
   note: z.optional(
@@ -133,21 +133,21 @@ export const ExpenseForm = () => {
         />
 
         <FormField
-          name="account"
+          name="accountId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
-                  htmlFor="account"
+                  htmlFor="accountId"
                   className="w-1/4"
                 >
                   Account
                 </FormLabel>
                 <AccountSelector
                   selected={field.value}
-                  onSelect={(value: string) => {
-                    form.setValue('account', value);
+                  onSelect={(value: number) => {
+                    form.setValue('accountId', value);
                   }}
                 />
               </div>
