@@ -123,8 +123,8 @@ export const Settings = () => {
       </ListGroup>
 
       <Button
-        className="mb-6 w-full"
-        variant="outline"
+        className="mb-6 w-full border-solid border border-zinc-300"
+        variant="secondary"
         onClick={logout}
       >
         {t('logout')}
