@@ -1,8 +1,38 @@
 import { LOGIN_ROUTE } from '@/router/routes';
 import { TOKEN_KEY, API_BASE_URL, USER_KEY } from '@/utils/constants';
-import Axios from 'axios';
+import axios from 'axios';
 
-const axiosInstance = Axios.create({
+const snakeToCamel = (str: string): string =>
+  str.replace(/([-_][a-z])/g, (group) =>
+    group.toUpperCase().replace('-', '').replace('_', ''),
+  );
+
+const camelToSnake = (str: string): string =>
+  str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+
+const isObject = (obj: any): boolean =>
+  obj !== null && typeof obj === 'object' && !Array.isArray(obj);
+
+const convertKeys = (obj: any, converter: (key: string) => string): any => {
+  if (!isObject(obj)) {
+    return obj;
+  }
+
+  const newObj: any = {};
+
+  Object.keys(obj).forEach((key) => {
+    const newKey = converter(key);
+    newObj[newKey] = isObject(obj[key])
+      ? convertKeys(obj[key], converter)
+      : Array.isArray(obj[key])
+        ? obj[key].map((item: any) => convertKeys(item, converter))
+        : obj[key];
+  });
+
+  return newObj;
+};
+
+const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -15,12 +45,12 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
-    // if (config.data) {
-    //   config.data = toSnakeCase(config.data);
-    // }
-    // if (config.params) {
-    //   config.params = toSnakeCase(config.params);
-    // }
+    if (config.data) {
+      config.data = convertKeys(config.data, camelToSnake);
+    }
+    if (config.params) {
+      config.params = convertKeys(config.params, camelToSnake);
+    }
     return config;
   },
   (error) => {
@@ -32,7 +62,12 @@ axiosInstance.defaults.withCredentials = true;
 axiosInstance.defaults.withXSRFToken = true;
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    if (response.data) {
+      response.data = convertKeys(response.data, snakeToCamel);
+    }
+    return response;
+  },
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem(USER_KEY);
