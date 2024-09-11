@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { RegisterForm } from '@/features/auth/register-form';
 import { LOGIN_ROUTE } from '@/router/routes';
@@ -9,14 +9,12 @@ import { useTranslation } from 'react-i18next';
 export const RegisterRoute = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('auth', { keyPrefix: 'forms' });
-  const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get('redirectTo');
 
   return (
     <AuthLayout title={t('sign-up')}>
       <RegisterForm
         onSuccess={() =>
-          navigate(`${redirectTo ? `${redirectTo}` : LOGIN_ROUTE}`, {
+          navigate(LOGIN_ROUTE, {
             replace: true,
           })
         }
