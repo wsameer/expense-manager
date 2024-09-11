@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseController;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends BaseController
 {
+
+  protected $userService;
+
+  public function __construct(UserService $userService)
+  {
+    $this->userService = $userService;
+  }
+
 
   /**
    * Handle a registration request for the application.
@@ -36,7 +45,7 @@ class AuthController extends BaseController
       return $this->sendError('The given data was invalid', [$firstError], 422);
     }
 
-    $user = User::create([
+    $user = $this->userService->createUser([
       'name' => $request->name,
       'email' => $request->email,
       'password' => Hash::make($request->password),
