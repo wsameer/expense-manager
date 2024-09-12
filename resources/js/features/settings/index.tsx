@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   ChevronRight,
@@ -21,13 +21,17 @@ import { ListGroup } from '@/Components/list-group';
 import { ListItem } from '@/Components/list-group/list-item';
 
 import { useTheme } from '../theme/theme-provider';
+import { EXPENSE_CATEGORY_SETTINGS_ROUTE } from '@/router/routes';
 
 export const Settings = () => {
+  const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
   const { logout } = useAuth();
   const { t } = useTranslation('common', {
     keyPrefix: 'settings',
   });
+
+  const onSettingItemClick = (url: string) => navigate(url);
 
   /**
    * @TODO
@@ -81,10 +85,9 @@ export const Settings = () => {
         <ListItem
           icon={<Coins className="h-4 w-4 text-gray-600 dark:text-gray-300" />}
           label={'Income Category settings'}
+          onClick={() => onSettingItemClick('')}
           rightElement={
-            <Link to={''}>
-              <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-            </Link>
+            <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           }
         />
         <ListItem
@@ -92,10 +95,9 @@ export const Settings = () => {
             <WalletCards className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           }
           label={'Expense Category settings'}
+          onClick={() => onSettingItemClick(EXPENSE_CATEGORY_SETTINGS_ROUTE)}
           rightElement={
-            <Link to={''}>
-              <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-            </Link>
+            <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           }
         />
         <ListItem
@@ -104,9 +106,7 @@ export const Settings = () => {
           }
           label={'Accounts settings'}
           rightElement={
-            <Link to={''}>
-              <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-            </Link>
+            <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           }
         />
         <ListItem
@@ -115,9 +115,7 @@ export const Settings = () => {
           }
           label={'Budget settings'}
           rightElement={
-            <Link to={''}>
-              <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-            </Link>
+            <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           }
         />
       </ListGroup>
