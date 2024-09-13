@@ -9,6 +9,7 @@ import {
   BASE_ROUTE,
   TRANSACTIONS_ROUTE,
   SETTINGS_ROUTE,
+  EXPENSE_CATEGORY_SETTINGS_ROUTE,
 } from './routes';
 import { MainErrorFallback } from '@/Components/errors';
 import { AppRoot } from '@/pages/root';
@@ -74,9 +75,16 @@ export const createRouter = () =>
         {
           path: SETTINGS_ROUTE,
           lazy: async () => {
-            const { SettingsRoute } = await import('../pages/settings');
+            const { SettingsRoute } = await import('../pages/settings/settings');
             return { Component: SettingsRoute };
           },
+        },
+        {
+          path: EXPENSE_CATEGORY_SETTINGS_ROUTE,
+          lazy: async () => {
+            const { ExpenseCategoryRoute } = await import('../pages/settings/expense-category');
+            return { Component: ExpenseCategoryRoute }
+          }
         },
         {
           path: '',
