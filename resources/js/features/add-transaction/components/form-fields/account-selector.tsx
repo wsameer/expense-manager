@@ -29,6 +29,9 @@ type Props = {
   onSelect: (value: number) => void;
 };
 
+/**
+ * @deprecated Use AccountPicker instead
+ */
 export const AccountSelector = React.memo<Props>(({ selected, onSelect }) => {
   const { allAccounts } = useAccounts();
 

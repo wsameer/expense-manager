@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -14,7 +14,10 @@ import {
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 
-import { DateSelector, CategorySelector, AccountSelector } from './form-fields';
+import { DateSelector, CategorySelector } from './form-fields';
+import { AccountPicker } from './form-fields/account-picker';
+import { Account } from '@/types/api';
+import { useAccounts } from '@/features/accounts/api/get-accounts';
 
 const formSchema = z.object({
   transactionDate: z.date({
@@ -38,6 +41,10 @@ const formSchema = z.object({
 });
 
 export const ExpenseForm = () => {
+  const [showAccountSelector, setShowAccountSelector] = useState(false);
+  const { allAccounts } = useAccounts();
+  console.log("🚀 ~ ExpenseForm ~ allAccounts:", allAccounts)
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,6 +59,11 @@ export const ExpenseForm = () => {
     // ✅ This will be type-safe and validated.
     console.table(values);
   }
+
+  const getSelectedAccountName = useCallback((id: number) => {
+    if (!id) return undefined;
+    return allAccounts?.find(account => id === account.id)?.name || undefined;
+  }, [allAccounts]);
 
   return (
     <Form {...form}>
@@ -144,12 +156,15 @@ export const ExpenseForm = () => {
                 >
                   Account
                 </FormLabel>
-                <AccountSelector
-                  selected={field.value}
-                  onSelect={(value: number) => {
-                    form.setValue('accountId', value);
-                  }}
-                />
+                <FormControl className="m-0">
+                  <Input
+                    className="w-3/4"
+                    placeholder="Select an account"
+                    onClick={() => setShowAccountSelector(true)}
+                    value={getSelectedAccountName(field.value)}
+                    readOnly
+                  />
+                </FormControl>
               </div>
               <FormMessage role="alert" />
             </FormItem>
@@ -180,7 +195,17 @@ export const ExpenseForm = () => {
           )}
         />
 
-        <div className=""></div>
+        <div className="">
+          {showAccountSelector &&
+            <AccountPicker
+              allAccounts={allAccounts}
+              onSelect={(value: number) => {
+                form.setValue('accountId', value)
+                setShowAccountSelector(false);
+              }}
+            />
+          }
+        </div>
 
         <Button
           className="w-full"
