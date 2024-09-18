@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChevronsUpDown, Check, ChevronRight } from 'lucide-react';
 
 import { FormControl } from '@/Components/ui/form';
@@ -35,6 +35,14 @@ export const AccountSelector = React.memo<Props>(({ selected, onSelect }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState<AccountGroup | undefined>();
   const [selectedAccount, setSelectedAccount] = useState<Account | undefined>();
+  const [searchValue, setSearchValue] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isPopoverOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [open]);
 
   useEffect(() => {
     if (allAccounts) {
@@ -78,8 +86,11 @@ export const AccountSelector = React.memo<Props>(({ selected, onSelect }) => {
       <PopoverContent className="w-max p-0">
         <Command>
           <CommandInput
+            ref={inputRef}
             className="border-none"
             placeholder="Search account..."
+            value={searchValue}
+            onValueChange={setSearchValue}
           />
           <CommandList>
             <CommandEmpty>No account found.</CommandEmpty>
