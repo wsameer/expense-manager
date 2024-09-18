@@ -52,7 +52,7 @@ export const AccountGroups = () => {
             key={id}
             title={capitalize(label)}
             rightSideElement={
-              <p className="text-base text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 {formattedAmount(getBalanceSumByGroup(key as AccountGroup))}
               </p>
             }
