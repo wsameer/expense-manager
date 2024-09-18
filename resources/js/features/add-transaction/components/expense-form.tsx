@@ -16,7 +16,6 @@ import { Button } from '@/Components/ui/button';
 
 import { DateSelector, CategorySelector } from './form-fields';
 import { AccountPicker } from './form-fields/account-picker';
-import { Account } from '@/types/api';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 
 const formSchema = z.object({
@@ -43,7 +42,6 @@ const formSchema = z.object({
 export const ExpenseForm = () => {
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const { allAccounts } = useAccounts();
-  console.log("🚀 ~ ExpenseForm ~ allAccounts:", allAccounts)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -87,6 +85,7 @@ export const ExpenseForm = () => {
                   aria-invalid={formErrors.transactionDate ? 'true' : 'false'}
                   selected={field.value}
                   onSelect={(value: Date) => field.onChange(value)}
+                  setShowAccountSelector={setShowAccountSelector}
                 />
               </div>
               <FormMessage role="alert" />
@@ -111,6 +110,7 @@ export const ExpenseForm = () => {
                     type="number"
                     className="w-3/4"
                     aria-invalid={formErrors.amount ? 'true' : 'false'}
+                    onFocus={() => setShowAccountSelector(false)}
                     {...field}
                   />
                 </FormControl>
@@ -137,6 +137,7 @@ export const ExpenseForm = () => {
                   onSelect={(value: string) => {
                     form.setValue('category', value);
                   }}
+                  setShowAccountSelector={setShowAccountSelector}
                 />
               </div>
               <FormMessage role="alert" />
@@ -187,6 +188,7 @@ export const ExpenseForm = () => {
                   <Input
                     className="w-3/4"
                     {...field}
+                    onFocus={() => setShowAccountSelector(false)}
                   />
                 </FormControl>
               </div>
@@ -195,7 +197,7 @@ export const ExpenseForm = () => {
           )}
         />
 
-        <div className="">
+        <div className="h-44 overflow-x-auto">
           {showAccountSelector &&
             <AccountPicker
               allAccounts={allAccounts}

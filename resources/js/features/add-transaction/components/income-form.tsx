@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -14,6 +14,8 @@ import {
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { AccountSelector, CategorySelector, DateSelector } from './form-fields';
+import { useAccounts } from '@/features/accounts/api/get-accounts';
+import { AccountPicker } from './form-fields/account-picker';
 
 const formSchema = z.object({
   transactionDate: z.date({
@@ -37,6 +39,9 @@ const formSchema = z.object({
 });
 
 export const IncomeForm = () => {
+  const [showAccountSelector, setShowAccountSelector] = useState(false);
+  const { allAccounts } = useAccounts();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,6 +56,11 @@ export const IncomeForm = () => {
     // ✅ This will be type-safe and validated.
     console.table(values);
   }
+
+  const getSelectedAccountName = useCallback((id: number) => {
+    if (!id) return undefined;
+    return allAccounts?.find(account => id === account.id)?.name || undefined;
+  }, [allAccounts]);
 
   return (
     <Form {...form}>
@@ -74,6 +84,7 @@ export const IncomeForm = () => {
                   aria-invalid={formErrors.transactionDate ? 'true' : 'false'}
                   selected={field.value}
                   onSelect={(value: Date) => field.onChange(value)}
+                  setShowAccountSelector={setShowAccountSelector}
                 />
               </div>
               <FormMessage role="alert" />
@@ -98,6 +109,7 @@ export const IncomeForm = () => {
                     type="number"
                     className="w-3/4"
                     aria-invalid={formErrors.amount ? 'true' : 'false'}
+                    onFocus={() => setShowAccountSelector(false)}
                     {...field}
                   />
                 </FormControl>
@@ -124,6 +136,7 @@ export const IncomeForm = () => {
                   onSelect={(value: string) => {
                     form.setValue('category', value);
                   }}
+                  setShowAccountSelector={setShowAccountSelector}
                 />
               </div>
               <FormMessage role="alert" />
@@ -143,12 +156,15 @@ export const IncomeForm = () => {
                 >
                   Account
                 </FormLabel>
-                <AccountSelector
-                  selected={field.value}
-                  onSelect={(value: number) => {
-                    form.setValue('accountId', value);
-                  }}
-                />
+                <FormControl className="m-0">
+                  <Input
+                    className="w-3/4"
+                    placeholder="Select an account"
+                    onClick={() => setShowAccountSelector(true)}
+                    value={getSelectedAccountName(field.value)}
+                    readOnly
+                  />
+                </FormControl>
               </div>
               <FormMessage role="alert" />
             </FormItem>
@@ -170,6 +186,7 @@ export const IncomeForm = () => {
                 <FormControl className="m-0">
                   <Input
                     className="w-3/4"
+                    onFocus={() => setShowAccountSelector(false)}
                     {...field}
                   />
                 </FormControl>
@@ -179,7 +196,17 @@ export const IncomeForm = () => {
           )}
         />
 
-        <div className=""></div>
+        <div className="h-44 overflow-x-auto">
+          {showAccountSelector &&
+            <AccountPicker
+              allAccounts={allAccounts}
+              onSelect={(value: number) => {
+                form.setValue('accountId', value)
+                setShowAccountSelector(false);
+              }}
+            />
+          }
+        </div>
 
         <Button
           className="w-full"
