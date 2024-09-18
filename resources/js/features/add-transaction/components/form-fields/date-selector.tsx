@@ -15,10 +15,11 @@ import { Button } from '@/Components/ui/button';
 type DateSelectorProps = {
   selected: Date | undefined;
   onSelect: (selected: Date) => void | undefined;
+  setShowAccountSelector: (value: boolean) => void;
 };
 
 export const DateSelector = React.memo(
-  ({ selected, onSelect }: DateSelectorProps) => {
+  ({ selected, onSelect, setShowAccountSelector }: DateSelectorProps) => {
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
     const handleOnSelect = (date: Date | undefined) => {
@@ -30,7 +31,7 @@ export const DateSelector = React.memo(
     return (
       <Popover
         open={isPopoverOpen}
-        onOpenChange={setIsPopoverOpen}
+        onOpenChange={(open) => { setShowAccountSelector(false); setIsPopoverOpen(open) }}
       >
         <PopoverTrigger asChild>
           <FormControl>

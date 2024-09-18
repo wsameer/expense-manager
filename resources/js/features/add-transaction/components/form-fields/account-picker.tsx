@@ -1,6 +1,6 @@
 import { Button } from '@/Components/ui/button';
-import { AccountGroup, Account } from '@/types/api';
-import React, { useState } from 'react'
+import { Account } from '@/types/api';
+import React from 'react'
 
 type Props = {
   onSelect: (value: number) => void;
@@ -14,7 +14,7 @@ export const AccountPicker = React.memo<Props>(({ allAccounts, onSelect }) => {
       {allAccounts?.map((account) =>
         <Button
           key={account.id}
-          className='px-2 h-20 whitespace-normal text-left leading-4'
+          className='px-2 h-14 whitespace-normal text-left leading-3'
           variant="outline"
           size="lg"
           style={{ fontSize: '11px' }}

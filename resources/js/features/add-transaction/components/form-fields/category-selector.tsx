@@ -22,15 +22,16 @@ import { Button } from '@/Components/ui/button';
 type Props = {
   selected: string;
   onSelect: (value: string) => void;
+  setShowAccountSelector: (value: boolean) => void;
 };
 
-export const CategorySelector = React.memo<Props>(({ selected, onSelect }) => {
+export const CategorySelector = React.memo<Props>(({ selected, onSelect, setShowAccountSelector }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   return (
     <Popover
       open={isPopoverOpen}
-      onOpenChange={setIsPopoverOpen}
+      onOpenChange={(open) => { setShowAccountSelector(false); setIsPopoverOpen(open) }}
     >
       <PopoverTrigger asChild>
         <FormControl>
@@ -44,7 +45,7 @@ export const CategorySelector = React.memo<Props>(({ selected, onSelect }) => {
           >
             {selected
               ? CATEGORIES.find((category) => category.value === selected)
-                  ?.label
+                ?.label
               : 'Select category'}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
