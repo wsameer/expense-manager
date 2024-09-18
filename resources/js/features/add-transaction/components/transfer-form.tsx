@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -14,7 +14,9 @@ import {
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 
-import { DateSelector, AccountSelector } from './form-fields';
+import { DateSelector } from './form-fields';
+import { useAccounts } from '@/features/accounts/api/get-accounts';
+import { AccountPicker } from './form-fields/account-picker';
 
 const formSchema = z.object({
   transactionDate: z.date({
@@ -35,9 +37,18 @@ const formSchema = z.object({
   note: z.optional(
     z.string().max(128, { message: 'note can be of max 128 characters' }),
   ),
-});
+}).refine(
+  (data) => data.fromAccountId !== data.toAccountId,
+  {
+    message: "From and To accounts must be different",
+    path: ['toAccountId']
+  }
+);
 
 export const TransferForm = () => {
+  const [showAccountSelector, setShowAccountSelector] = useState<string | boolean>(false);
+  const { allAccounts } = useAccounts();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,6 +63,11 @@ export const TransferForm = () => {
     // ✅ This will be type-safe and validated.
     console.table(values);
   }
+
+  const getSelectedAccountName = useCallback((id: number) => {
+    if (!id) return undefined;
+    return allAccounts?.find(account => id === account.id)?.name || undefined;
+  }, [allAccounts]);
 
   return (
     <Form {...form}>
@@ -75,6 +91,7 @@ export const TransferForm = () => {
                   aria-invalid={formErrors.transactionDate ? 'true' : 'false'}
                   selected={field.value}
                   onSelect={(value: Date) => field.onChange(value)}
+                  setShowAccountSelector={setShowAccountSelector}
                 />
               </div>
               <FormMessage role="alert" />
@@ -99,6 +116,7 @@ export const TransferForm = () => {
                     type="number"
                     className="w-3/4"
                     aria-invalid={formErrors.amount ? 'true' : 'false'}
+                    onFocus={() => setShowAccountSelector(false)}
                     {...field}
                   />
                 </FormControl>
@@ -120,11 +138,12 @@ export const TransferForm = () => {
                 >
                   From
                 </FormLabel>
-                <AccountSelector
-                  selected={field.value}
-                  onSelect={(value: number) => {
-                    form.setValue('fromAccountId', value);
-                  }}
+                <Input
+                  className="w-3/4"
+                  placeholder="Select an account"
+                  onClick={() => setShowAccountSelector('fromAccountId')}
+                  value={getSelectedAccountName(field.value)}
+                  readOnly
                 />
               </div>
               <FormMessage role="alert" />
@@ -144,12 +163,15 @@ export const TransferForm = () => {
                 >
                   To
                 </FormLabel>
-                <AccountSelector
-                  selected={field.value}
-                  onSelect={(value: number) => {
-                    form.setValue('toAccountId', value);
-                  }}
-                />
+                <FormControl className="m-0">
+                  <Input
+                    className="w-3/4"
+                    placeholder="Select an account"
+                    onClick={() => setShowAccountSelector('toAccountId')}
+                    value={getSelectedAccountName(field.value)}
+                    readOnly
+                  />
+                </FormControl>
               </div>
               <FormMessage role="alert" />
             </FormItem>
@@ -171,6 +193,7 @@ export const TransferForm = () => {
                 <FormControl className="m-0">
                   <Input
                     className="w-3/4"
+                    onFocus={() => setShowAccountSelector(false)}
                     {...field}
                   />
                 </FormControl>
@@ -180,7 +203,18 @@ export const TransferForm = () => {
           )}
         />
 
-        <div className=""></div>
+        <div className="h-44 overflow-x-auto">
+          {showAccountSelector &&
+            <AccountPicker
+              allAccounts={allAccounts}
+              onSelect={(value: number) => {
+                // @ts-ignore
+                form.setValue(showAccountSelector, value)
+                setShowAccountSelector(false);
+              }}
+            />
+          }
+        </div>
 
         <Button
           className="w-full"
