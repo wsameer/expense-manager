@@ -77,7 +77,9 @@ export const AccountGroups = () => {
                 );
               }
             })}
-            {(key !== 'CASH') && <AddAccount group={key as unknown as AccountGroupEnum} />}
+            {key !== 'CASH' && (
+              <AddAccount group={key as unknown as AccountGroupEnum} />
+            )}
           </ListGroup>
         );
       })}

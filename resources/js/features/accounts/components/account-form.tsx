@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
@@ -60,7 +59,9 @@ export const AccountForm = ({
   const { allAccounts } = useAccounts();
   const { createAccount, isCreating } = useCreateAccount();
   const { updateAccount, isUpdating } = useUpdateAccount();
-  const [showPaymentOptions, setShowPaymentOptions] = useState(group === "CREDIT_CARD");
+  const [showPaymentOptions, setShowPaymentOptions] = useState(
+    group === 'CREDIT_CARD',
+  );
 
   const { t } = useTranslation('account', {
     keyPrefix: 'create-account-form',
