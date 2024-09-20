@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExpenseCategory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseCategoryController extends Controller
 {
@@ -12,7 +15,15 @@ class ExpenseCategoryController extends Controller
    */
   public function index()
   {
-    $categories = auth()->user()->expenseCategories()->with('subcategories')->get();
+    $user = Auth::user();
+
+    if (!$user) {
+      return response()->json(['error' => 'Unauthenticated'], 401);
+    }
+
+    /** @var \App\Models\User $user **/
+    $categories = $user->expenseCategories()->with('subcategories')->get();
+
     return response()->json($categories);
   }
 
@@ -53,13 +64,32 @@ class ExpenseCategoryController extends Controller
   }
 
   /**
-   * Remove the specified resource from storage.
+   * DELETE an account
    */
-  public function destroy(ExpenseCategory $category)
+  public function destroy($categoryId): JsonResponse
   {
-    $this->authorize('delete', $category);
+    try {
+      $user = Auth::user();
 
-    $category->delete();
-    return response()->json(null, 204);
+      if (!$user) {
+        return response()->json(['error' => 'Unauthenticated'], 401);
+      }
+
+      /** @var \App\Models\User $user **/
+      $category = $user->expenseCategories()->findOrFail($categoryId);
+      $category->delete();
+
+      return response()->json(null, 204);
+    } catch (ModelNotFoundException $e) {
+      return response()->json([
+        'error' => 'Expense category not found',
+        'message' => 'The requested expense category does not exist or does not belong to you.'
+      ], 404);
+    } catch (\Exception $e) {
+      return response()->json([
+        'error' => 'Internal Server Error',
+        'message' => 'An unexpected error occurred while processing your request.'
+      ], 500);
+    }
   }
 }
