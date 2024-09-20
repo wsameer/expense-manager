@@ -26,9 +26,11 @@ export const AccountsPage = () => {
   const { isDesktop } = useResponsive();
 
   return (
-    <div className={cn("grid grid-cols-1 gap-6", {
-      "w-1/3": isDesktop
-    })}>
+    <div
+      className={cn('grid grid-cols-1 gap-6', {
+        'w-1/3': isDesktop,
+      })}
+    >
       <div className="flex justify-between items-center space-x-3">
         {statsData.map((item) => (
           <AccountOverviewStat
