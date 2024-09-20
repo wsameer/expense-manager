@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class AccountController extends Controller
 {
   /**
-   * GET all users
+   * GET all accounts related to the user
    */
   public function index()
   {
@@ -22,11 +22,15 @@ class AccountController extends Controller
 
   /**
    * POST
-   * Create a new user
+   * Create a new account
    */
   public function store(Request $request): JsonResponse
   {
     $user = Auth::user();
+
+    if (!$user) {
+      return response()->json(['error' => 'Unauthenticated'], 401);
+    }
 
     $validatedData = $request->validate([
       'name' => 'required|string|max:255',
@@ -49,7 +53,7 @@ class AccountController extends Controller
   }
 
   /**
-   * GET user by id
+   * GET account by id
    */
   public function show($id): JsonResponse
   {
@@ -61,11 +65,16 @@ class AccountController extends Controller
 
   /**
    * PUT
-   * Update existing user
+   * Update existing account
    */
   public function update(Request $request, $id): JsonResponse
   {
     $user = Auth::user();
+
+    if (!$user) {
+      return response()->json(['error' => 'Unauthenticated'], 401);
+    }
+
     /** @var \App\Models\User $user **/
     $account = $user->accounts()->findOrFail($id);
 
@@ -94,12 +103,16 @@ class AccountController extends Controller
   }
 
   /**
-   * DELETE a user
+   * DELETE an account
    */
   public function destroy($id): JsonResponse
   {
     try {
       $user = Auth::user();
+
+      if (!$user) {
+        return response()->json(['error' => 'Unauthenticated'], 401);
+      }
 
       /** @var \App\Models\User $user **/
       $account = $user->accounts()->findOrFail($id);
