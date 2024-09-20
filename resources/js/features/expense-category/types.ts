@@ -13,3 +13,8 @@ export interface Category {
 export interface ApiResponse {
   data: Category[];
 }
+
+export type CategoryDeletePayload = {
+  categoryId: number;
+  subcategoryId?: number;
+};

@@ -1,8 +1,8 @@
 import { Account } from '@/types/api';
+import { handleError } from '@/lib/handle-error';
 import useSWRMutation from 'swr/mutation';
 import { ACCOUNTS_API } from '../constants';
 import axiosInstance from '@/lib/api-client';
-import { handleError } from './handle-error';
 import { useSWRConfig } from 'swr';
 import { CreateAccountForm } from '../types';
 

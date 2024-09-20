@@ -1,13 +1,12 @@
-import { AxiosError } from 'axios';
-import useSWR, { useSWRConfig } from 'swr';
-import { ApiResponse, Category } from '../types';
+import { AxiosError, AxiosResponse } from 'axios';
+import useSWR from 'swr';
+import { Category } from '../types';
 import { EXPENSE_CATEGORIES_API } from '../constants';
 import axiosInstance from '@/lib/api-client';
 import { useCallback } from 'react';
 
 const fetchExpenseCategories = async (url: string): Promise<Category[]> => {
-  const res = await axiosInstance.get<any[]>(url);
-  console.log('🚀 ~ fetchExpenseCategories ~ res:', res);
+  const res = await axiosInstance.get<Category[]>(url);
   return res.data;
 };
 

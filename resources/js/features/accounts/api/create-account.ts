@@ -4,7 +4,7 @@ import axiosInstance from '@/lib/api-client';
 import { Account } from '@/types/api';
 import { ACCOUNTS_API } from '../constants';
 import { CreateAccountForm } from '../types';
-import { handleError } from './handle-error';
+import { handleError } from '@/lib/handle-error';
 import { useSWRConfig } from 'swr';
 
 const createAccountFetcher = async (

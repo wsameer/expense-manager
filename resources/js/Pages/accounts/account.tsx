@@ -15,31 +15,31 @@ import { useDeleteAccount } from '@/features/accounts/api/delete-account';
 
 export const AccountDetailsRoute = () => {
   const { id } = useParams();
-  const { t } = useTranslation('account');
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { openConfirmDialog } = useConfirmDialog();
-  const { deleteAccount, isDeleting } = useDeleteAccount();
+  const { deleteAccount } = useDeleteAccount();
   const { account } = useAccountById(id ?? null);
 
   const handleDeleteAccount = () => {
     if (!id) return;
 
     openConfirmDialog({
-      title: t('are-you-sure'),
-      message: t('this-action-cannot-be-undone'),
+      title: t('alert.are-you-sure'),
+      message: t('alert.this-action-cannot-be-undone'),
       onConfirm: async () => {
         try {
           await deleteAccount(id);
           toast({
-            title: t('deleted'),
-            description: t('your-account-has-been-deleted'),
+            title: t('alert.deleted'),
+            description: t('alert.your-account-has-been-deleted'),
           });
           navigate(ACCOUNTS_ROUTE);
         } catch (error) {
           console.error('Error deleting account:', error);
           toast({
-            title: t('operation-failed'),
-            description: t('account-failed-to-delete'),
+            title: t('errors.operation-failed'),
+            description: t('account.account-failed-to-delete'),
           });
         }
       },
@@ -49,13 +49,13 @@ export const AccountDetailsRoute = () => {
   if (!id) {
     return (
       <PageLayout
-        title={t('invalid-request')}
+        title={t('account.invalid-request')}
         showHeader={true}
         backUrl={ACCOUNTS_ROUTE}
       >
         <div className="grid justify-center">
           <p className="text-xl text-muted-foreground mt-72">
-            {t('select-account-first')}
+            {t('account.select-account-first')}
           </p>
         </div>
       </PageLayout>
@@ -65,13 +65,13 @@ export const AccountDetailsRoute = () => {
   if (!account) {
     return (
       <PageLayout
-        title={t('invalid-request')}
+        title={t('account.invalid-request')}
         showHeader={true}
         backUrl={ACCOUNTS_ROUTE}
       >
         <div className="grid justify-center">
           <p className="text-xl text-muted-foreground mt-72">
-            {t('account-does-not-exist')}
+            {t('account.account-does-not-exist')}
           </p>
         </div>
       </PageLayout>

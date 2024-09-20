@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useExpenseCategories } from './api/useExpenseCategories';
+import { useExpenseCategories } from './api/use-expense-categories';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { Button } from '@/Components/ui/button';
 import {
@@ -19,24 +19,31 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
-import { DeleteExpenseCategory } from './components/delete-category';
+import { useTranslation } from 'react-i18next';
+import { useConfirmDialog } from '@/Components/ui/confirmable';
+import { toast } from '@/hooks';
+import { useDeleteExpenseCategory } from './api/delete-category';
 
 export const ExpenseCategoryList: React.FC = () => {
+  const { t } = useTranslation(['common', 'categories']);
+  const { openConfirmDialog } = useConfirmDialog();
+  const { deleteSubcategory, deleteCategory } = useDeleteExpenseCategory();
   const [expandedCategories, setExpandedCategories] = useState<Set<number>>(
     new Set(),
   );
-  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
-
   const { expenseCategories, isLoading, isError } = useExpenseCategories();
 
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 gap-4">
-        <Skeleton className="h-[24px] w-[150px] rounded-xl" />
-        <Skeleton className="h-[24px] w-[150px] rounded-xl" />
-        <Skeleton className="h-[24px] w-[150px] rounded-xl" />
-        <Skeleton className="h-[24px] w-[150px] rounded-xl" />
-        <Skeleton className="h-[24px] w-[150px] rounded-xl" />
+        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
+        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
+        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
+        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
+        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
+        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
+        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
+        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
       </div>
     );
   }
@@ -61,6 +68,32 @@ export const ExpenseCategoryList: React.FC = () => {
       }
       return newSet;
     });
+  };
+
+  const handleDeleteCategory = (categoryId: number, subCategoryId: number | null) => {
+    openConfirmDialog({
+      title: t('common:alert.are-you-sure'),
+      message: t('common:alert.this-action-cannot-be-undone'),
+      onConfirm: async () => {
+        try {
+          if (subCategoryId) {
+            await deleteSubcategory(categoryId, subCategoryId);
+          } else {
+            await deleteCategory(categoryId);
+          }
+          toast({
+            title: t('common:alert.deleted'),
+            description: t('categories:expense.category-is-deleted'),
+          });
+        } catch (error) {
+          console.error('Error deleting account:', error);
+          toast({
+            title: t('common:errors.operation-failed'),
+            description: t('categories:expense.failed-to-delete'),
+          });
+        }
+      },
+    })
   };
 
   return (
@@ -102,18 +135,18 @@ export const ExpenseCategoryList: React.FC = () => {
                     className="h-6 w-6"
                   >
                     <MoreVertical className="w-4 h-4" />
-                    <span className="sr-only">More</span>
+                    <span className="sr-only">{t('common:more')}</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem>
-                    <Pencil className="h-3.5 w-3.5 mr-2" /> Edit
+                    <Pencil className="h-3.5 w-3.5 mr-2" /> {t('common:edit')}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="text-red-500 focus:text-red-700"
-                    onClick={() => setOpenDeleteDialog(true)}
+                    onClick={() => handleDeleteCategory(category.id, null)}
                   >
-                    <Trash className="h-3.5 w-3.5 mr-2" /> Delete
+                    <Trash className="h-3.5 w-3.5 mr-2" /> {t('common:delete')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -136,12 +169,6 @@ export const ExpenseCategoryList: React.FC = () => {
           </CollapsibleContent>
         </Collapsible>
       ))}
-
-      <DeleteExpenseCategory
-        open={openDeleteDialog}
-        setOpen={setOpenDeleteDialog}
-        closeDialog={() => setOpenDeleteDialog(false)}
-      />
     </div>
   );
 
@@ -154,9 +181,8 @@ export const ExpenseCategoryList: React.FC = () => {
             className="p-4"
           >
             <div
-              className={`flex items-center justify-between cursor-pointer ${
-                category.subcategories?.length === 0 ? 'opacity-50' : ''
-              }`}
+              className={`flex items-center justify-between cursor-pointer ${category.subcategories?.length === 0 ? 'opacity-50' : ''
+                }`}
               onClick={() =>
                 category.subcategories?.length > 0 &&
                 toggleCategory(category.id)

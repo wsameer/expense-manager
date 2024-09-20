@@ -1,10 +1,10 @@
 import axiosInstance from '@/lib/api-client';
-import { handleError } from './handle-error';
 import useSWRMutation from 'swr/mutation';
 import { ACCOUNTS_API } from '../constants';
 import { useSWRConfig } from 'swr';
 import { Account } from '@/types/api';
 import { cache } from 'swr/_internal';
+import { handleError } from '@/lib/handle-error';
 
 const deleteAccountFetcher = async (
   url: string,
