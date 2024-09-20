@@ -18,35 +18,36 @@ import { DateSelector } from './form-fields';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 import { AccountPicker } from './form-fields/account-picker';
 
-const formSchema = z.object({
-  transactionDate: z.date({
-    required_error: 'A date is required',
-  }),
-  amount: z.coerce
-    .number({
-      required_error: 'Amount is required',
-      invalid_type_error: 'Amount must be a number',
-    })
-    .nonnegative(),
-  fromAccountId: z.coerce.number({
-    required_error: 'Please select an account',
-  }),
-  toAccountId: z.coerce.number({
-    required_error: 'Please select an account',
-  }),
-  note: z.optional(
-    z.string().max(128, { message: 'note can be of max 128 characters' }),
-  ),
-}).refine(
-  (data) => data.fromAccountId !== data.toAccountId,
-  {
-    message: "From and To accounts must be different",
-    path: ['toAccountId']
-  }
-);
+const formSchema = z
+  .object({
+    transactionDate: z.date({
+      required_error: 'A date is required',
+    }),
+    amount: z.coerce
+      .number({
+        required_error: 'Amount is required',
+        invalid_type_error: 'Amount must be a number',
+      })
+      .nonnegative(),
+    fromAccountId: z.coerce.number({
+      required_error: 'Please select an account',
+    }),
+    toAccountId: z.coerce.number({
+      required_error: 'Please select an account',
+    }),
+    note: z.optional(
+      z.string().max(128, { message: 'note can be of max 128 characters' }),
+    ),
+  })
+  .refine((data) => data.fromAccountId !== data.toAccountId, {
+    message: 'From and To accounts must be different',
+    path: ['toAccountId'],
+  });
 
 export const TransferForm = () => {
-  const [showAccountSelector, setShowAccountSelector] = useState<string | boolean>(false);
+  const [showAccountSelector, setShowAccountSelector] = useState<
+    string | boolean
+  >(false);
   const { allAccounts } = useAccounts();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -64,10 +65,15 @@ export const TransferForm = () => {
     console.table(values);
   }
 
-  const getSelectedAccountName = useCallback((id: number) => {
-    if (!id) return undefined;
-    return allAccounts?.find(account => id === account.id)?.name || undefined;
-  }, [allAccounts]);
+  const getSelectedAccountName = useCallback(
+    (id: number) => {
+      if (!id) return undefined;
+      return (
+        allAccounts?.find((account) => id === account.id)?.name || undefined
+      );
+    },
+    [allAccounts],
+  );
 
   return (
     <Form {...form}>
@@ -204,16 +210,16 @@ export const TransferForm = () => {
         />
 
         <div className="h-44 overflow-x-auto">
-          {showAccountSelector &&
+          {showAccountSelector && (
             <AccountPicker
               allAccounts={allAccounts}
               onSelect={(value: number) => {
                 // @ts-ignore
-                form.setValue(showAccountSelector, value)
+                form.setValue(showAccountSelector, value);
                 setShowAccountSelector(false);
               }}
             />
-          }
+          )}
         </div>
 
         <Button

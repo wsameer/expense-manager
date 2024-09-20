@@ -31,7 +31,10 @@ export const DateSelector = React.memo(
     return (
       <Popover
         open={isPopoverOpen}
-        onOpenChange={(open) => { setShowAccountSelector(false); setIsPopoverOpen(open) }}
+        onOpenChange={(open) => {
+          setShowAccountSelector(false);
+          setIsPopoverOpen(open);
+        }}
       >
         <PopoverTrigger asChild>
           <FormControl>

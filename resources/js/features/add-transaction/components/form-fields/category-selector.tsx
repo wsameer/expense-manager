@@ -25,65 +25,72 @@ type Props = {
   setShowAccountSelector: (value: boolean) => void;
 };
 
-export const CategorySelector = React.memo<Props>(({ selected, onSelect, setShowAccountSelector }) => {
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+export const CategorySelector = React.memo<Props>(
+  ({ selected, onSelect, setShowAccountSelector }) => {
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-  return (
-    <Popover
-      open={isPopoverOpen}
-      onOpenChange={(open) => { setShowAccountSelector(false); setIsPopoverOpen(open) }}
-    >
-      <PopoverTrigger asChild>
-        <FormControl>
-          <Button
-            variant="outline"
-            role="combobox"
-            className={cn(
-              'w-3/4 justify-between',
-              !selected && 'text-muted-foreground',
-            )}
-          >
-            {selected
-              ? CATEGORIES.find((category) => category.value === selected)
-                ?.label
-              : 'Select category'}
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </Button>
-        </FormControl>
-      </PopoverTrigger>
-      <PopoverContent className="w-max p-0">
-        <Command>
-          <CommandInput
-            className="border-none"
-            placeholder="Search category..."
-          />
-          <CommandList>
-            <CommandEmpty>No category found.</CommandEmpty>
-            <CommandGroup>
-              {CATEGORIES.map((category) => (
-                <CommandItem
-                  value={category.label}
-                  key={category.value}
-                  onSelect={() => {
-                    onSelect(category.value!);
-                    setIsPopoverOpen(false);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      'mr-2 h-4 w-4',
-                      category.value === selected ? 'opacity-100' : 'opacity-0',
-                    )}
-                  />
-                  {category.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  );
-});
+    return (
+      <Popover
+        open={isPopoverOpen}
+        onOpenChange={(open) => {
+          setShowAccountSelector(false);
+          setIsPopoverOpen(open);
+        }}
+      >
+        <PopoverTrigger asChild>
+          <FormControl>
+            <Button
+              variant="outline"
+              role="combobox"
+              className={cn(
+                'w-3/4 justify-between',
+                !selected && 'text-muted-foreground',
+              )}
+            >
+              {selected
+                ? CATEGORIES.find((category) => category.value === selected)
+                    ?.label
+                : 'Select category'}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </FormControl>
+        </PopoverTrigger>
+        <PopoverContent className="w-max p-0">
+          <Command>
+            <CommandInput
+              className="border-none"
+              placeholder="Search category..."
+            />
+            <CommandList>
+              <CommandEmpty>No category found.</CommandEmpty>
+              <CommandGroup>
+                {CATEGORIES.map((category) => (
+                  <CommandItem
+                    value={category.label}
+                    key={category.value}
+                    onSelect={() => {
+                      onSelect(category.value!);
+                      setIsPopoverOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        'mr-2 h-4 w-4',
+                        category.value === selected
+                          ? 'opacity-100'
+                          : 'opacity-0',
+                      )}
+                    />
+                    {category.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    );
+  },
+);
 
 CategorySelector.displayName = 'CategorySelector';

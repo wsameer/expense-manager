@@ -36,9 +36,11 @@ export const AccountSelector = React.memo<Props>(({ selected, onSelect }) => {
   const { allAccounts } = useAccounts();
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState<AccountGroup | undefined>();
+  const [selectedGroup, setSelectedGroup] = useState<
+    AccountGroup | undefined
+  >();
   const [selectedAccount, setSelectedAccount] = useState<Account | undefined>();
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -49,7 +51,9 @@ export const AccountSelector = React.memo<Props>(({ selected, onSelect }) => {
 
   useEffect(() => {
     if (allAccounts) {
-      const mappedAccount = allAccounts.find(account => selected === account.id);
+      const mappedAccount = allAccounts.find(
+        (account) => selected === account.id,
+      );
       setSelectedAccount(mappedAccount);
       setSelectedGroup(mappedAccount?.group);
     }
@@ -58,9 +62,13 @@ export const AccountSelector = React.memo<Props>(({ selected, onSelect }) => {
   if (!allAccounts) {
     return (
       <FormControl>
-        <Input disabled type="text" placeholder="You have no accounts" />
+        <Input
+          disabled
+          type="text"
+          placeholder="You have no accounts"
+        />
       </FormControl>
-    )
+    );
   }
 
   return (
@@ -79,9 +87,7 @@ export const AccountSelector = React.memo<Props>(({ selected, onSelect }) => {
               !selected && 'text-muted-foreground',
             )}
           >
-            {selectedAccount
-              ? selectedAccount.name
-              : 'Select account'}
+            {selectedAccount ? selectedAccount.name : 'Select account'}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </FormControl>
@@ -107,7 +113,7 @@ export const AccountSelector = React.memo<Props>(({ selected, onSelect }) => {
                 >
                   ← Back to account groups
                 </CommandItem>
-                {allAccounts.map(account => {
+                {allAccounts.map((account) => {
                   if (account.group === selectedGroup) {
                     return (
                       <CommandItem
@@ -115,18 +121,20 @@ export const AccountSelector = React.memo<Props>(({ selected, onSelect }) => {
                         onSelect={() => {
                           setSelectedAccount(account);
                           setIsPopoverOpen(false);
-                          onSelect(account.id)
+                          onSelect(account.id);
                         }}
                       >
                         <Check
                           className={cn(
-                            "mr-2 h-4 w-4",
-                            selected === account.id ? "opacity-100" : "opacity-0"
+                            'mr-2 h-4 w-4',
+                            selected === account.id
+                              ? 'opacity-100'
+                              : 'opacity-0',
                           )}
                         />
                         {account.name}
                       </CommandItem>
-                    )
+                    );
                   }
                   return null;
                 })}
@@ -138,8 +146,9 @@ export const AccountSelector = React.memo<Props>(({ selected, onSelect }) => {
                     key={type.id}
                     onSelect={() => setSelectedGroup(type.key as AccountGroup)}
                   >
-                    <div className='flex justify-between items-center w-full '>
-                      {capitalize(type.label)}<ChevronRight className='h-4 w-4' />
+                    <div className="flex justify-between items-center w-full ">
+                      {capitalize(type.label)}
+                      <ChevronRight className="h-4 w-4" />
                     </div>
                   </CommandItem>
                 ))}

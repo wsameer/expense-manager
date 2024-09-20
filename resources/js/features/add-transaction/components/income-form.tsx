@@ -57,10 +57,15 @@ export const IncomeForm = () => {
     console.table(values);
   }
 
-  const getSelectedAccountName = useCallback((id: number) => {
-    if (!id) return undefined;
-    return allAccounts?.find(account => id === account.id)?.name || undefined;
-  }, [allAccounts]);
+  const getSelectedAccountName = useCallback(
+    (id: number) => {
+      if (!id) return undefined;
+      return (
+        allAccounts?.find((account) => id === account.id)?.name || undefined
+      );
+    },
+    [allAccounts],
+  );
 
   return (
     <Form {...form}>
@@ -197,15 +202,15 @@ export const IncomeForm = () => {
         />
 
         <div className="h-44 overflow-x-auto">
-          {showAccountSelector &&
+          {showAccountSelector && (
             <AccountPicker
               allAccounts={allAccounts}
               onSelect={(value: number) => {
-                form.setValue('accountId', value)
+                form.setValue('accountId', value);
                 setShowAccountSelector(false);
               }}
             />
-          }
+          )}
         </div>
 
         <Button
