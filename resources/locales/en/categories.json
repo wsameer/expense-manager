@@ -1,0 +1,6 @@
+{
+  "expense": {
+    "category-is-deleted": "Expense category has been deleted",
+    "failed-to-delete": "Failed to delete category"
+  }
+}

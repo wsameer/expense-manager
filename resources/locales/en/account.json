@@ -14,11 +14,7 @@
     "group": "Group",
     "payment": "Payment"
   },
-  "are-you-sure": "Are you absolutely sure?",
-  "this-action-cannot-be-undone": "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
-  "deleted": "Deleted!",
   "your-account-has-been-deleted": "Your account has been deleted.",
-  "operation-failed": "Operation failed",
   "account-failed-to-delete": "Your account cannot be deleted at the moment. Please try again.",
   "select-account-first": "Select an account first to see the details",
   "invalid-request": "Invalid Request!",
