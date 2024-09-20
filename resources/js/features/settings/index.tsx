@@ -84,7 +84,7 @@ export const Settings = () => {
       <ListGroup title="Category/Accounts">
         <ListItem
           icon={<Coins className="h-4 w-4 text-gray-600 dark:text-gray-300" />}
-          label={'Income Category settings'}
+          label={'Income Category Setting'}
           onClick={() => onSettingItemClick('')}
           rightElement={
             <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
@@ -94,7 +94,7 @@ export const Settings = () => {
           icon={
             <WalletCards className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           }
-          label={'Expense Category settings'}
+          label={'Expense Category Setting'}
           onClick={() => onSettingItemClick(EXPENSE_CATEGORY_SETTINGS_ROUTE)}
           rightElement={
             <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
@@ -104,7 +104,7 @@ export const Settings = () => {
           icon={
             <CreditCard className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           }
-          label={'Accounts settings'}
+          label={'Accounts Setting'}
           rightElement={
             <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           }
@@ -113,7 +113,7 @@ export const Settings = () => {
           icon={
             <PiggyBank className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           }
-          label={'Budget settings'}
+          label={'Budget Setting'}
           rightElement={
             <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           }
