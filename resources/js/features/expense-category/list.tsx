@@ -171,51 +171,6 @@ export const ExpenseCategoryList: React.FC = () => {
       ))}
     </div>
   );
-
-  return (
-    <div className="w-full max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-      <ul className="divide-y divide-gray-200">
-        {expenseCategories?.map((category) => (
-          <li
-            key={category.id}
-            className="p-4"
-          >
-            <div
-              className={`flex items-center justify-between cursor-pointer ${category.subcategories?.length === 0 ? 'opacity-50' : ''
-                }`}
-              onClick={() =>
-                category.subcategories?.length > 0 &&
-                toggleCategory(category.id)
-              }
-            >
-              <span className="text-lg font-medium text-gray-900">
-                {category.name}
-              </span>
-              {category.subcategories?.length > 0 &&
-                (expandedCategories.has(category.id) ? (
-                  <ChevronDown className="h-5 w-5 text-gray-500" />
-                ) : (
-                  <ChevronRight className="h-5 w-5 text-gray-500" />
-                ))}
-            </div>
-            {expandedCategories.has(category.id) &&
-              category.subcategories?.length > 0 && (
-                <ul className="mt-2 ml-4 space-y-2">
-                  {category.subcategories?.map((subCategory) => (
-                    <li
-                      key={subCategory.id}
-                      className="text-sm text-gray-600"
-                    >
-                      {subCategory.name}
-                    </li>
-                  ))}
-                </ul>
-              )}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
 };
 
 ExpenseCategoryList.displayName = 'ExpenseCategoryList';

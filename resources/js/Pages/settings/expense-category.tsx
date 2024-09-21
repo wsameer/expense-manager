@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/Components/ui/button';
 import { PageLayout } from '@/layouts';
 import { SETTINGS_ROUTE } from '@/router/routes';
 import { ExpenseCategoryList } from '@/features/expense-category/list';
+import { AddExpenseCategory } from '@/features/expense-category/components/add-expense-category';
+import { useExpenseCategories } from '@/features/expense-category/api/use-expense-categories';
 
 export const ExpenseCategoryRoute = () => {
+
+  const { refetchExpenseCategories } = useExpenseCategories();
+  const [openEditModal, setOpenEditModal] = useState(false);
+
   return (
     <PageLayout
       title="Expense Categories"
@@ -12,11 +18,17 @@ export const ExpenseCategoryRoute = () => {
       backUrl={SETTINGS_ROUTE}
       rightElement={
         <div className="d-flex">
-          <Button>Add</Button>
+          <Button onClick={() => setOpenEditModal(true)}>Add</Button>
         </div>
       }
     >
       <ExpenseCategoryList />
+
+      <AddExpenseCategory
+        onCategoryAdded={refetchExpenseCategories}
+        onOpenChange={setOpenEditModal}
+        open={openEditModal}
+      />
     </PageLayout>
   );
 };
