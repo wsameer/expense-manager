@@ -16,9 +16,9 @@ class ExpenseCategory extends Model
     return $this->belongsTo(User::class);
   }
 
-  public function subCategories()
+  public function subcategories()
   {
-    return $this->belongsTo(ExpenseSubcategory::class);
+    return $this->hasMany(ExpenseSubcategory::class);
   }
 
   public function transactions()

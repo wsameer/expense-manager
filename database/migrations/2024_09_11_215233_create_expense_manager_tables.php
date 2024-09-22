@@ -21,7 +21,7 @@ return new class extends Migration
 
     Schema::create('expense_subcategories', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('expense_category_id')->constrained()->onDelete('cascade');
+      $table->foreignId('expense_category_id')->constrained('expense_categories')->onDelete('cascade');
       $table->string('name');
       $table->timestamps();
     });
