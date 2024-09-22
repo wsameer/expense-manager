@@ -1,12 +1,23 @@
-import React from 'react'
+import React from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/Components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/Components/ui/form';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/Components/ui/form';
 import { EXPENSE_CATEGORIES_API } from '../constants';
 import { toast } from '@/hooks';
 import axiosInstance from '@/lib/api-client';
@@ -16,27 +27,36 @@ type Props = {
   onOpenChange: (value: boolean) => void;
   editMode?: number;
   onCategoryAdded: () => void;
-}
+};
 
 const FormSchema = z.object({
   categoryName: z.string().min(2, {
-    message: "Category Name must be at least 2 characters.",
+    message: 'Category Name must be at least 2 characters.',
   }),
-})
+});
 
-export const AddExpenseCategory = ({ open, onOpenChange, onCategoryAdded, editMode = undefined }: Props) => {
+export const AddExpenseCategory = ({
+  open,
+  onOpenChange,
+  onCategoryAdded,
+  editMode = undefined,
+}: Props) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      categoryName: "",
+      categoryName: '',
     },
   });
 
-  const handleCreateExpenseCategory = async (values: z.infer<typeof FormSchema>) => {
+  const handleCreateExpenseCategory = async (
+    values: z.infer<typeof FormSchema>,
+  ) => {
     if (!values) return false;
 
     try {
-      await axiosInstance.post(EXPENSE_CATEGORIES_API, { name: values.categoryName });
+      await axiosInstance.post(EXPENSE_CATEGORIES_API, {
+        name: values.categoryName,
+      });
       onCategoryAdded();
       form.reset();
       toast({
@@ -53,11 +73,14 @@ export const AddExpenseCategory = ({ open, onOpenChange, onCategoryAdded, editMo
   };
 
   const handleEditExpenseCategory = (data: z.infer<typeof FormSchema>) => {
-    console.log("🚀 ~ handleEditExpenseCategory ~ data:", data)
-  }
+    console.log('🚀 ~ handleEditExpenseCategory ~ data:', data);
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+    >
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Expense Category</DialogTitle>
@@ -65,7 +88,9 @@ export const AddExpenseCategory = ({ open, onOpenChange, onCategoryAdded, editMo
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(
-              editMode ? handleEditExpenseCategory : handleCreateExpenseCategory,
+              editMode
+                ? handleEditExpenseCategory
+                : handleCreateExpenseCategory,
             )}
             className="space-y-6"
           >
@@ -75,9 +100,7 @@ export const AddExpenseCategory = ({ open, onOpenChange, onCategoryAdded, editMo
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="categoryName">
-                      Category Name
-                    </FormLabel>
+                    <FormLabel htmlFor="categoryName">Category Name</FormLabel>
                     <Input
                       placeholder="Category Name"
                       {...field}
@@ -87,12 +110,15 @@ export const AddExpenseCategory = ({ open, onOpenChange, onCategoryAdded, editMo
                 )}
               />
             </div>
-            <Button type="submit" className='w-full'>
+            <Button
+              type="submit"
+              className="w-full"
+            >
               {editMode ? 'Save changes' : 'Create Expense Category'}
             </Button>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};

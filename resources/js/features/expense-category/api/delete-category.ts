@@ -25,7 +25,7 @@ export const useDeleteExpenseCategory = () => {
   );
 
   const deleteCategory = async (categoryId: number) => {
-    // Store the current accounts before deletion
+    // Store the current categories before deletion
     const currentExpenseCategories = cache.get(EXPENSE_CATEGORIES_API)?.data;
 
     try {
@@ -45,10 +45,5 @@ export const useDeleteExpenseCategory = () => {
     }
   };
 
-  const deleteSubcategory = async (
-    categoryId: number,
-    subcategoryId: number,
-  ) => {};
-
-  return { deleteCategory, deleteSubcategory, isDeleting: isMutating, error };
+  return { deleteCategory, isDeleting: isMutating, error };
 };

@@ -1,4 +1,4 @@
-export interface SubCategory {
+export interface Subcategory {
   id: number;
   name: string;
 }
@@ -7,7 +7,7 @@ export interface Category {
   id: number;
   name: string;
   is_default: boolean;
-  subcategories: SubCategory[];
+  subcategories: Subcategory[];
 }
 
 export interface ApiResponse {

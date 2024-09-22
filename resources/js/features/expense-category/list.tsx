@@ -3,11 +3,10 @@ import { useExpenseCategories } from './api/use-expense-categories';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { Button } from '@/Components/ui/button';
 import {
-  ChevronDown,
-  ChevronRight,
   ChevronsUpDown,
   MoreVertical,
   Pencil,
+  PlusCircle,
   Trash,
 } from 'lucide-react';
 
@@ -23,15 +22,24 @@ import { useTranslation } from 'react-i18next';
 import { useConfirmDialog } from '@/Components/ui/confirmable';
 import { toast } from '@/hooks';
 import { useDeleteExpenseCategory } from './api/delete-category';
+import { AddExpenseSubCategory } from './components/add-expense-subcategory';
+import { Category } from './types';
+import { SubcategoryItem } from './components/subcategory';
 
 export const ExpenseCategoryList: React.FC = () => {
   const { t } = useTranslation(['common', 'categories']);
   const { openConfirmDialog } = useConfirmDialog();
-  const { deleteSubcategory, deleteCategory } = useDeleteExpenseCategory();
+  const { expenseCategories, refetchExpenseCategories, isLoading, isError } =
+    useExpenseCategories();
+  const { deleteCategory } = useDeleteExpenseCategory();
+
   const [expandedCategories, setExpandedCategories] = useState<Set<number>>(
     new Set(),
   );
-  const { expenseCategories, isLoading, isError } = useExpenseCategories();
+  const [openSubCategoryModal, setOpenSubCategoryModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null,
+  );
 
   if (isLoading) {
     return (
@@ -70,17 +78,15 @@ export const ExpenseCategoryList: React.FC = () => {
     });
   };
 
-  const handleDeleteCategory = (categoryId: number, subCategoryId: number | null) => {
+  const handleDeleteCategory = (
+    categoryId: number,
+  ) => {
     openConfirmDialog({
       title: t('common:alert.are-you-sure'),
       message: t('common:alert.this-action-cannot-be-undone'),
       onConfirm: async () => {
         try {
-          if (subCategoryId) {
-            await deleteSubcategory(categoryId, subCategoryId);
-          } else {
-            await deleteCategory(categoryId);
-          }
+          await deleteCategory(categoryId);
           toast({
             title: t('common:alert.deleted'),
             description: t('categories:expense.category-is-deleted'),
@@ -93,11 +99,11 @@ export const ExpenseCategoryList: React.FC = () => {
           });
         }
       },
-    })
+    });
   };
 
   return (
-    <div className="grid grid-cols-1 gap-4 mt-4">
+    <div className="grid grid-cols-1 gap-2 mt-4">
       {expenseCategories?.map((category) => (
         <Collapsible
           key={category.id}
@@ -107,34 +113,34 @@ export const ExpenseCategoryList: React.FC = () => {
             category.subcategories.length > 0 && toggleCategory(category.id)
           }
         >
-          <div className="flex items-center justify-between space-x-4 px-4">
+          <div className="flex items-center justify-between space-x-4 px-4 py-2">
             <div className="flex items-center gap-2">
               <p>{category.name}</p>
               <p className="text-sm text-muted-foreground">{`(${category.subcategories?.length ?? 0})`}</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center">
               <CollapsibleTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="w-4 p-0"
+                  className="h-6 w-6"
                   disabled={
                     !category.subcategories ||
                     category.subcategories.length === 0
                   }
                 >
-                  <ChevronsUpDown className="w-4 h-4" />
-                  <span className="sr-only">Toggle</span>
+                  <ChevronsUpDown className="h-4 w-4" />
+                  <span className="sr-only">{t('common:toggle')}</span>
                 </Button>
               </CollapsibleTrigger>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    size="icon"
                     variant="ghost"
+                    size="icon"
                     className="h-6 w-6"
                   >
-                    <MoreVertical className="w-4 h-4" />
+                    <MoreVertical className="h-4 w-4" />
                     <span className="sr-only">{t('common:more')}</span>
                   </Button>
                 </DropdownMenuTrigger>
@@ -143,8 +149,17 @@ export const ExpenseCategoryList: React.FC = () => {
                     <Pencil className="h-3.5 w-3.5 mr-2" /> {t('common:edit')}
                   </DropdownMenuItem>
                   <DropdownMenuItem
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setOpenSubCategoryModal(true);
+                    }}
+                  >
+                    <PlusCircle className="h-3.5 w-3.5 mr-2" />
+                    {t('categories:expense.add-subcategory')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
                     className="text-red-500 focus:text-red-700"
-                    onClick={() => handleDeleteCategory(category.id, null)}
+                    onClick={() => handleDeleteCategory(category.id)}
                   >
                     <Trash className="h-3.5 w-3.5 mr-2" /> {t('common:delete')}
                   </DropdownMenuItem>
@@ -156,19 +171,25 @@ export const ExpenseCategoryList: React.FC = () => {
             {expandedCategories.has(category.id) &&
               category.subcategories?.length > 0 && (
                 <div>
-                  {category.subcategories?.map((subCategory) => (
-                    <li
-                      key={subCategory.id}
-                      className="rounded-md border px-4 py-3 text-sm"
-                    >
-                      {subCategory.name}
-                    </li>
+                  {category.subcategories?.map((subcategory) => (
+                    <SubcategoryItem data={subcategory} />
                   ))}
                 </div>
               )}
           </CollapsibleContent>
         </Collapsible>
       ))}
+
+      {selectedCategory && (
+        <AddExpenseSubCategory
+          open={openSubCategoryModal}
+          onOpenChange={setOpenSubCategoryModal}
+          editMode={undefined}
+          selectedCategory={selectedCategory!}
+          onCategoryAdded={refetchExpenseCategories}
+        />
+      )}
+
     </div>
   );
 };

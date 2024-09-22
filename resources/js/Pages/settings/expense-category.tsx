@@ -3,11 +3,10 @@ import { Button } from '@/Components/ui/button';
 import { PageLayout } from '@/layouts';
 import { SETTINGS_ROUTE } from '@/router/routes';
 import { ExpenseCategoryList } from '@/features/expense-category/list';
-import { AddExpenseCategory } from '@/features/expense-category/components/add-expense-category';
 import { useExpenseCategories } from '@/features/expense-category/api/use-expense-categories';
+import { AddExpenseCategory } from '@/features/expense-category/components/add-expense-category';
 
 export const ExpenseCategoryRoute = () => {
-
   const { refetchExpenseCategories } = useExpenseCategories();
   const [openEditModal, setOpenEditModal] = useState(false);
 
