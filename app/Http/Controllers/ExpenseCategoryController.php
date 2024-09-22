@@ -33,7 +33,7 @@ class ExpenseCategoryController extends Controller
   public function store(Request $request)
   {
     $request->validate([
-      'name' => 'required|string|max:255',
+      'name' => 'required|string|max:50',
     ]);
 
     $category = auth()->user()->expenseCategories()->create($request->all());
@@ -56,7 +56,7 @@ class ExpenseCategoryController extends Controller
     $this->authorize('update', $category);
 
     $request->validate([
-      'name' => 'required|string|max:255'
+      'name' => 'required|string|max:50'
     ]);
 
     $category->update($request->all());
