@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExpenseCategory;
+use App\Models\ExpenseSubcategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseSubcategoryController extends Controller
 {
@@ -17,22 +19,48 @@ class ExpenseSubcategoryController extends Controller
   }
 
   /**
-   * Store a newly created resource in storage.
+   * Store a newly created sub category resource in storage.
    */
-  public function store(Request $request, ExpenseCategory $category)
+  public function store(Request $request, $categoryId)
   {
-    $this->authorize('update', $category);
+    try {
+      $user = Auth::user();
 
-    $request->validate([
-      'name' => 'required|string|max:255',
-    ]);
+      if (!$user) {
+        return response()->json(['error' => 'Unauthenticated'], 401);
+      }
 
-    if ($category->subcategories()->count() >= 10) {
-      return response()->json(['error' => 'Maximum subcategories limit reached'], 422);
+      $request->validate([
+        'name' => 'required|string|max:50',
+      ]);
+
+      $category = ExpenseCategory::findOrFail($categoryId);
+
+      if ($category->subcategories()->count() >= 10) {
+        return response()->json(['error' => 'Maximum subcategories limit reached'], 422);
+      }
+
+      \DB::beginTransaction();
+
+      $subcategory = $category->subcategories()->create([
+        'name' => $request->input('name'),
+      ]);
+
+      \DB::commit();
+
+      \Log::info('Subcategory created successfully', ['id' => $subcategory->id, 'name' => $subcategory->name]);
+
+      return response()->json($subcategory, 201);
+    } catch (\Exception $e) {
+      \DB::rollBack();
+      \Log::error('Subcategory creation error', [
+        'message' => $e->getMessage(),
+        'trace' => $e->getTraceAsString(),
+        'categoryId' => $categoryId,
+        'requestData' => $request->all()
+      ]);
+      return response()->json(['error' => 'An error occurred while creating the subcategory: ' . $e->getMessage()], 500);
     }
-
-    $subcategory = $category->subcategories()->create($request->all());
-    return response()->json($subcategory, 201);
   }
 
   /**
