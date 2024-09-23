@@ -6,7 +6,6 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseSubcategoryController;
 use App\Http\Controllers\TransactionController;
-use App\Models\ExpenseCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
