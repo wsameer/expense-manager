@@ -10,6 +10,10 @@ const fetchExpenseCategories = async (url: string): Promise<Category[]> => {
   return res.data;
 };
 
+interface CategoryInput {
+  name: string;
+}
+
 export const useExpenseCategories = () => {
   const { data, error, mutate } = useSWR<Category[], AxiosError>(
     EXPENSE_CATEGORIES_API,
@@ -21,12 +25,41 @@ export const useExpenseCategories = () => {
     },
   );
 
+  const createCategory = useCallback(
+    async (categoryData: CategoryInput): Promise<Category> => {
+      const response = await axiosInstance.post<Category>(
+        EXPENSE_CATEGORIES_API,
+        categoryData,
+      );
+      await mutate(); // Revalidate the cache
+      return response.data;
+    },
+    [mutate],
+  );
+
+  const updateCategory = useCallback(
+    async (
+      categoryId: string,
+      categoryData: CategoryInput,
+    ): Promise<Category> => {
+      const response = await axiosInstance.put<Category>(
+        `${EXPENSE_CATEGORIES_API}/${categoryId}`,
+        categoryData,
+      );
+      await mutate(); // Revalidate the cache
+      return response.data;
+    },
+    [mutate],
+  );
+
   const refetchExpenseCategories = useCallback(() => mutate(), [mutate]);
 
   return {
     expenseCategories: data,
     isLoading: !error && !data,
     isError: error,
+    createCategory,
+    updateCategory,
     refetchExpenseCategories,
   };
 };

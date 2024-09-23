@@ -89,7 +89,7 @@ export const AddExpenseSubCategory = ({
     >
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Expense Category</DialogTitle>
+          <DialogTitle>Expense Subcategory</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -101,13 +101,15 @@ export const AddExpenseSubCategory = ({
             className="space-y-6"
           >
             <div className="my-4">
-              <div className='mb-4'>
+              <div className="mb-4">
                 <FormField
                   name="categoryName"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="categoryName">Category Name</FormLabel>
+                      <FormLabel htmlFor="categoryName">
+                        Category Name
+                      </FormLabel>
                       <Input
                         placeholder="Category Name"
                         value={selectedCategory.name}

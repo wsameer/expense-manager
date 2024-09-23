@@ -3,12 +3,17 @@ import { Button } from '@/Components/ui/button';
 import { PageLayout } from '@/layouts';
 import { SETTINGS_ROUTE } from '@/router/routes';
 import { ExpenseCategoryList } from '@/features/expense-category/list';
-import { useExpenseCategories } from '@/features/expense-category/api/use-expense-categories';
 import { AddExpenseCategory } from '@/features/expense-category/components/add-expense-category';
+import { Category } from '@/features/expense-category/types';
 
 export const ExpenseCategoryRoute = () => {
-  const { refetchExpenseCategories } = useExpenseCategories();
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [categoryToEdit, setCategoryToEdit] = useState<Category | undefined>();
+
+  const handleEditExpenseCategory = (category: Category) => {
+    setCategoryToEdit(category);
+    setOpenEditModal(true)
+  }
 
   return (
     <PageLayout
@@ -21,12 +26,12 @@ export const ExpenseCategoryRoute = () => {
         </div>
       }
     >
-      <ExpenseCategoryList />
+      <ExpenseCategoryList handleEditExpenseCategory={handleEditExpenseCategory} />
 
       <AddExpenseCategory
-        onCategoryAdded={refetchExpenseCategories}
         onOpenChange={setOpenEditModal}
         open={openEditModal}
+        editMode={categoryToEdit}
       />
     </PageLayout>
   );

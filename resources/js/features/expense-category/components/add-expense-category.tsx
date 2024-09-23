@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 
@@ -18,15 +18,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/Components/ui/form';
-import { EXPENSE_CATEGORIES_API } from '../constants';
 import { toast } from '@/hooks';
-import axiosInstance from '@/lib/api-client';
+import { useExpenseCategories } from '../api/use-expense-categories';
+import { Category } from '../types';
 
 type Props = {
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  editMode?: number;
-  onCategoryAdded: () => void;
+  editMode?: Category;
 };
 
 const FormSchema = z.object({
@@ -38,13 +37,15 @@ const FormSchema = z.object({
 export const AddExpenseCategory = ({
   open,
   onOpenChange,
-  onCategoryAdded,
   editMode = undefined,
 }: Props) => {
+
+  const { createCategory, updateCategory, refetchExpenseCategories } = useExpenseCategories();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      categoryName: '',
+      categoryName: editMode ? editMode.name : '',
     },
   });
 
@@ -54,13 +55,13 @@ export const AddExpenseCategory = ({
     if (!values) return false;
 
     try {
-      await axiosInstance.post(EXPENSE_CATEGORIES_API, {
-        name: values.categoryName,
+      await createCategory({
+        name: values.categoryName
       });
-      onCategoryAdded();
+      refetchExpenseCategories();
       form.reset();
       toast({
-        title: 'New Expense Category Created',
+        title: 'Expense category created',
         description: `Category "${values.categoryName}" has been created`,
       });
       return onOpenChange(false);
@@ -72,9 +73,34 @@ export const AddExpenseCategory = ({
     }
   };
 
-  const handleEditExpenseCategory = (data: z.infer<typeof FormSchema>) => {
-    console.log('🚀 ~ handleEditExpenseCategory ~ data:', data);
+  const handleEditExpenseCategory = async (values: z.infer<typeof FormSchema>) => {
+    if (!values || !editMode) return false;
+    try {
+      await updateCategory(editMode.id.toString(), {
+        name: values.categoryName
+      });
+      refetchExpenseCategories();
+      form.reset();
+      toast({
+        title: 'Expense category updated',
+        description: `Category "${values.categoryName}" has been updated`,
+      });
+      return onOpenChange(false);
+    } catch (error: any) {
+      toast({
+        title: 'Operation failed!',
+        description: error.message,
+      });
+    }
   };
+
+  useEffect(() => {
+    if (editMode) {
+      form.reset({
+        categoryName: editMode.name
+      });
+    }
+  }, [editMode, form.reset]);
 
   return (
     <Dialog
@@ -107,14 +133,15 @@ export const AddExpenseCategory = ({
                     />
                     <FormMessage role="alert" />
                   </FormItem>
-                )}
+                )
+                }
               />
             </div>
             <Button
               type="submit"
               className="w-full"
             >
-              {editMode ? 'Save changes' : 'Create Expense Category'}
+              {editMode ? 'Save changes' : 'Create'}
             </Button>
           </form>
         </Form>

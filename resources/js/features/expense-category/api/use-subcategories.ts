@@ -39,6 +39,18 @@ export const useExpenseSubcategories = (categoryId: number) => {
     [url, mutate],
   );
 
+  // const updateSubCategory = useCallback(
+  //   async (subcategoryData: SubcategoryInput): Promise<Subcategory> => {
+  //     const response = await axiosInstance.post<Subcategory>(
+  //       url,
+  //       subcategoryData,
+  //     );
+  //     await mutate(); // Revalidate the cache
+  //     return response.data;
+  //   },
+  //   [url, mutate],
+  // );
+
   const updateSubcategory = useCallback(
     async (
       subcategoryId: number,

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useExpenseCategories } from './api/use-expense-categories';
-import { Skeleton } from '@/Components/ui/skeleton';
 import { Button } from '@/Components/ui/button';
 import {
   ChevronsUpDown,
@@ -25,13 +24,23 @@ import { useDeleteExpenseCategory } from './api/delete-category';
 import { AddExpenseSubCategory } from './components/add-expense-subcategory';
 import { Category } from './types';
 import { SubcategoryItem } from './components/subcategory';
+import { Busy } from './components/busy';
+import { Error } from './components/error';
 
-export const ExpenseCategoryList: React.FC = () => {
+type Props = {
+  handleEditExpenseCategory: (category: Category) => void;
+}
+
+export const ExpenseCategoryList: React.FC<Props> = ({ handleEditExpenseCategory }) => {
   const { t } = useTranslation(['common', 'categories']);
   const { openConfirmDialog } = useConfirmDialog();
-  const { expenseCategories, refetchExpenseCategories, isLoading, isError } =
-    useExpenseCategories();
   const { deleteCategory } = useDeleteExpenseCategory();
+  const {
+    expenseCategories,
+    isLoading,
+    isError,
+    refetchExpenseCategories
+  } = useExpenseCategories();
 
   const [expandedCategories, setExpandedCategories] = useState<Set<number>>(
     new Set(),
@@ -40,31 +49,6 @@ export const ExpenseCategoryList: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null,
   );
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 gap-4">
-        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
-        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
-        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
-        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
-        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
-        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
-        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
-        <Skeleton className="h-[46px] w-full rounded-xl mt-4" />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="grid grid-cols-1 gap-4">
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-          Error loading expense categories. Please try again.
-        </h3>
-      </div>
-    );
-  }
 
   const toggleCategory = (categoryId: number) => {
     setExpandedCategories((prev) => {
@@ -78,12 +62,10 @@ export const ExpenseCategoryList: React.FC = () => {
     });
   };
 
-  const handleDeleteCategory = (
-    categoryId: number,
-  ) => {
+  const handleDeleteCategory = (categoryId: number) => {
     openConfirmDialog({
       title: t('common:alert.are-you-sure'),
-      message: t('common:alert.this-action-cannot-be-undone'),
+      message: t('categories:expense:category-delete-warning-message'),
       onConfirm: async () => {
         try {
           await deleteCategory(categoryId);
@@ -102,6 +84,14 @@ export const ExpenseCategoryList: React.FC = () => {
     });
   };
 
+  if (isLoading) {
+    return <Busy />;
+  }
+
+  if (isError) {
+    return <Error />;
+  }
+
   return (
     <div className="grid grid-cols-1 gap-2 mt-4">
       {expenseCategories?.map((category) => (
@@ -116,7 +106,9 @@ export const ExpenseCategoryList: React.FC = () => {
           <div className="flex items-center justify-between space-x-4 px-4 py-2">
             <div className="flex items-center gap-2">
               <p>{category.name}</p>
-              <p className="text-sm text-muted-foreground">{`(${category.subcategories?.length ?? 0})`}</p>
+              <p className="text-sm text-muted-foreground">
+                {`(${category.subcategories?.length ?? 0})`}
+              </p>
             </div>
             <div className="flex items-center">
               <CollapsibleTrigger asChild>
@@ -145,7 +137,9 @@ export const ExpenseCategoryList: React.FC = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleEditExpenseCategory(category)}
+                  >
                     <Pencil className="h-3.5 w-3.5 mr-2" /> {t('common:edit')}
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -170,11 +164,11 @@ export const ExpenseCategoryList: React.FC = () => {
           <CollapsibleContent className="space-y-2">
             {expandedCategories.has(category.id) &&
               category.subcategories?.length > 0 && (
-                <div>
-                  {category.subcategories?.map((subcategory) => (
+                category.subcategories?.map((subcategory) => (
+                  <div key={subcategory.id}>
                     <SubcategoryItem data={subcategory} />
-                  ))}
-                </div>
+                  </div>
+                ))
               )}
           </CollapsibleContent>
         </Collapsible>
@@ -189,7 +183,6 @@ export const ExpenseCategoryList: React.FC = () => {
           onCategoryAdded={refetchExpenseCategories}
         />
       )}
-
     </div>
   );
 };

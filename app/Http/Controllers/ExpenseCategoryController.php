@@ -82,14 +82,14 @@ class ExpenseCategoryController extends Controller
       $category = $request->user()->expenseCategories()->findOrFail($id);
 
       // Authorization
-      $this->authorize('update', $category);
+      // $this->authorize('update', $category);
 
       // Validation of data
       $validatedData = $request->validate([
         'name' => 'required|string|max:50',
       ]);
 
-      // Update
+      // TODO Update
       $category->update($validatedData);
 
       return response()->json([
