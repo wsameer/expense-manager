@@ -1,6 +1,4 @@
-import { AxiosError } from 'axios';
-import useSWR from 'swr';
-import { Category, Subcategory } from '../types';
+import { Subcategory } from '../types';
 import { EXPENSE_CATEGORIES_API } from '../constants';
 import axiosInstance from '@/lib/api-client';
 import { useCallback, useMemo } from 'react';

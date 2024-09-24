@@ -167,7 +167,9 @@ export const ExpenseCategoryList: React.FC<Props> = ({ handleEditExpenseCategory
                 category.subcategories?.map((subcategory) => (
                   <SubcategoryItem
                     key={subcategory.id}
+                    categoryId={category.id}
                     data={subcategory}
+                    mutateCategories={refetchExpenseCategories}
                     onEdit={(subcategory) => {
                       setOpenSubCategoryModal(true);
                       setSelectedCategory(category);

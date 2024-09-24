@@ -8,13 +8,15 @@ import { useConfirmDialog } from '@/Components/ui/confirmable';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
+  categoryId: number;
   data: Subcategory;
   onEdit: (value: Subcategory) => void;
+  mutateCategories: () => void;
 };
 
-export const SubcategoryItem = ({ data, onEdit }: Props) => {
+export const SubcategoryItem = ({ data, categoryId, mutateCategories, onEdit }: Props) => {
   const { t } = useTranslation(['common', 'categories']);
-  const { deleteSubcategory } = useExpenseSubcategories(data.id);
+  const { deleteSubcategory } = useExpenseSubcategories(categoryId);
   const { openConfirmDialog } = useConfirmDialog();
 
   const handleDeleteSubcategory = () => {
@@ -24,6 +26,7 @@ export const SubcategoryItem = ({ data, onEdit }: Props) => {
       onConfirm: async () => {
         try {
           await deleteSubcategory(data.id);
+          mutateCategories();
           toast({
             title: t('common:alert.deleted'),
             description: t('categories:expense.subcategory-is-deleted'),
