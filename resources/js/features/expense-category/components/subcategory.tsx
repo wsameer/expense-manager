@@ -9,9 +9,10 @@ import { useTranslation } from 'react-i18next';
 
 type Props = {
   data: Subcategory;
+  onEdit: (value: Subcategory) => void;
 };
 
-export const SubcategoryItem = ({ data }: Props) => {
+export const SubcategoryItem = ({ data, onEdit }: Props) => {
   const { t } = useTranslation(['common', 'categories']);
   const { deleteSubcategory } = useExpenseSubcategories(data.id);
   const { openConfirmDialog } = useConfirmDialog();
@@ -41,9 +42,9 @@ export const SubcategoryItem = ({ data }: Props) => {
   return (
     <div
       key={data.id}
-      className="border-t px-4 py-3 text-sm"
+      className="border-t text-sm"
     >
-      <div className="flex items-center justify-between space-y-2">
+      <div className="flex items-center justify-between space-x-4 px-4 py-2">
         <small className="text-sm font-medium leading-none">{data.name}</small>
         <div className="flex items-center space-x-1 mt-0">
           <Button
@@ -58,7 +59,7 @@ export const SubcategoryItem = ({ data }: Props) => {
             className="h-6 w-6"
             variant="ghost"
             size="icon"
-          // onClick={handleUpdateSubcategory}
+            onClick={() => onEdit(data)}
           >
             <Pencil className="h-3 w-3" />
           </Button>

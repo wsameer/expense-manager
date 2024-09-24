@@ -19,15 +19,15 @@ import {
   FormMessage,
 } from '@/Components/ui/form';
 import { toast } from '@/hooks';
-import { Category } from '../types';
+import { Category, Subcategory } from '../types';
 import { useExpenseSubcategories } from '../api/use-subcategories';
 
 type Props = {
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  editMode?: number;
   onCategoryAdded: () => void;
   selectedCategory: Category;
+  selectedSubcategory: Subcategory | undefined;
 };
 
 const FormSchema = z.object({
@@ -44,14 +44,14 @@ export const AddExpenseSubCategory = ({
   onOpenChange,
   onCategoryAdded,
   selectedCategory,
-  editMode = undefined,
+  selectedSubcategory,
 }: Props) => {
-  const { createSubcategory } = useExpenseSubcategories(selectedCategory.id);
+  const { createSubcategory, updateSubcategory } = useExpenseSubcategories(selectedCategory.id);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      subCategoryName: '',
+      subCategoryName: selectedSubcategory?.name || '',
       categoryName: selectedCategory.name,
     },
   });
@@ -66,8 +66,8 @@ export const AddExpenseSubCategory = ({
       onCategoryAdded(); // mutate Category API
       form.reset();
       toast({
-        title: 'New Expense Sub Category Created',
-        description: `Sub-Category "${values.subCategoryName}" has been created`,
+        title: 'Expense Subcategory Created',
+        description: `Subcategory "${values.subCategoryName}" has been created`,
       });
       return onOpenChange(false);
     } catch (error: any) {
@@ -78,9 +78,33 @@ export const AddExpenseSubCategory = ({
     }
   };
 
-  const handleEditExpenseSubcategory = (data: z.infer<typeof FormSchema>) => {
-    console.log('🚀 ~ handleEditExpenseSubcategory ~ data:', data);
+  const handleEditExpenseSubcategory = async (data: z.infer<typeof FormSchema>) => {
+    if (!data) return false;
+
+    try {
+      await updateSubcategory(selectedSubcategory?.id!, { name: data.subCategoryName });
+      onCategoryAdded();
+      form.reset();
+      toast({
+        title: 'Subcategory Updated',
+        description: `Subcategory "${data.subCategoryName}" has been updated`,
+      });
+      return onOpenChange(false);
+    } catch (error: any) {
+      toast({
+        title: 'Operation failed!',
+        description: error.message,
+      });
+    }
   };
+
+  useEffect(() => {
+    form.reset({
+      categoryName: selectedCategory ? selectedCategory.name : '',
+      subCategoryName: selectedSubcategory ? selectedSubcategory.name : ''
+    });
+  }, [selectedCategory, selectedSubcategory, form.reset]);
+
 
   return (
     <Dialog
@@ -94,7 +118,7 @@ export const AddExpenseSubCategory = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(
-              editMode
+              selectedSubcategory
                 ? handleEditExpenseSubcategory
                 : handleCreateExpenseSubcategory,
             )}
@@ -140,7 +164,7 @@ export const AddExpenseSubCategory = ({
               type="submit"
               className="w-full"
             >
-              {editMode ? 'Save changes' : 'Create Expense Subcategory'}
+              {selectedSubcategory ? 'Save changes' : 'Create Expense Subcategory'}
             </Button>
           </form>
         </Form>

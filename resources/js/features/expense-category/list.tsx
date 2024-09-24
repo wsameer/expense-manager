@@ -22,7 +22,7 @@ import { useConfirmDialog } from '@/Components/ui/confirmable';
 import { toast } from '@/hooks';
 import { useDeleteExpenseCategory } from './api/delete-category';
 import { AddExpenseSubCategory } from './components/add-expense-subcategory';
-import { Category } from './types';
+import { Category, Subcategory } from './types';
 import { SubcategoryItem } from './components/subcategory';
 import { Busy } from './components/busy';
 import { Error } from './components/error';
@@ -46,9 +46,8 @@ export const ExpenseCategoryList: React.FC<Props> = ({ handleEditExpenseCategory
     new Set(),
   );
   const [openSubCategoryModal, setOpenSubCategoryModal] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null,
-  );
+  const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const [selectedSubcategory, setSelectedSubcategory] = useState<Subcategory>()
 
   const toggleCategory = (categoryId: number) => {
     setExpandedCategories((prev) => {
@@ -146,6 +145,7 @@ export const ExpenseCategoryList: React.FC<Props> = ({ handleEditExpenseCategory
                     onClick={() => {
                       setSelectedCategory(category);
                       setOpenSubCategoryModal(true);
+                      setSelectedSubcategory(undefined)
                     }}
                   >
                     <PlusCircle className="h-3.5 w-3.5 mr-2" />
@@ -161,25 +161,31 @@ export const ExpenseCategoryList: React.FC<Props> = ({ handleEditExpenseCategory
               </DropdownMenu>
             </div>
           </div>
-          <CollapsibleContent className="space-y-2">
+          <CollapsibleContent>
             {expandedCategories.has(category.id) &&
               category.subcategories?.length > 0 && (
                 category.subcategories?.map((subcategory) => (
-                  <div key={subcategory.id}>
-                    <SubcategoryItem data={subcategory} />
-                  </div>
+                  <SubcategoryItem
+                    key={subcategory.id}
+                    data={subcategory}
+                    onEdit={(subcategory) => {
+                      setOpenSubCategoryModal(true);
+                      setSelectedCategory(category);
+                      setSelectedSubcategory(subcategory)
+                    }}
+                  />
                 ))
               )}
           </CollapsibleContent>
         </Collapsible>
       ))}
 
-      {selectedCategory && (
+      {(selectedCategory || selectedSubcategory) && (
         <AddExpenseSubCategory
           open={openSubCategoryModal}
           onOpenChange={setOpenSubCategoryModal}
-          editMode={undefined}
           selectedCategory={selectedCategory!}
+          selectedSubcategory={selectedSubcategory}
           onCategoryAdded={refetchExpenseCategories}
         />
       )}
