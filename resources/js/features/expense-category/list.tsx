@@ -93,9 +93,9 @@ export const ExpenseCategoryList: React.FC = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-2 mt-4">
+    <div className="grid justify-items-center grid-cols-1 gap-2 mt-4">
       <Button
-        className='flex justify-start content-center gap-2 mb-4'
+        className='flex justify-start content-center gap-2 mb-4 w-full'
         variant="dashed"
         size="sm"
         onClick={() => {
@@ -112,25 +112,19 @@ export const ExpenseCategoryList: React.FC = () => {
       {expenseCategories?.map((category) => (
         <Collapsible
           key={category.id}
-          className="bg-white border dark:bg-gray-800 rounded-lg overflow-hidden"
+          className="bg-white border dark:bg-gray-800 rounded-lg overflow-hidden w-full"
           open={expandedCategories.has(category.id)}
           onOpenChange={() =>
             category.subcategories.length > 0 && toggleCategory(category.id)
           }
         >
-          <div className="flex items-center justify-between space-x-4 px-4 py-2">
+          <div className="flex items-center justify-between space-x-4 px-2 py-2">
             <div className="flex items-center gap-2">
-              <p>{category.name}</p>
-              <p className="text-sm text-muted-foreground">
-                {`(${category.subcategories?.length ?? 0})`}
-              </p>
-            </div>
-            <div className="flex items-center">
               <CollapsibleTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-6 w-6"
+                  className="items-left h-6 w-6"
                   disabled={
                     !category.subcategories ||
                     category.subcategories.length === 0
@@ -140,45 +134,49 @@ export const ExpenseCategoryList: React.FC = () => {
                   <span className="sr-only">{t('common:toggle')}</span>
                 </Button>
               </CollapsibleTrigger>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-6 w-6"
-                  >
-                    <MoreVertical className="h-4 w-4" />
-                    <span className="sr-only">{t('common:more')}</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setOpenCategoryModal(true)
-                      setSelectedCategory(category);
-                    }}
-                  >
-                    <Pencil className="h-3.5 w-3.5 mr-2" /> {t('common:edit')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setSelectedCategory(category);
-                      setOpenSubCategoryModal(true);
-                      setSelectedSubcategory(undefined)
-                    }}
-                  >
-                    <PlusCircle className="h-3.5 w-3.5 mr-2" />
-                    {t('categories:expense.add-subcategory')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="text-red-500 focus:text-red-700"
-                    onClick={() => handleDeleteCategory(category.id)}
-                  >
-                    <Trash className="h-3.5 w-3.5 mr-2" /> {t('common:delete')}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <p>{category.name}</p>
+              <p className="text-sm text-muted-foreground">
+                {`(${category.subcategories?.length ?? 0})`}
+              </p>
             </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6"
+                >
+                  <MoreVertical className="h-4 w-4" />
+                  <span className="sr-only">{t('common:more')}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  onClick={() => {
+                    setOpenCategoryModal(true)
+                    setSelectedCategory(category);
+                  }}
+                >
+                  <Pencil className="h-3.5 w-3.5 mr-2" /> {t('common:edit')}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setOpenSubCategoryModal(true);
+                    setSelectedSubcategory(undefined)
+                  }}
+                >
+                  <PlusCircle className="h-3.5 w-3.5 mr-2" />
+                  {t('categories:expense.add-subcategory')}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="text-red-500 focus:text-red-700"
+                  onClick={() => handleDeleteCategory(category.id)}
+                >
+                  <Trash className="h-3.5 w-3.5 mr-2" /> {t('common:delete')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <CollapsibleContent>
             {expandedCategories.has(category.id) &&

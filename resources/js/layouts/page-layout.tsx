@@ -63,7 +63,7 @@ export const PageLayout = React.memo<PageLayoutProps>(
         )}
 
         <main className="flex-1 overflow-y-auto">
-          <div className="container flex-1 items-start pb-24">
+          <div className="container pb-24">
             <div className="mx-auto w-full min-w-0">
               <div className="space-y-2">
                 {!showHeader && (
