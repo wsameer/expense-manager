@@ -5,8 +5,7 @@ import { useForm } from 'react-hook-form';
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
+  DialogFooter,
 } from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
@@ -25,7 +24,7 @@ import { Category } from '../types';
 type Props = {
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  editMode?: Category;
+  selectedCategory?: Category;
 };
 
 const FormSchema = z.object({
@@ -34,57 +33,45 @@ const FormSchema = z.object({
   }),
 });
 
-export const AddExpenseCategory = ({
-  open,
+export const AddExpenseCategoryForm = ({
+  selectedCategory = undefined,
   onOpenChange,
-  editMode = undefined,
+  open
 }: Props) => {
 
-  const { createCategory, updateCategory, refetchExpenseCategories } = useExpenseCategories();
+  const {
+    createCategory,
+    updateCategory,
+    refetchExpenseCategories
+  } = useExpenseCategories();
 
   const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      categoryName: editMode ? editMode.name : '',
-    },
+    resolver: zodResolver(FormSchema)
   });
 
-  const handleCreateExpenseCategory = async (
+  const handleExpenseCategorySubmit = async (
     values: z.infer<typeof FormSchema>,
   ) => {
     if (!values) return false;
 
-    try {
-      await createCategory({
-        name: values.categoryName
-      });
-      refetchExpenseCategories();
-      form.reset();
-      toast({
-        title: 'Expense category created',
-        description: `Category "${values.categoryName}" has been created`,
-      });
-      return onOpenChange(false);
-    } catch (error: any) {
-      toast({
-        title: 'Operation failed!',
-        description: error.message,
-      });
-    }
-  };
+    const isEditing = !!selectedCategory;
+    const actionType = isEditing ? 'updated' : 'created';
 
-  const handleEditExpenseCategory = async (values: z.infer<typeof FormSchema>) => {
-    if (!values || !editMode) return false;
     try {
-      await updateCategory(editMode.id.toString(), {
-        name: values.categoryName
-      });
+      if (isEditing) {
+        await updateCategory(selectedCategory.id.toString(), { name: values.categoryName });
+      } else {
+        await createCategory({ name: values.categoryName });
+      }
+
       refetchExpenseCategories();
       form.reset();
+
       toast({
-        title: 'Expense category updated',
-        description: `Category "${values.categoryName}" has been updated`,
+        title: `Expense category ${actionType}`,
+        description: `Category "${values.categoryName}" has been ${actionType}`,
       });
+
       return onOpenChange(false);
     } catch (error: any) {
       toast({
@@ -92,32 +79,20 @@ export const AddExpenseCategory = ({
         description: error.message,
       });
     }
-  };
+  }
 
   useEffect(() => {
-    if (editMode) {
-      form.reset({
-        categoryName: editMode.name
-      });
-    }
-  }, [editMode, form.reset]);
+    form.reset({
+      categoryName: selectedCategory ? selectedCategory.name : ''
+    });
+  }, [selectedCategory, form.reset]);
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={onOpenChange}
-    >
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Expense Category</DialogTitle>
-        </DialogHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(
-              editMode
-                ? handleEditExpenseCategory
-                : handleCreateExpenseCategory,
-            )}
+            onSubmit={form.handleSubmit(handleExpenseCategorySubmit)}
             className="space-y-6"
           >
             <div className="my-4">
@@ -133,16 +108,17 @@ export const AddExpenseCategory = ({
                     />
                     <FormMessage role="alert" />
                   </FormItem>
-                )
-                }
+                )}
               />
             </div>
-            <Button
-              type="submit"
-              className="w-full"
-            >
-              {editMode ? 'Save changes' : 'Create'}
-            </Button>
+            <DialogFooter>
+              <Button
+                type="submit"
+                className="w-full"
+              >
+                {selectedCategory ? 'Save changes' : 'Create'}
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

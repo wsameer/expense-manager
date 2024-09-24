@@ -5,6 +5,7 @@ import {
   ChevronsUpDown,
   MoreVertical,
   Pencil,
+  Plus,
   PlusCircle,
   Trash,
 } from 'lucide-react';
@@ -26,12 +27,9 @@ import { Category, Subcategory } from './types';
 import { SubcategoryItem } from './components/subcategory';
 import { Busy } from './components/busy';
 import { Error } from './components/error';
+import { AddExpenseCategoryForm } from './components/add-category-form';
 
-type Props = {
-  handleEditExpenseCategory: (category: Category) => void;
-}
-
-export const ExpenseCategoryList: React.FC<Props> = ({ handleEditExpenseCategory }) => {
+export const ExpenseCategoryList: React.FC = () => {
   const { t } = useTranslation(['common', 'categories']);
   const { openConfirmDialog } = useConfirmDialog();
   const { deleteCategory } = useDeleteExpenseCategory();
@@ -45,7 +43,10 @@ export const ExpenseCategoryList: React.FC<Props> = ({ handleEditExpenseCategory
   const [expandedCategories, setExpandedCategories] = useState<Set<number>>(
     new Set(),
   );
+
+  const [openCategoryModal, setOpenCategoryModal] = useState(false);
   const [openSubCategoryModal, setOpenSubCategoryModal] = useState(false);
+
   const [selectedCategory, setSelectedCategory] = useState<Category>();
   const [selectedSubcategory, setSelectedSubcategory] = useState<Subcategory>()
 
@@ -93,6 +94,21 @@ export const ExpenseCategoryList: React.FC<Props> = ({ handleEditExpenseCategory
 
   return (
     <div className="grid grid-cols-1 gap-2 mt-4">
+      <Button
+        className='flex justify-start content-center gap-2 mb-4'
+        variant="dashed"
+        size="sm"
+        onClick={() => {
+          setSelectedCategory(undefined)
+          setOpenCategoryModal(true);
+        }}
+      >
+        <Plus className='h-4 w-4' />
+        <small className="text-sm font-medium leading-none">
+          {t('categories:expense.new-category')}
+        </small>
+      </Button>
+
       {expenseCategories?.map((category) => (
         <Collapsible
           key={category.id}
@@ -137,7 +153,10 @@ export const ExpenseCategoryList: React.FC<Props> = ({ handleEditExpenseCategory
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem
-                    onClick={() => handleEditExpenseCategory(category)}
+                    onClick={() => {
+                      setOpenCategoryModal(true)
+                      setSelectedCategory(category);
+                    }}
                   >
                     <Pencil className="h-3.5 w-3.5 mr-2" /> {t('common:edit')}
                   </DropdownMenuItem>
@@ -181,6 +200,12 @@ export const ExpenseCategoryList: React.FC<Props> = ({ handleEditExpenseCategory
           </CollapsibleContent>
         </Collapsible>
       ))}
+
+      <AddExpenseCategoryForm
+        open={openCategoryModal}
+        onOpenChange={setOpenCategoryModal}
+        selectedCategory={selectedCategory}
+      />
 
       {(selectedCategory || selectedSubcategory) && (
         <AddExpenseSubCategory
