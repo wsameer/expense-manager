@@ -55,7 +55,6 @@ export const AddExpenseCategoryForm = ({
     if (!values) return false;
 
     const isEditing = !!selectedCategory;
-    const actionType = isEditing ? 'updated' : 'created';
 
     try {
       if (isEditing) {
@@ -63,15 +62,8 @@ export const AddExpenseCategoryForm = ({
       } else {
         await createCategory({ name: values.categoryName });
       }
-
       refetchExpenseCategories();
       form.reset();
-
-      toast({
-        title: `Expense category ${actionType}`,
-        description: `Category "${values.categoryName}" has been ${actionType}`,
-      });
-
       return onOpenChange(false);
     } catch (error: any) {
       toast({

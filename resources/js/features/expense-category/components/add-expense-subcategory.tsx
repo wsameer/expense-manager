@@ -56,39 +56,24 @@ export const AddExpenseSubCategory = ({
     },
   });
 
-  const handleCreateExpenseSubcategory = async (
+  const handleExpenseSubcategorySubmit = async (
     values: z.infer<typeof FormSchema>,
   ) => {
     if (!values) return false;
 
+    const isEditing = !!selectedCategory;
+
     try {
-      await createSubcategory({ name: values.subCategoryName });
+      if (isEditing) {
+        await createSubcategory({ name: values.subCategoryName });
+      } else {
+        await updateSubcategory(
+          selectedSubcategory?.id!,
+          { name: values.subCategoryName }
+        );
+      }
       onCategoryAdded(); // mutate Category API
       form.reset();
-      toast({
-        title: 'Expense Subcategory Created',
-        description: `Subcategory "${values.subCategoryName}" has been created`,
-      });
-      return onOpenChange(false);
-    } catch (error: any) {
-      toast({
-        title: 'Operation failed!',
-        description: error.message,
-      });
-    }
-  };
-
-  const handleEditExpenseSubcategory = async (data: z.infer<typeof FormSchema>) => {
-    if (!data) return false;
-
-    try {
-      await updateSubcategory(selectedSubcategory?.id!, { name: data.subCategoryName });
-      onCategoryAdded();
-      form.reset();
-      toast({
-        title: 'Subcategory Updated',
-        description: `Subcategory "${data.subCategoryName}" has been updated`,
-      });
       return onOpenChange(false);
     } catch (error: any) {
       toast({
@@ -117,11 +102,7 @@ export const AddExpenseSubCategory = ({
         </DialogHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(
-              selectedSubcategory
-                ? handleEditExpenseSubcategory
-                : handleCreateExpenseSubcategory,
-            )}
+            onSubmit={form.handleSubmit(handleExpenseSubcategorySubmit)}
             className="space-y-6"
           >
             <div className="my-4">
