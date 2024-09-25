@@ -47,7 +47,7 @@ export const SubcategoryItem = ({ data, categoryId, mutateCategories, onEdit }: 
       key={data.id}
       className="border-t text-sm"
     >
-      <div className="flex items-center justify-between space-x-4 px-4 py-2">
+      <div className="flex items-center justify-between space-x-4 pl-4 pr-2 py-2">
         <small className="text-sm font-medium leading-none">{data.name}</small>
         <div className="flex items-center space-x-1 mt-0">
           <Button

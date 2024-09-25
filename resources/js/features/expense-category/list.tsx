@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useExpenseCategories } from './api/use-expense-categories';
 import { Button } from '@/Components/ui/button';
 import {
-  ChevronsUpDown,
+  ChevronDown,
   MoreVertical,
   Pencil,
   Plus,
@@ -95,7 +95,7 @@ export const ExpenseCategoryList: React.FC = () => {
   return (
     <div className="grid justify-items-center grid-cols-1 gap-2 mt-4">
       <Button
-        className='flex justify-start content-center gap-2 mb-4 w-full'
+        className='flex justify-start content-center gap-2 mb-3 w-full'
         variant="dashed"
         size="sm"
         onClick={() => {
@@ -130,13 +130,13 @@ export const ExpenseCategoryList: React.FC = () => {
                     category.subcategories.length === 0
                   }
                 >
-                  <ChevronsUpDown className="h-4 w-4" />
+                  <ChevronDown className="h-4 w-4" />
                   <span className="sr-only">{t('common:toggle')}</span>
                 </Button>
               </CollapsibleTrigger>
               <p>{category.name}</p>
-              <p className="text-sm text-muted-foreground">
-                {`(${category.subcategories?.length ?? 0})`}
+              <p className="bg-zinc-200 text-xs px-1.5 py-1 rounded-md">
+                {category.subcategories?.length ?? 0}
               </p>
             </div>
             <DropdownMenu>
