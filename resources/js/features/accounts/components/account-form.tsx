@@ -126,7 +126,7 @@ export const AccountForm = ({
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
                   htmlFor="name"
-                  className="w-1/4"
+                  className="w-1/3"
                 >
                   {t('name')}
                 </FormLabel>
@@ -148,7 +148,7 @@ export const AccountForm = ({
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
                   htmlFor="group"
-                  className="w-1/4"
+                  className="w-1/3"
                 >
                   {t('group')}
                 </FormLabel>
@@ -204,7 +204,7 @@ export const AccountForm = ({
                 <div className="flex items-center mt-4 space-y-0 space-x-2">
                   <FormLabel
                     htmlFor="paymentAccountId"
-                    className="w-1/4"
+                    className="w-1/3"
                   >
                     {t('payment')}
                   </FormLabel>
@@ -226,7 +226,7 @@ export const AccountForm = ({
                     <SelectContent>
                       {allAccounts?.map(({ id, group, name }) =>
                         group === AccountGroup.CHEQUING ||
-                        group === AccountGroup.SAVINGS ? (
+                          group === AccountGroup.SAVINGS ? (
                           <SelectItem
                             key={id}
                             value={id}
@@ -252,7 +252,7 @@ export const AccountForm = ({
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
                   htmlFor="balance"
-                  className="w-1/4"
+                  className="w-1/3"
                 >
                   {t('balance')}
                 </FormLabel>
@@ -271,7 +271,7 @@ export const AccountForm = ({
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
                   htmlFor="description"
-                  className="w-1/4"
+                  className="w-1/3"
                 >
                   {t('description')}
                 </FormLabel>

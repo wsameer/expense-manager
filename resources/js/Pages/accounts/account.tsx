@@ -87,8 +87,8 @@ export const AccountDetailsRoute = () => {
         <div className="d-flex">
           <Button
             variant="ghost"
-            className="text-red-600"
-            size="icon"
+            className="text-red-600 hover:text-red-700"
+            size="sm"
             onClick={handleDeleteAccount}
           >
             <Trash className="h-4 w-4" />

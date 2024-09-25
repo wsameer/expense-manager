@@ -19,7 +19,7 @@ export const AccountDetails = React.memo(({ data }: Props) => {
           Make changes to your account here.
         </TabsContent>
         <TabsContent value="monthly">Change your password here.</TabsContent>
-        <TabsContent value="annually">Change your password here.</TabsContent>
+        <TabsContent value="annually">Change your username here.</TabsContent>
       </Tabs>
     </div>
   );

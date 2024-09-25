@@ -43,9 +43,9 @@ export const Navigation = () => {
           <React.Fragment key={item.path}>
             <Button
               variant="ghost"
-              size="sm"
+              size="icon"
               className={cn(
-                'p-0',
+                'p-0 hover:bg-white',
                 location.pathname === item.path
                   ? 'text-black'
                   : 'text-gray-400',
@@ -63,11 +63,9 @@ export const Navigation = () => {
         <Button
           variant="ghost"
           size="icon"
-          className={cn(
-            location.pathname === navItems[navItems.length - 1].path
-              ? 'text-black'
-              : 'text-gray-400',
-          )}
+          className={cn('hover:bg-white text-gray-400', {
+            'text-black': location.pathname === navItems[navItems.length - 1].path
+          })}
           onClick={() => navigate(navItems[navItems.length - 1].path)}
         >
           <div className="flex flex-col items-center justify-center">
