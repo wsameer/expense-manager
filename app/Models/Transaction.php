@@ -20,6 +20,10 @@ class Transaction extends Model
     'type'
   ];
 
+  protected $casts = [
+    'transaction_date' => 'date',
+  ];
+
   public function user()
   {
     return $this->belongsTo(User::class);
@@ -35,8 +39,25 @@ class Transaction extends Model
     return $this->belongsTo(IncomeCategoryModel::class);
   }
 
-  public function bankAccount()
+  public function account()
   {
     return $this->belongsTo(Account::class);
+  }
+
+  public function category()
+  {
+    return $this->type === 'expense'
+      ? $this->expenseCategory()
+      : $this->incomeCategory();
+  }
+
+  public function scopeExpenses($query)
+  {
+    return $query->where('type', 'expense');
+  }
+
+  public function scopeIncomes($query)
+  {
+    return $query->where('type', 'income');
   }
 }
