@@ -9,7 +9,16 @@ class Transaction extends Model
 {
   use HasFactory;
 
-  protected $fillable = ['user_id', 'expense_category_id', 'account_id', 'amount', 'transaction_date', 'description'];
+  protected $fillable = [
+    'user_id',
+    'expense_category_id',
+    'income_category_id',
+    'account_id',
+    'amount',
+    'transaction_date',
+    'description',
+    'type'
+  ];
 
   public function user()
   {
@@ -19,6 +28,11 @@ class Transaction extends Model
   public function expenseCategory()
   {
     return $this->belongsTo(ExpenseCategory::class);
+  }
+
+  public function incomeCategory()
+  {
+    return $this->belongsTo(IncomeCategoryModel::class);
   }
 
   public function bankAccount()

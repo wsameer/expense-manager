@@ -18,7 +18,7 @@ import {
   DrawerClose,
 } from '@/Components/ui/drawer';
 import { useResponsive } from '@/hooks';
-import { PlusCircle } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { AccountForm } from './account-form';
 import { useTranslation } from 'react-i18next';
 import { AccountGroupEnum } from '../types';
@@ -39,9 +39,9 @@ export const AddAccount = ({ group }: { group: AccountGroupEnum }) => {
         <DrawerTrigger asChild>
           <Button
             className="w-full"
-            variant="secondary"
+            variant="dashed"
           >
-            <PlusCircle className="h-5 w-5 mr-2" />
+            <Plus className="h-4 w-4 mr-2" />
             <p>{t('add-new-account')}</p>
           </Button>
         </DrawerTrigger>
@@ -76,7 +76,7 @@ export const AddAccount = ({ group }: { group: AccountGroupEnum }) => {
           className="w-full"
           variant="secondary"
         >
-          <PlusCircle className="h-5 w-5 mr-2" />
+          <Plus className="h-5 w-5 mr-2" />
           <p>{t('add-new-account')}</p>
         </Button>
       </DialogTrigger>
