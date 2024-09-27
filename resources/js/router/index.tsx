@@ -10,6 +10,7 @@ import {
   TRANSACTIONS_ROUTE,
   SETTINGS_ROUTE,
   EXPENSE_CATEGORY_SETTINGS_ROUTE,
+  INCOME_CATEGORY_SETTINGS_ROUTE,
 } from './routes';
 import { MainErrorFallback } from '@/Components/errors';
 import { AppRoot } from '@/pages/root';
@@ -88,6 +89,15 @@ export const createRouter = () =>
               '../pages/settings/expense-category'
             );
             return { Component: ExpenseCategoryRoute };
+          },
+        },
+        {
+          path: INCOME_CATEGORY_SETTINGS_ROUTE,
+          lazy: async () => {
+            const { IncomeCategoryRoute } = await import(
+              '../pages/settings/income-category'
+            );
+            return { Component: IncomeCategoryRoute };
           },
         },
         {

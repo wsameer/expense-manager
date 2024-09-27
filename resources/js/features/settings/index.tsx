@@ -21,7 +21,10 @@ import { ListGroup } from '@/Components/list-group';
 import { ListItem } from '@/Components/list-group/list-item';
 
 import { useTheme } from '../theme/theme-provider';
-import { EXPENSE_CATEGORY_SETTINGS_ROUTE } from '@/router/routes';
+import {
+  EXPENSE_CATEGORY_SETTINGS_ROUTE,
+  INCOME_CATEGORY_SETTINGS_ROUTE,
+} from '@/router/routes';
 
 export const Settings = () => {
   const navigate = useNavigate();
@@ -85,7 +88,7 @@ export const Settings = () => {
         <ListItem
           icon={<Coins className="h-4 w-4 text-gray-600 dark:text-gray-300" />}
           label={'Income Category Setting'}
-          onClick={() => onSettingItemClick('')}
+          onClick={() => onSettingItemClick(INCOME_CATEGORY_SETTINGS_ROUTE)}
           rightElement={
             <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           }
