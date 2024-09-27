@@ -9,6 +9,9 @@ export type TransactionsProps = {
   setSelectedTab: (value: TransactionTypes) => void;
 };
 
+/**
+ * @deprecated Get the data from API call
+ */
 export const CATEGORIES = [
   { label: 'Food', value: 'food' },
   { label: 'Groceries', value: 'groceries' },

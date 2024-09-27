@@ -23,10 +23,15 @@ type Props = {
   selected: string;
   onSelect: (value: string) => void;
   setShowAccountSelector: (value: boolean) => void;
+  options: Array<{
+    id: number;
+    value: string;
+    label: string;
+  }>
 };
 
 export const CategorySelector = React.memo<Props>(
-  ({ selected, onSelect, setShowAccountSelector }) => {
+  ({ selected, onSelect, options, setShowAccountSelector }) => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
     return (
@@ -48,8 +53,8 @@ export const CategorySelector = React.memo<Props>(
               )}
             >
               {selected
-                ? CATEGORIES.find((category) => category.value === selected)
-                    ?.label
+                ? options.find((category) => category.value === selected)
+                  ?.label
                 : 'Select category'}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
@@ -64,12 +69,12 @@ export const CategorySelector = React.memo<Props>(
             <CommandList>
               <CommandEmpty>No category found.</CommandEmpty>
               <CommandGroup>
-                {CATEGORIES.map((category) => (
+                {options.map((category) => (
                   <CommandItem
                     value={category.label}
                     key={category.value}
                     onSelect={() => {
-                      onSelect(category.value!);
+                      onSelect(category.value);
                       setIsPopoverOpen(false);
                     }}
                   >

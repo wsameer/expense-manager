@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -13,9 +13,11 @@ import {
 } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
-import { AccountSelector, CategorySelector, DateSelector } from './form-fields';
+import { CategorySelector, DateSelector } from './form-fields';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
-import { AccountPicker } from './form-fields/account-picker';
+import { OptionSelector } from './form-fields/option-selector';
+import { useIncomeCategories } from '@/features/income-category/api/use-categories';
+import { cleanString } from '@/utils';
 
 const formSchema = z.object({
   transactionDate: z.date({
@@ -41,6 +43,19 @@ const formSchema = z.object({
 export const IncomeForm = () => {
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const { allAccounts } = useAccounts();
+  const { incomeCategories } = useIncomeCategories()
+
+  const incomeCategoryOptions = useMemo(() => {
+    if (!incomeCategories) return [];
+
+    return incomeCategories.map((d) => {
+      return {
+        id: d.id,
+        label: d.name,
+        value: cleanString(d.name),
+      };
+    });
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -137,10 +152,9 @@ export const IncomeForm = () => {
                   Category
                 </FormLabel>
                 <CategorySelector
+                  options={incomeCategoryOptions}
                   selected={field.value}
-                  onSelect={(value: string) => {
-                    form.setValue('category', value);
-                  }}
+                  onSelect={(value: string) => form.setValue('category', value)}
                   setShowAccountSelector={setShowAccountSelector}
                 />
               </div>
@@ -203,7 +217,7 @@ export const IncomeForm = () => {
 
         <div className="h-44 overflow-x-auto">
           {showAccountSelector && (
-            <AccountPicker
+            <OptionSelector
               allAccounts={allAccounts}
               onSelect={(value: number) => {
                 form.setValue('accountId', value);

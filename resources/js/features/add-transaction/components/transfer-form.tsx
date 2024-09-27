@@ -16,7 +16,7 @@ import { Input } from '@/Components/ui/input';
 
 import { DateSelector } from './form-fields';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
-import { AccountPicker } from './form-fields/account-picker';
+import { OptionSelector } from './form-fields/option-selector';
 
 const formSchema = z
   .object({
@@ -211,7 +211,7 @@ export const TransferForm = () => {
 
         <div className="h-44 overflow-x-auto">
           {showAccountSelector && (
-            <AccountPicker
+            <OptionSelector
               allAccounts={allAccounts}
               onSelect={(value: number) => {
                 // @ts-ignore

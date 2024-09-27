@@ -26,3 +26,10 @@ export const formattedAmount = (amount: number): string => {
     currency: 'CAD',
   });
 };
+
+export const cleanString = (input: string): string => {
+  return input
+    .toLowerCase()
+    .replace(/\s+/g, '')
+    .replace(/[^a-z0-9]/gi, '');
+};

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -15,8 +15,10 @@ import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 
 import { DateSelector, CategorySelector } from './form-fields';
-import { AccountPicker } from './form-fields/account-picker';
+import { OptionSelector } from './form-fields/option-selector';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
+import { useExpenseCategories } from '@/features/expense-category/api/use-expense-categories';
+import { cleanString } from '@/utils';
 
 const formSchema = z.object({
   transactionDate: z.date({
@@ -35,13 +37,26 @@ const formSchema = z.object({
     required_error: 'Please select an account',
   }),
   note: z.optional(
-    z.string().max(128, { message: 'note can be of max 128 characters' }),
+    z.string().max(128, { message: 'Note can be of max 128 characters' }),
   ),
 });
 
 export const ExpenseForm = () => {
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const { allAccounts } = useAccounts();
+  const { expenseCategories } = useExpenseCategories()
+
+  const expenseCategoryOptions = useMemo(() => {
+    if (!expenseCategories) return [];
+
+    return expenseCategories.map((d) => {
+      return {
+        id: d.id,
+        label: d.name,
+        value: cleanString(d.name),
+      };
+    });
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -138,6 +153,7 @@ export const ExpenseForm = () => {
                   Category
                 </FormLabel>
                 <CategorySelector
+                  options={expenseCategoryOptions}
                   selected={field.value}
                   onSelect={(value: string) => {
                     form.setValue('category', value);
@@ -204,7 +220,7 @@ export const ExpenseForm = () => {
 
         <div className="h-44 overflow-x-auto">
           {showAccountSelector && (
-            <AccountPicker
+            <OptionSelector
               allAccounts={allAccounts}
               onSelect={(value: number) => {
                 form.setValue('accountId', value);
