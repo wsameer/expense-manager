@@ -7,7 +7,7 @@ type Props = {
   allAccounts: Account[] | undefined;
 };
 
-export const AccountPicker = React.memo<Props>(({ allAccounts, onSelect }) => {
+export const OptionSelector = React.memo<Props>(({ allAccounts, onSelect }) => {
   return (
     <div className="grid grid-cols-4 gap-1">
       {allAccounts?.map((account) => (
@@ -29,4 +29,4 @@ export const AccountPicker = React.memo<Props>(({ allAccounts, onSelect }) => {
   );
 });
 
-AccountPicker.displayName = 'AccountPicker';
+OptionSelector.displayName = 'OptionSelector';
