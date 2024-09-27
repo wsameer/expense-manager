@@ -46,7 +46,9 @@ export const AddExpenseSubCategory = ({
   selectedCategory,
   selectedSubcategory,
 }: Props) => {
-  const { createSubcategory, updateSubcategory } = useExpenseSubcategories(selectedCategory.id);
+  const { createSubcategory, updateSubcategory } = useExpenseSubcategories(
+    selectedCategory.id,
+  );
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -67,10 +69,9 @@ export const AddExpenseSubCategory = ({
       if (isEditing) {
         await createSubcategory({ name: values.subCategoryName });
       } else {
-        await updateSubcategory(
-          selectedSubcategory?.id!,
-          { name: values.subCategoryName }
-        );
+        await updateSubcategory(selectedSubcategory?.id!, {
+          name: values.subCategoryName,
+        });
       }
       onCategoryAdded(); // mutate Category API
       form.reset();
@@ -86,10 +87,9 @@ export const AddExpenseSubCategory = ({
   useEffect(() => {
     form.reset({
       categoryName: selectedCategory ? selectedCategory.name : '',
-      subCategoryName: selectedSubcategory ? selectedSubcategory.name : ''
+      subCategoryName: selectedSubcategory ? selectedSubcategory.name : '',
     });
   }, [selectedCategory, selectedSubcategory, form.reset]);
-
 
   return (
     <Dialog
@@ -145,7 +145,9 @@ export const AddExpenseSubCategory = ({
               type="submit"
               className="w-full"
             >
-              {selectedSubcategory ? 'Save changes' : 'Create Expense Subcategory'}
+              {selectedSubcategory
+                ? 'Save changes'
+                : 'Create Expense Subcategory'}
             </Button>
           </form>
         </Form>

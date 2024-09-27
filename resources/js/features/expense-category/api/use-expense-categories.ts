@@ -5,14 +5,14 @@ import { EXPENSE_CATEGORIES_API } from '../constants';
 import axiosInstance from '@/lib/api-client';
 import { useCallback } from 'react';
 
+interface CategoryInput {
+  name: string;
+}
+
 const fetchExpenseCategories = async (url: string): Promise<Category[]> => {
   const res = await axiosInstance.get<Category[]>(url);
   return res.data;
 };
-
-interface CategoryInput {
-  name: string;
-}
 
 export const useExpenseCategories = () => {
   const { data, error, mutate } = useSWR<Category[], AxiosError>(
@@ -31,7 +31,7 @@ export const useExpenseCategories = () => {
         EXPENSE_CATEGORIES_API,
         categoryData,
       );
-      await mutate(); // Revalidate the cache
+      // await mutate(); // Revalidate the cache
       return response.data;
     },
     [mutate],
@@ -46,7 +46,7 @@ export const useExpenseCategories = () => {
         `${EXPENSE_CATEGORIES_API}/${categoryId}`,
         categoryData,
       );
-      await mutate(); // Revalidate the cache
+      // await mutate(); // Revalidate the cache
       return response.data;
     },
     [mutate],

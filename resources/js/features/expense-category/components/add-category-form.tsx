@@ -2,11 +2,7 @@ import React, { useEffect } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-} from '@/Components/ui/dialog';
+import { Dialog, DialogContent, DialogFooter } from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,6 +16,7 @@ import {
 import { toast } from '@/hooks';
 import { useExpenseCategories } from '../api/use-expense-categories';
 import { Category } from '../types';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   open: boolean;
@@ -36,17 +33,14 @@ const FormSchema = z.object({
 export const AddExpenseCategoryForm = ({
   selectedCategory = undefined,
   onOpenChange,
-  open
+  open,
 }: Props) => {
-
-  const {
-    createCategory,
-    updateCategory,
-    refetchExpenseCategories
-  } = useExpenseCategories();
+  const { t } = useTranslation();
+  const { createCategory, updateCategory, refetchExpenseCategories } =
+    useExpenseCategories();
 
   const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema)
+    resolver: zodResolver(FormSchema),
   });
 
   const handleExpenseCategorySubmit = async (
@@ -58,7 +52,9 @@ export const AddExpenseCategoryForm = ({
 
     try {
       if (isEditing) {
-        await updateCategory(selectedCategory.id.toString(), { name: values.categoryName });
+        await updateCategory(selectedCategory.id.toString(), {
+          name: values.categoryName,
+        });
       } else {
         await createCategory({ name: values.categoryName });
       }
@@ -71,16 +67,19 @@ export const AddExpenseCategoryForm = ({
         description: error.message,
       });
     }
-  }
+  };
 
   useEffect(() => {
     form.reset({
-      categoryName: selectedCategory ? selectedCategory.name : ''
+      categoryName: selectedCategory ? selectedCategory.name : '',
     });
   }, [selectedCategory, form.reset]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+    >
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
           <form
@@ -93,7 +92,9 @@ export const AddExpenseCategoryForm = ({
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="categoryName">Category Name</FormLabel>
+                    <FormLabel htmlFor="categoryName">
+                      {t('categories:category-name')}
+                    </FormLabel>
                     <Input
                       placeholder="Category Name"
                       {...field}
@@ -108,7 +109,9 @@ export const AddExpenseCategoryForm = ({
                 type="submit"
                 className="w-full"
               >
-                {selectedCategory ? 'Save changes' : 'Create'}
+                {selectedCategory
+                  ? t('categories:save-changes')
+                  : t('categories:create')}
               </Button>
             </DialogFooter>
           </form>

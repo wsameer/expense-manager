@@ -1,7 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export const NavItemMobile = () => {
-  return (
-    <div>NavItemMobile</div>
-  )
-}
+  return <div>NavItemMobile</div>;
+};

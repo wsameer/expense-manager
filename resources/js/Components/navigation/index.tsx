@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   CreditCardIcon,
   EllipsisIcon,
@@ -64,7 +64,9 @@ export const Navigation = () => {
           variant="ghost"
           size="icon"
           className={cn('hover:bg-white text-gray-400', {
-            'text-black': location.pathname === navItems[navItems.length - 1].path
+            'text-black': location.pathname.includes(
+              navItems[navItems.length - 1].path,
+            ),
           })}
           onClick={() => navigate(navItems[navItems.length - 1].path)}
         >

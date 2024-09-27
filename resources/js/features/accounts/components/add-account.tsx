@@ -38,7 +38,7 @@ export const AddAccount = ({ group }: { group: AccountGroupEnum }) => {
       >
         <DrawerTrigger asChild>
           <Button
-            className="w-full"
+            className="w-full border-zinc-400"
             variant="dashed"
           >
             <Plus className="h-4 w-4 mr-2" />
@@ -49,13 +49,11 @@ export const AddAccount = ({ group }: { group: AccountGroupEnum }) => {
           <DrawerHeader className="text-left">
             <DrawerTitle>{t('add-new-account')}</DrawerTitle>
           </DrawerHeader>
-
           <AccountForm
             className="px-4"
             group={group}
             setOpen={setOpen}
           />
-
           <DrawerFooter className="pt-2">
             <DrawerClose asChild>
               <Button variant="outline">{t('cancel')}</Button>

@@ -14,7 +14,12 @@ type Props = {
   mutateCategories: () => void;
 };
 
-export const SubcategoryItem = ({ data, categoryId, mutateCategories, onEdit }: Props) => {
+export const SubcategoryItem = ({
+  data,
+  categoryId,
+  mutateCategories,
+  onEdit,
+}: Props) => {
   const { t } = useTranslation(['common', 'categories']);
   const { deleteSubcategory } = useExpenseSubcategories(categoryId);
   const { openConfirmDialog } = useConfirmDialog();
