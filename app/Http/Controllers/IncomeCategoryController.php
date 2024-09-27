@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class IncomeCategoryController extends Controller
 {
@@ -65,7 +67,38 @@ class IncomeCategoryController extends Controller
    */
   public function update(Request $request, string $id)
   {
-    //
+    try {
+      // User Ownership
+      $category = $request->user()->incomeCategories()->findOrFail($id);
+
+      // Authorization
+      // $this->authorize('update', $category);
+
+      // Validation of data
+      $validatedData = $request->validate([
+        'name' => 'required|string|max:50',
+        'description' => 'nullable|string',
+      ]);
+
+      // TODO Update
+      $category->update($validatedData);
+
+      return response()->json([
+        'message' => 'Income category updated successfully',
+        'category' => $category
+      ]);
+    } catch (ModelNotFoundException $e) {
+      return response()->json(['error' => 'Income category not found'], 404);
+    } catch (AuthorizationException $e) {
+      return response()->json(['error' => 'You are not authorized to update this category'], 403);
+    } catch (ValidationException $e) {
+      return response()->json(['error' => $e->errors()], 422);
+    } catch (\Exception $e) {
+      return response()->json([
+        'error' => 'Internal Server Error',
+        'message' => 'An unexpected error occurred'
+      ], 500);
+    }
   }
 
   /**
