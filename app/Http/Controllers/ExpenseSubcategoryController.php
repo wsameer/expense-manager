@@ -21,9 +21,6 @@ class ExpenseSubcategoryController extends Controller
       // User Ownership
       $category = $request->user()->expenseCategories()->findOrFail($categoryId);
 
-      // TODO Authorization
-      // $this->authorize('update', $category);
-
       // Validation of request data
       $request->validate([
         'name' => 'required|string|max:50',
@@ -81,8 +78,8 @@ class ExpenseSubcategoryController extends Controller
         ->subcategories()
         ->findOrFail($subcategoryId);
 
-      // TODO
-      // $this->authorize('update', $subCategory);
+      // Authorization via policy
+      $this->authorize('update', $subCategory);
 
       $validatedData = $request->validate([
         'name' => 'required|string|max:50',
@@ -128,9 +125,9 @@ class ExpenseSubcategoryController extends Controller
         $subCategory = $category->subcategories()->findOrFail($subcategoryId);
 
         // TODO
-        // if (!auth()->user()->can('delete', $subCategory)) {
-        //   return response()->json(['error' => 'Unauthorized'], 403);
-        // }
+        if ($request->user()->can('delete', $subCategory)) {
+          return response()->json(['error' => 'Unauthorized'], 403);
+        }
 
         // Delete
         $subCategory->delete();
