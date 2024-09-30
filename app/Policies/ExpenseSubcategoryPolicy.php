@@ -23,7 +23,7 @@ class ExpenseSubcategoryPolicy
    */
   public function view(User $user, ExpenseSubcategory $expenseSubcategory): bool
   {
-    //
+    return $user->id === $expenseSubcategory->expenseCategory->user_id;
   }
 
   /**
@@ -47,7 +47,7 @@ class ExpenseSubcategoryPolicy
    */
   public function delete(User $user, ExpenseSubcategory $expenseSubcategory): bool
   {
-    //
+    return $user->id === $expenseSubcategory->expenseCategory->user_id;
   }
 
   /**

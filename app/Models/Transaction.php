@@ -11,13 +11,14 @@ class Transaction extends Model
 
   protected $fillable = [
     'user_id',
+    'type',
+    'transaction_date',
+    'amount',
+    'from_account_id',
+    'to_account_id',
     'expense_category_id',
     'income_category_id',
-    'account_id',
-    'amount',
-    'transaction_date',
-    'description',
-    'type'
+    'note',
   ];
 
   protected $casts = [
@@ -29,6 +30,16 @@ class Transaction extends Model
     return $this->belongsTo(User::class);
   }
 
+  public function fromAccount()
+  {
+    return $this->belongsTo(Account::class, 'from_account_id');
+  }
+
+  public function toAccount()
+  {
+    return $this->belongsTo(Account::class, 'to_account_id');
+  }
+
   public function expenseCategory()
   {
     return $this->belongsTo(ExpenseCategory::class);
@@ -37,11 +48,6 @@ class Transaction extends Model
   public function incomeCategory()
   {
     return $this->belongsTo(IncomeCategoryModel::class);
-  }
-
-  public function account()
-  {
-    return $this->belongsTo(Account::class);
   }
 
   public function category()
