@@ -20,6 +20,7 @@ return new class extends Migration
       $table->foreignId('from_account_id')->constrained('accounts')->onDelete('cascade');
       $table->foreignId('to_account_id')->nullable()->constrained('accounts')->onDelete('cascade');
       $table->foreignId('expense_category_id')->nullable()->constrained()->onDelete('cascade');
+      $table->foreignId('expense_subcategory_id')->nullable()->constrained()->onDelete('cascade');
       $table->foreignId('income_category_id')->nullable()->constrained()->onDelete('cascade');
       $table->text('note')->nullable();
       $table->timestamps();

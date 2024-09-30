@@ -15,9 +15,14 @@ class TransactionController extends Controller
   public function index()
   {
     $this->authorize('viewAny', Transaction::class);
-    $transactions = auth()->user()->transactions()->with(
-      ['fromAccount', 'toAccount', 'expenseCategory', 'incomeCategory']
-    )->latest()->get();
+    $transactions = auth()->user()->transactions()->with([
+      'fromAccount',
+      'toAccount',
+      'expenseCategory',
+      'expenseSubcategory',
+      'incomeCategory'
+    ])->latest()->get();
+
     return response()->json($transactions);
   }
 
@@ -37,6 +42,12 @@ class TransactionController extends Controller
           return $request->input('type') === 'expense';
         }),
         'exists:expense_categories,id',
+      ],
+      'expense_subcategory_id' => [
+        'nullable',
+        Rule::exists('expense_subcategories', 'id')->where(function ($query) use ($request) {
+          $query->where('expense_category_id', $request->input('expense_category_id'));
+        }),
       ],
       'income_category_id' => [
         Rule::requiredIf(function () use ($request) {
@@ -67,9 +78,13 @@ class TransactionController extends Controller
       }
 
       return response()->json(
-        $transaction->load(
-          ['fromAccount', 'toAccount', 'expenseCategory', 'incomeCategory']
-        ),
+        $transaction->load([
+          'fromAccount',
+          'toAccount',
+          'expenseCategory',
+          'expenseSubcategory',
+          'incomeCategory'
+        ]),
         201
       );
     });
@@ -81,7 +96,13 @@ class TransactionController extends Controller
   public function show(Transaction $transaction)
   {
     $this->authorize('view', $transaction);
-    return response()->json($transaction->load(['fromAccount', 'toAccount', 'expenseCategory', 'incomeCategory']));
+    return response()->json($transaction->load([
+      'fromAccount',
+      'toAccount',
+      'expenseCategory',
+      'expenseSubcategory',
+      'incomeCategory'
+    ]));
   }
 
   /**
