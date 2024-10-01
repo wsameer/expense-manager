@@ -15,7 +15,7 @@ import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { CategorySelector, DateSelector } from './form-fields';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
-import { OptionSelector } from './form-fields/option-selector';
+import { OptionSelector } from '../../../Components/option-selector';
 import { useIncomeCategories } from '@/features/income-category/api/use-categories';
 import { cleanString } from '@/utils';
 
@@ -42,6 +42,7 @@ const formSchema = z.object({
 
 export const IncomeForm = () => {
   const [showAccountSelector, setShowAccountSelector] = useState(false);
+  const [showCategorySelector, setShowCategorySelector] = useState(false);
   const { allAccounts } = useAccounts();
   const { incomeCategories } = useIncomeCategories()
 
@@ -104,7 +105,10 @@ export const IncomeForm = () => {
                   aria-invalid={formErrors.transactionDate ? 'true' : 'false'}
                   selected={field.value}
                   onSelect={(value: Date) => field.onChange(value)}
-                  setShowAccountSelector={setShowAccountSelector}
+                  closeOtherControls={() => {
+                    setShowAccountSelector(false);
+                    setShowCategorySelector(false)
+                  }}
                 />
               </div>
               <FormMessage role="alert" />
@@ -218,7 +222,7 @@ export const IncomeForm = () => {
         <div className="h-44 overflow-x-auto">
           {showAccountSelector && (
             <OptionSelector
-              allAccounts={allAccounts}
+              options={allAccounts}
               onSelect={(value: number) => {
                 form.setValue('accountId', value);
                 setShowAccountSelector(false);

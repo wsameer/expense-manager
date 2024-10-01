@@ -14,14 +14,14 @@ import {
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 
-import { DateSelector, CategorySelector } from './form-fields';
-import { OptionSelector } from './form-fields/option-selector';
+import { DateSelector } from './form-fields';
+import { OptionSelector } from '../../../Components/option-selector';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 import { useExpenseCategories } from '@/features/expense-category/api/use-expense-categories';
 import { cleanString } from '@/utils';
 
 const formSchema = z.object({
-  transactionDate: z.date({
+  date: z.date({
     required_error: 'A date is required',
   }),
   amount: z.coerce
@@ -30,7 +30,7 @@ const formSchema = z.object({
       invalid_type_error: 'Amount must be a number',
     })
     .nonnegative(),
-  category: z.string({
+  categoryId: z.coerce.number({
     required_error: 'Please select a category',
   }),
   accountId: z.coerce.number({
@@ -42,26 +42,16 @@ const formSchema = z.object({
 });
 
 export const ExpenseForm = () => {
-  const [showAccountSelector, setShowAccountSelector] = useState(false);
   const { allAccounts } = useAccounts();
   const { expenseCategories } = useExpenseCategories()
 
-  const expenseCategoryOptions = useMemo(() => {
-    if (!expenseCategories) return [];
-
-    return expenseCategories.map((d) => {
-      return {
-        id: d.id,
-        label: d.name,
-        value: cleanString(d.name),
-      };
-    });
-  }, []);
+  const [showAccountSelector, setShowAccountSelector] = useState(false);
+  const [showCategorySelector, setShowCategorySelector] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      transactionDate: new Date(),
+      date: new Date(),
       amount: 0,
     },
   });
@@ -70,7 +60,7 @@ export const ExpenseForm = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.table(values);
+    console.log(values);
   }
 
   const getSelectedAccountName = useCallback(
@@ -83,6 +73,15 @@ export const ExpenseForm = () => {
     [allAccounts],
   );
 
+  const getSelectedCategoryName = useCallback((id: number) => {
+    if (!id) return undefined;
+    return (
+      expenseCategories?.find((category) => id === category.id)?.name || undefined
+    );
+  },
+    [expenseCategories],
+  );
+
   return (
     <Form {...form}>
       <form
@@ -90,22 +89,25 @@ export const ExpenseForm = () => {
         className="space-y-4"
       >
         <FormField
-          name="transactionDate"
+          name="date"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
-                  htmlFor="transactionDate"
+                  htmlFor="date"
                   className="w-1/4"
                 >
                   Date
                 </FormLabel>
                 <DateSelector
-                  aria-invalid={formErrors.transactionDate ? 'true' : 'false'}
+                  aria-invalid={formErrors.date ? 'true' : 'false'}
                   selected={field.value}
                   onSelect={(value: Date) => field.onChange(value)}
-                  setShowAccountSelector={setShowAccountSelector}
+                  closeOtherControls={() => {
+                    setShowAccountSelector(false);
+                    setShowCategorySelector(false)
+                  }}
                 />
               </div>
               <FormMessage role="alert" />
@@ -141,25 +143,29 @@ export const ExpenseForm = () => {
         />
 
         <FormField
-          name="category"
+          name="categoryId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
-                  htmlFor="category"
+                  htmlFor="categoryId"
                   className="w-1/4"
                 >
                   Category
                 </FormLabel>
-                <CategorySelector
-                  options={expenseCategoryOptions}
-                  selected={field.value}
-                  onSelect={(value: string) => {
-                    form.setValue('category', value);
-                  }}
-                  setShowAccountSelector={setShowAccountSelector}
-                />
+                <FormControl>
+                  <Input
+                    className="w-3/4"
+                    placeholder="Select a category"
+                    onClick={() => {
+                      setShowAccountSelector(false);
+                      setShowCategorySelector(true);
+                    }}
+                    value={getSelectedCategoryName(field.value)}
+                    readOnly
+                  />
+                </FormControl>
               </div>
               <FormMessage role="alert" />
             </FormItem>
@@ -182,7 +188,10 @@ export const ExpenseForm = () => {
                   <Input
                     className="w-3/4"
                     placeholder="Select an account"
-                    onClick={() => setShowAccountSelector(true)}
+                    onClick={() => {
+                      setShowCategorySelector(false);
+                      setShowAccountSelector(true);
+                    }}
                     value={getSelectedAccountName(field.value)}
                     readOnly
                   />
@@ -221,10 +230,20 @@ export const ExpenseForm = () => {
         <div className="h-44 overflow-x-auto">
           {showAccountSelector && (
             <OptionSelector
-              allAccounts={allAccounts}
-              onSelect={(value: number) => {
-                form.setValue('accountId', value);
+              options={allAccounts!}
+              onSelect={(option) => {
+                form.setValue('accountId', option.id);
                 setShowAccountSelector(false);
+              }}
+            />
+          )}
+
+          {showCategorySelector && (
+            <OptionSelector
+              options={expenseCategories!}
+              onSelect={(option) => {
+                form.setValue('categoryId', option.id);
+                setShowCategorySelector(false);
               }}
             />
           )}

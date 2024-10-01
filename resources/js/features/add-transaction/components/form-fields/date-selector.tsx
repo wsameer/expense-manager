@@ -15,11 +15,11 @@ import { Button } from '@/Components/ui/button';
 type DateSelectorProps = {
   selected: Date | undefined;
   onSelect: (selected: Date) => void | undefined;
-  setShowAccountSelector: (value: boolean) => void;
+  closeOtherControls: () => void;
 };
 
 export const DateSelector = React.memo(
-  ({ selected, onSelect, setShowAccountSelector }: DateSelectorProps) => {
+  ({ selected, onSelect, closeOtherControls }: DateSelectorProps) => {
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
     const handleOnSelect = (date: Date | undefined) => {
@@ -32,7 +32,7 @@ export const DateSelector = React.memo(
       <Popover
         open={isPopoverOpen}
         onOpenChange={(open) => {
-          setShowAccountSelector(false);
+          closeOtherControls();
           setIsPopoverOpen(open);
         }}
       >

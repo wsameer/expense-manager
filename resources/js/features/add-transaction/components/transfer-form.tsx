@@ -16,7 +16,7 @@ import { Input } from '@/Components/ui/input';
 
 import { DateSelector } from './form-fields';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
-import { OptionSelector } from './form-fields/option-selector';
+import { OptionSelector } from '../../../Components/option-selector';
 
 const formSchema = z
   .object({
@@ -97,7 +97,7 @@ export const TransferForm = () => {
                   aria-invalid={formErrors.transactionDate ? 'true' : 'false'}
                   selected={field.value}
                   onSelect={(value: Date) => field.onChange(value)}
-                  setShowAccountSelector={setShowAccountSelector}
+                  closeOtherControls={() => setShowAccountSelector(false)}
                 />
               </div>
               <FormMessage role="alert" />
@@ -212,7 +212,7 @@ export const TransferForm = () => {
         <div className="h-44 overflow-x-auto">
           {showAccountSelector && (
             <OptionSelector
-              allAccounts={allAccounts}
+              options={allAccounts}
               onSelect={(value: number) => {
                 // @ts-ignore
                 form.setValue(showAccountSelector, value);
