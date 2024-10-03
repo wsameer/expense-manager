@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 
-import { Dialog, DialogContent, DialogFooter } from '@/Components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,10 +18,18 @@ import {
   FormLabel,
   FormMessage,
 } from '@/Components/ui/form';
-import { toast } from '@/hooks';
+import { toast, useResponsive } from '@/hooks';
 import { useExpenseCategories } from '../api/use-expense-categories';
 import { Category } from '../types';
 import { useTranslation } from 'react-i18next';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/Components/ui/drawer';
 
 type Props = {
   open: boolean;
@@ -36,6 +49,7 @@ export const AddExpenseCategoryForm = ({
   open,
 }: Props) => {
   const { t } = useTranslation();
+  const { isMobile } = useResponsive();
   const { createCategory, updateCategory, refetchExpenseCategories } =
     useExpenseCategories();
 
@@ -69,11 +83,71 @@ export const AddExpenseCategoryForm = ({
     }
   };
 
+  const renderForm = useCallback(
+    () => (
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleExpenseCategorySubmit)}
+          className="space-y-6"
+        >
+          <FormField
+            name="categoryName"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="categoryName">
+                  {t('categories:category-name')}
+                </FormLabel>
+                <Input
+                  placeholder="Category Name"
+                  {...field}
+                />
+                <FormMessage role="alert" />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="w-full"
+          >
+            {selectedCategory
+              ? t('categories:save-changes')
+              : t('categories:create')}
+          </Button>
+        </form>
+      </Form>
+    ),
+    [],
+  );
+
   useEffect(() => {
     form.reset({
       categoryName: selectedCategory ? selectedCategory.name : '',
     });
   }, [selectedCategory, form.reset]);
+
+  if (isMobile) {
+    return (
+      <Drawer
+        open={open}
+        onOpenChange={onOpenChange}
+      >
+        <DrawerContent>
+          <DrawerHeader className="text-left">
+            <DrawerTitle>
+              {t('categories:expense.expense-category')}
+            </DrawerTitle>
+          </DrawerHeader>
+          <div className="px-4">{renderForm()}</div>
+          <DrawerFooter>
+            <DrawerClose asChild>
+              <Button variant="outline">{t('common:cancel')}</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
 
   return (
     <Dialog
@@ -81,41 +155,10 @@ export const AddExpenseCategoryForm = ({
       onOpenChange={onOpenChange}
     >
       <DialogContent className="sm:max-w-[425px]">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleExpenseCategorySubmit)}
-            className="space-y-6"
-          >
-            <div className="my-4">
-              <FormField
-                name="categoryName"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="categoryName">
-                      {t('categories:category-name')}
-                    </FormLabel>
-                    <Input
-                      placeholder="Category Name"
-                      {...field}
-                    />
-                    <FormMessage role="alert" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <DialogFooter>
-              <Button
-                type="submit"
-                className="w-full"
-              >
-                {selectedCategory
-                  ? t('categories:save-changes')
-                  : t('categories:create')}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+        <DialogHeader>
+          <DialogTitle>{t('categories:expense.expense-category')}</DialogTitle>
+        </DialogHeader>
+        {renderForm()}
       </DialogContent>
     </Dialog>
   );
