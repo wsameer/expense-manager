@@ -44,7 +44,7 @@ export const IncomeForm = () => {
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [showCategorySelector, setShowCategorySelector] = useState(false);
   const { allAccounts } = useAccounts();
-  const { incomeCategories } = useIncomeCategories()
+  const { incomeCategories } = useIncomeCategories();
 
   const incomeCategoryOptions = useMemo(() => {
     if (!incomeCategories) return [];
@@ -107,7 +107,7 @@ export const IncomeForm = () => {
                   onSelect={(value: Date) => field.onChange(value)}
                   closeOtherControls={() => {
                     setShowAccountSelector(false);
-                    setShowCategorySelector(false)
+                    setShowCategorySelector(false);
                   }}
                 />
               </div>
