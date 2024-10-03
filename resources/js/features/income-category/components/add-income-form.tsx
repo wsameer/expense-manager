@@ -1,7 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
-import { Dialog, DialogContent, DialogFooter } from '@/Components/ui/dialog';
+import { useTranslation } from 'react-i18next';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogHeader,
+} from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,11 +19,19 @@ import {
   FormLabel,
   FormMessage,
 } from '@/Components/ui/form';
-import { toast } from '@/hooks';
+import { toast, useResponsive } from '@/hooks';
+import { Textarea } from '@/Components/ui/textarea';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/Components/ui/drawer';
+
 import { Category } from '../types';
 import { useIncomeCategories } from '../api/use-categories';
-import { Textarea } from '@/Components/ui/textarea';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   open: boolean;
@@ -36,6 +51,7 @@ export const AddIncomeCategoryForm = ({
   onOpenChange,
   open,
 }: Props) => {
+  const { isMobile } = useResponsive();
   const { t } = useTranslation();
   const { createCategory, updateCategory } = useIncomeCategories();
 
@@ -79,65 +95,90 @@ export const AddIncomeCategoryForm = ({
     });
   }, [selectedCategory, form.reset]);
 
+  const renderForm = useCallback(
+    () => (
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleExpenseCategorySubmit)}
+          className="space-y-6"
+        >
+          <FormField
+            name="categoryName"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="categoryName">
+                  {t('categories:category-name')}
+                </FormLabel>
+                <Input
+                  placeholder="Category Name"
+                  {...field}
+                />
+                <FormMessage role="alert" />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="description"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="description">
+                  {t('categories:description')}
+                </FormLabel>
+                <Textarea
+                  placeholder="Type your description here"
+                  {...field}
+                />
+                <FormMessage role="alert" />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="w-full"
+          >
+            {selectedCategory
+              ? t('categories:save-changes')
+              : t('categories:create')}
+          </Button>
+        </form>
+      </Form>
+    ),
+    [],
+  );
+
+  if (isMobile) {
+    return (
+      <Drawer
+        open={open}
+        onOpenChange={onOpenChange}
+      >
+        <DrawerContent>
+          <DrawerHeader className="text-left">
+            <DrawerTitle>{t('categories:income.income-category')}</DrawerTitle>
+          </DrawerHeader>
+          <div className="px-4">{renderForm()}</div>
+          <DrawerFooter>
+            <DrawerClose asChild>
+              <Button variant="outline">{t('common:cancel')}</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
   return (
     <Dialog
       open={open}
       onOpenChange={onOpenChange}
     >
       <DialogContent className="sm:max-w-[425px]">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleExpenseCategorySubmit)}
-            className="space-y-6"
-          >
-            <div className="my-4">
-              <FormField
-                name="categoryName"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="categoryName">
-                      {t('categories:category-name')}
-                    </FormLabel>
-                    <Input
-                      placeholder="Category Name"
-                      {...field}
-                    />
-                    <FormMessage role="alert" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="my-4">
-              <FormField
-                name="description"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="description">
-                      {t('categories:description')}
-                    </FormLabel>
-                    <Textarea
-                      placeholder="Type your description here"
-                      {...field}
-                    />
-                    <FormMessage role="alert" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <DialogFooter>
-              <Button
-                type="submit"
-                className="w-full"
-              >
-                {selectedCategory
-                  ? t('categories:save-changes')
-                  : t('categories:create')}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+        <DialogHeader>
+          <DialogTitle>{t('categories:income.income-category')}</DialogTitle>
+        </DialogHeader>
+        {renderForm()}
       </DialogContent>
     </Dialog>
   );
