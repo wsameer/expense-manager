@@ -43,7 +43,7 @@ const formSchema = z.object({
 
 export const ExpenseForm = () => {
   const { allAccounts } = useAccounts();
-  const { expenseCategories } = useExpenseCategories()
+  const { expenseCategories } = useExpenseCategories();
 
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [showCategorySelector, setShowCategorySelector] = useState(false);
@@ -73,12 +73,14 @@ export const ExpenseForm = () => {
     [allAccounts],
   );
 
-  const getSelectedCategoryName = useCallback((id: number) => {
-    if (!id) return undefined;
-    return (
-      expenseCategories?.find((category) => id === category.id)?.name || undefined
-    );
-  },
+  const getSelectedCategoryName = useCallback(
+    (id: number) => {
+      if (!id) return undefined;
+      return (
+        expenseCategories?.find((category) => id === category.id)?.name ||
+        undefined
+      );
+    },
     [expenseCategories],
   );
 
@@ -106,7 +108,7 @@ export const ExpenseForm = () => {
                   onSelect={(value: Date) => field.onChange(value)}
                   closeOtherControls={() => {
                     setShowAccountSelector(false);
-                    setShowCategorySelector(false)
+                    setShowCategorySelector(false);
                   }}
                 />
               </div>
