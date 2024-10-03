@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 
@@ -18,9 +18,18 @@ import {
   FormLabel,
   FormMessage,
 } from '@/Components/ui/form';
-import { toast } from '@/hooks';
+import { toast, useResponsive } from '@/hooks';
 import { Category, Subcategory } from '../types';
 import { useExpenseSubcategories } from '../api/use-subcategories';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/Components/ui/drawer';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   open: boolean;
@@ -46,6 +55,8 @@ export const AddExpenseSubCategory = ({
   selectedCategory,
   selectedSubcategory,
 }: Props) => {
+  const { t } = useTranslation();
+  const { isMobile } = useResponsive();
   const { createSubcategory, updateSubcategory } = useExpenseSubcategories(
     selectedCategory.id,
   );
@@ -84,12 +95,87 @@ export const AddExpenseSubCategory = ({
     }
   };
 
+  const renderForm = useCallback(() => {
+    return (
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleExpenseSubcategorySubmit)}
+          className="space-y-6"
+        >
+          <FormField
+            name="categoryName"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="categoryName">
+                  {t('categories:category-name')}
+                </FormLabel>
+                <Input
+                  placeholder="Category Name"
+                  value={selectedCategory.name}
+                  readOnly
+                />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="subCategoryName"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="subCategoryName">
+                  {t('categories:subcategory-name')}
+                </FormLabel>
+                <Input
+                  placeholder="Subcategory Name"
+                  {...field}
+                />
+                <FormMessage role="alert" />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="w-full"
+          >
+            {selectedSubcategory
+              ? t('categories:save-changes')
+              : t('categories:expense.create-subcategory')}
+          </Button>
+        </form>
+      </Form>
+    );
+  }, []);
+
   useEffect(() => {
     form.reset({
       categoryName: selectedCategory ? selectedCategory.name : '',
       subCategoryName: selectedSubcategory ? selectedSubcategory.name : '',
     });
   }, [selectedCategory, selectedSubcategory, form.reset]);
+
+  if (isMobile) {
+    return (
+      <Drawer
+        open={open}
+        onOpenChange={onOpenChange}
+      >
+        <DrawerContent>
+          <DrawerHeader className="text-left">
+            <DrawerTitle>
+              {t('categories:expense.expense-category')}
+            </DrawerTitle>
+          </DrawerHeader>
+          <div className="px-4">{renderForm()}</div>
+          <DrawerFooter>
+            <DrawerClose asChild>
+              <Button variant="outline">{t('common:cancel')}</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
 
   return (
     <Dialog
@@ -98,59 +184,9 @@ export const AddExpenseSubCategory = ({
     >
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Expense Subcategory</DialogTitle>
+          <DialogTitle>{t('categories:expense.expense-category')}</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleExpenseSubcategorySubmit)}
-            className="space-y-6"
-          >
-            <div className="my-4">
-              <div className="mb-4">
-                <FormField
-                  name="categoryName"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="categoryName">
-                        Category Name
-                      </FormLabel>
-                      <Input
-                        placeholder="Category Name"
-                        value={selectedCategory.name}
-                        readOnly
-                      />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <FormField
-                name="subCategoryName"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="subCategoryName">
-                      Subcategory Name
-                    </FormLabel>
-                    <Input
-                      placeholder="Subcategory Name"
-                      {...field}
-                    />
-                    <FormMessage role="alert" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <Button
-              type="submit"
-              className="w-full"
-            >
-              {selectedSubcategory
-                ? 'Save changes'
-                : 'Create Expense Subcategory'}
-            </Button>
-          </form>
-        </Form>
+        {renderForm()}
       </DialogContent>
     </Dialog>
   );
