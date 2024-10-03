@@ -4,7 +4,7 @@ import React from 'react';
 
 type Props = {
   onSelect: (value: any) => void;
-  options: { id: number, name: string }[]
+  options: { id: number; name: string }[];
 };
 
 export const OptionSelector = React.memo<Props>(({ onSelect, options }) => {
@@ -25,7 +25,7 @@ export const OptionSelector = React.memo<Props>(({ onSelect, options }) => {
           {option.name}
         </Button>
       ))}
-    </div >
+    </div>
   );
 });
 

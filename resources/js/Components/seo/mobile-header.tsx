@@ -1,20 +1,23 @@
 import React, { ReactElement } from 'react';
 import { Button } from '../ui/button';
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 
 type Props = {
   title?: string;
   showStickyHeader: boolean;
-  backUrl?: string;
+  backButton?: {
+    url?: string;
+    title?: string;
+  },
   rightElement?: ReactElement;
 };
 
 export const MobileHeader = ({
   title,
-  backUrl,
   showStickyHeader,
   rightElement,
+  backButton
 }: Props) => {
   return (
     <header
@@ -24,21 +27,21 @@ export const MobileHeader = ({
       {showStickyHeader ? (
         <div className="container flex h-14 max-w-screen-2xl items-center">
           <div className="flex-1 text-left">
-            {backUrl && (
+            {backButton && backButton.url && (
               <Button
-                className="p-0 h-8 rounded-full justify-center"
+                className="p-0 h-8 rounded-full justify-center hover:bg-transparent"
                 variant="ghost"
-                size="icon"
                 asChild
               >
-                <Link to={backUrl}>
-                  <ArrowLeft className="h-5 w-5" />
+                <Link to={backButton.url}>
+                  <ChevronLeft className="h-5 w-5 mr-0.5" />
+                  {backButton.title && <small className="text-sm font-medium leading-none">{backButton.title}</small>}
                 </Link>
               </Button>
             )}
           </div>
           <div className="flex text-center">
-            <small className="text-sm font-medium leading-none">{title}</small>
+            <p className="text-sm font-medium leading-none">{title}</p>
           </div>
           <div className="flex-1 text-right">{rightElement}</div>
         </div>

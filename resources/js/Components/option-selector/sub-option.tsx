@@ -1,7 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export const SubOption = () => {
-  return (
-    <div>SubOption</div>
-  )
-}
+  return <div>SubOption</div>;
+};

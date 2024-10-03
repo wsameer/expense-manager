@@ -27,7 +27,7 @@ type Props = {
     id: number;
     value: string;
     label: string;
-  }>
+  }>;
 };
 
 export const CategorySelector = React.memo<Props>(
@@ -53,8 +53,7 @@ export const CategorySelector = React.memo<Props>(
               )}
             >
               {selected
-                ? options.find((category) => category.value === selected)
-                  ?.label
+                ? options.find((category) => category.value === selected)?.label
                 : 'Select category'}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>

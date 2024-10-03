@@ -12,10 +12,13 @@ import { cn } from '@/utils';
 interface PageLayoutProps {
   title?: string;
   subTitle?: string;
-  backUrl?: string;
   children?: ReactNode;
   showHeader?: boolean;
   rightElement?: ReactElement;
+  backButton?: {
+    url: string;
+    title?: string;
+  },
 }
 
 export const PageLayout = React.memo<PageLayoutProps>(
@@ -23,9 +26,9 @@ export const PageLayout = React.memo<PageLayoutProps>(
     title,
     children,
     subTitle,
-    backUrl,
     rightElement,
     showHeader = false,
+    backButton
   }) => {
     const { isMobile } = useResponsive();
     const pageTitleRef = useRef<HTMLDivElement>(null);
@@ -55,8 +58,8 @@ export const PageLayout = React.memo<PageLayoutProps>(
           <MobileHeader
             title={title}
             showStickyHeader={showStickyHeader}
-            backUrl={backUrl}
             rightElement={rightElement}
+            backButton={backButton}
           />
         ) : (
           <AppHeader />
