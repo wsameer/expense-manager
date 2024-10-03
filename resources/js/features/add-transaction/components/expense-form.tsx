@@ -18,7 +18,6 @@ import { DateSelector } from './form-fields';
 import { OptionSelector } from '../../../Components/option-selector';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 import { useExpenseCategories } from '@/features/expense-category/api/use-expense-categories';
-import { cleanString } from '@/utils';
 
 const formSchema = z.object({
   date: z.date({
