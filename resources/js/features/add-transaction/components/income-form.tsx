@@ -13,11 +13,12 @@ import {
 } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
-import { CategorySelector, DateSelector } from './form-fields';
+import { DateSelector } from './form-fields';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 import { OptionSelector } from '../../../Components/option-selector';
 import { useIncomeCategories } from '@/features/income-category/api/use-categories';
-import { cleanString } from '@/utils';
+import { Account } from '@/types/api';
+import { useTranslation } from 'react-i18next';
 
 const formSchema = z.object({
   transactionDate: z.date({
@@ -29,7 +30,7 @@ const formSchema = z.object({
       invalid_type_error: 'Amount must be a number',
     })
     .nonnegative(),
-  category: z.string({
+  categoryId: z.coerce.number({
     required_error: 'Please select a category',
   }),
   accountId: z.coerce.number({
@@ -41,6 +42,7 @@ const formSchema = z.object({
 });
 
 export const IncomeForm = () => {
+  const { t } = useTranslation('transaction');
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [showCategorySelector, setShowCategorySelector] = useState(false);
   const { allAccounts } = useAccounts();
@@ -52,8 +54,7 @@ export const IncomeForm = () => {
     return incomeCategories.map((d) => {
       return {
         id: d.id,
-        label: d.name,
-        value: cleanString(d.name),
+        name: d.name
       };
     });
   }, []);
@@ -83,6 +84,17 @@ export const IncomeForm = () => {
     [allAccounts],
   );
 
+  const getSelectedCategoryName = useCallback(
+    (id: number) => {
+      if (!id) return undefined;
+      return (
+        incomeCategories?.find((category) => id === category.id)?.name ||
+        undefined
+      );
+    },
+    [incomeCategories],
+  );
+
   return (
     <Form {...form}>
       <form
@@ -99,7 +111,7 @@ export const IncomeForm = () => {
                   htmlFor="transactionDate"
                   className="w-1/4"
                 >
-                  Date
+                  {t('transaction:date')}
                 </FormLabel>
                 <DateSelector
                   aria-invalid={formErrors.transactionDate ? 'true' : 'false'}
@@ -126,7 +138,7 @@ export const IncomeForm = () => {
                   htmlFor="amount"
                   className="w-1/4"
                 >
-                  Amount
+                  {t('transaction:amount')}
                 </FormLabel>
                 <FormControl className="m-0">
                   <Input
@@ -144,23 +156,29 @@ export const IncomeForm = () => {
         />
 
         <FormField
-          name="category"
+          name="categoryId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
-                  htmlFor="category"
+                  htmlFor="categoryId"
                   className="w-1/4"
                 >
-                  Category
+                  {t('transaction:category')}
                 </FormLabel>
-                <CategorySelector
-                  options={incomeCategoryOptions}
-                  selected={field.value}
-                  onSelect={(value: string) => form.setValue('category', value)}
-                  setShowAccountSelector={setShowAccountSelector}
-                />
+                <FormControl>
+                  <Input
+                    className="w-3/4"
+                    placeholder={t('transaction:select-a-category')}
+                    onClick={() => {
+                      setShowAccountSelector(false);
+                      setShowCategorySelector(true);
+                    }}
+                    value={getSelectedCategoryName(field.value)}
+                    readOnly
+                  />
+                </FormControl>
               </div>
               <FormMessage role="alert" />
             </FormItem>
@@ -177,12 +195,12 @@ export const IncomeForm = () => {
                   htmlFor="accountId"
                   className="w-1/4"
                 >
-                  Account
+                  {t('transaction:account')}
                 </FormLabel>
                 <FormControl className="m-0">
                   <Input
                     className="w-3/4"
-                    placeholder="Select an account"
+                    placeholder={t('transaction:select-account')}
                     onClick={() => setShowAccountSelector(true)}
                     value={getSelectedAccountName(field.value)}
                     readOnly
@@ -204,7 +222,7 @@ export const IncomeForm = () => {
                   htmlFor="note"
                   className="w-1/4"
                 >
-                  Note
+                  {t('transaction:note')}
                 </FormLabel>
                 <FormControl className="m-0">
                   <Input
@@ -222,10 +240,20 @@ export const IncomeForm = () => {
         <div className="h-44 overflow-x-auto">
           {showAccountSelector && (
             <OptionSelector
-              options={allAccounts}
-              onSelect={(value: number) => {
-                form.setValue('accountId', value);
+              options={allAccounts!}
+              onSelect={(value: Account) => {
+                form.setValue('accountId', value.id);
                 setShowAccountSelector(false);
+              }}
+            />
+          )}
+
+          {showCategorySelector && (
+            <OptionSelector
+              options={incomeCategoryOptions!}
+              onSelect={(option) => {
+                form.setValue('categoryId', option.id);
+                setShowCategorySelector(false);
               }}
             />
           )}
@@ -236,7 +264,7 @@ export const IncomeForm = () => {
           variant="destructive"
           type="submit"
         >
-          Submit
+          {t('transaction:create')}
         </Button>
       </form>
     </Form>

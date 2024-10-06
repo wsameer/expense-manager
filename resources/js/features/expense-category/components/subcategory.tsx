@@ -1,11 +1,12 @@
 import React from 'react';
 import { Subcategory } from '../types';
 import { Button } from '@/Components/ui/button';
-import { Pencil, Trash } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useExpenseSubcategories } from '../api/use-subcategories';
 import { toast } from '@/hooks';
 import { useConfirmDialog } from '@/Components/ui/confirmable';
 import { useTranslation } from 'react-i18next';
+import { Separator } from '@/Components/ui/separator';
 
 type Props = {
   categoryId: number;
@@ -37,7 +38,6 @@ export const SubcategoryItem = ({
             description: t('categories:expense.subcategory-is-deleted'),
           });
         } catch (error) {
-          console.error('Error deleting account:', error);
           toast({
             title: t('common:errors.operation-failed'),
             description: t('categories:expense.failed-to-delete-subcategory'),
@@ -55,13 +55,14 @@ export const SubcategoryItem = ({
       <div className="flex items-center justify-between space-x-4 pl-4 pr-2 py-2">
         <small className="text-sm font-medium leading-none">{data.name}</small>
         <div className="flex items-center space-x-1 mt-0">
+          <Separator orientation="vertical" className="mx-1 h-4" />
           <Button
             className="text-red-500 hover:text-red-700 h-6 w-6"
             variant="ghost"
             size="icon"
             onClick={handleDeleteSubcategory}
           >
-            <Trash className="h-3 w-3" />
+            <Trash2 className="h-3 w-3" />
           </Button>
           <Button
             className="h-6 w-6"

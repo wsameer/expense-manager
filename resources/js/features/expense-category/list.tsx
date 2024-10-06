@@ -7,7 +7,7 @@ import {
   Pencil,
   Plus,
   PlusCircle,
-  Trash,
+  Trash2,
 } from 'lucide-react';
 
 import { Collapsible, CollapsibleTrigger } from '@/Components/ui/collapsible';
@@ -132,9 +132,9 @@ export const ExpenseCategoryList: React.FC = () => {
                 <small className="text-sm font-medium leading-none">
                   {category.name}
                 </small>
-                <small className="bg-zinc-100 text-sm text-zinc-500 font-medium leading-none px-1.5 py-1 rounded-md">
+                <div className='border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-primary text-primary-foreground ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full'>
                   {category.subcategories?.length ?? 0}
-                </small>
+                </div>
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -170,7 +170,7 @@ export const ExpenseCategoryList: React.FC = () => {
                     className="text-red-500 focus:text-red-700"
                     onClick={() => handleDeleteCategory(category.id)}
                   >
-                    <Trash className="h-3.5 w-3.5 mr-2" /> {t('common:delete')}
+                    <Trash2 className="h-3.5 w-3.5 mr-2" /> {t('common:delete')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

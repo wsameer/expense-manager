@@ -58,7 +58,7 @@ class TransactionController extends Controller
       'note' => 'nullable|string',
     ]);
 
-    return DB::transaction(function () use ($validated, $request) {
+    return \DB::transaction(function () use ($validated, $request) {
       $transaction = auth()->user()->transactions()->create($validated);
 
       $fromAccount = Account::findOrFail($validated['from_account_id']);
