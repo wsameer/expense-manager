@@ -1,8 +1,10 @@
 {
-  "data": "Date",
+  "date": "Date",
   "amount": "Amount",
   "category": "Category",
   "account": "Account",
   "note": "Note",
-  "submit": "Submit"
+  "create": "Create",
+  "select-a-category": "Select a category",
+  "select-account": "Select an account"
 }

@@ -8,6 +8,7 @@ import common from '../locales/en/common.json';
 import auth from '../locales/en/auth.json';
 import account from '../locales/en/account.json';
 import categories from '../locales/en/categories.json';
+import transaction from '../locales/en/transaction.json';
 
 export const defaultNS = 'ns1';
 export const resources = {
@@ -16,6 +17,7 @@ export const resources = {
     auth,
     account,
     categories,
+    transaction,
   },
 } as const;
 
