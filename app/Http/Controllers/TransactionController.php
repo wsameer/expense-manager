@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -33,14 +34,12 @@ class TransactionController extends Controller
   {
     $validated = $request->validate([
       'type' => 'required|in:bank_to_bank,income,expense',
-      'date' => 'required|date',
+      'date' => 'required|date_format:Y-m-d H:i:s',
       'amount' => 'required|numeric|min:0.01',
       'from_account_id' => 'required|exists:accounts,id',
       'to_account_id' => 'required_if:type,bank_to_bank|exists:accounts,id',
       'expense_category_id' => [
-        Rule::requiredIf(function () use ($request) {
-          return $request->input('type') === 'expense';
-        }),
+        Rule::requiredIf(fn() => $request->input('type') === 'expense'),
         'exists:expense_categories,id',
       ],
       'expense_subcategory_id' => [
@@ -50,13 +49,14 @@ class TransactionController extends Controller
         }),
       ],
       'income_category_id' => [
-        Rule::requiredIf(function () use ($request) {
-          return $request->input('type') === 'income';
-        }),
+        Rule::requiredIf(fn() => $request->input('type') === 'income'),
         'exists:income_categories,id',
       ],
       'note' => 'nullable|string',
     ]);
+
+    // Convert the date string to a Carbon instance
+    $validated['date'] = Carbon::parse($validated['date']);
 
     return \DB::transaction(function () use ($validated, $request) {
       $transaction = auth()->user()->transactions()->create($validated);
