@@ -1,8 +1,12 @@
+import React from 'react';
+
 import { Button } from '@/Components/ui/button';
+import { cn } from '@/utils';
 
-import React, { useState } from 'react';
-
-interface Option { id: number; name: string, subcategories?: any };
+interface Option {
+  id: number;
+  name: string;
+}
 
 type Props = {
   options: Option[];
@@ -10,21 +14,27 @@ type Props = {
 };
 
 export const OptionSelector = React.memo<Props>(({ options, onSelect }) => {
+  // Ensure we always have 9 slots (3 rows x 3 columns)
+  const filledOptions = [...options, ...Array(9).fill(null)].slice(0, 9);
+
   return (
     <div className="grid grid-cols-3 gap-1">
-      {options?.map((option) => (
+      {filledOptions.map((option, index) => (
         <Button
-          key={option.id}
-          className="px-2 h-14 whitespace-normal text-center leading-3"
+          key={option ? option.id : `empty-${index}`}
+          className={cn('px-2 h-14 whitespace-normal text-center leading-3', {
+            'bg-zinc-200': !option,
+          })}
           variant="outline"
           size="lg"
           style={{ fontSize: '11px' }}
           onClick={(e) => {
             e.preventDefault();
-            onSelect(option);
+            if (option) onSelect(option);
           }}
+          disabled={!option}
         >
-          {option.name}
+          {option ? option.name : ''}
         </Button>
       ))}
     </div>
