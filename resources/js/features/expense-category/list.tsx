@@ -104,96 +104,100 @@ export const ExpenseCategoryList: React.FC = () => {
       {isLoading ? (
         <Busy />
       ) : (
-        expenseCategories?.map((category) => (
-          <Collapsible
-            key={category.id}
-            className="bg-white border dark:bg-gray-800 rounded-lg overflow-hidden w-full"
-            open={expandedCategories.has(category.id)}
-            onOpenChange={() =>
-              category.subcategories.length > 0 && toggleCategory(category.id)
-            }
-          >
-            <div className="flex items-center justify-between space-x-4 px-2 py-2">
-              <div className="flex items-center gap-2">
-                <CollapsibleTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="items-left h-6 w-6"
-                    disabled={
-                      !category.subcategories ||
-                      category.subcategories.length === 0
-                    }
-                  >
-                    <ChevronDown className="h-4 w-4" />
-                    <span className="sr-only">{t('common:toggle')}</span>
-                  </Button>
-                </CollapsibleTrigger>
-                <small className="text-sm font-medium leading-none">
-                  {category.name}
-                </small>
-                <div className='border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-primary text-primary-foreground ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full'>
-                  {category.subcategories?.length ?? 0}
+        expenseCategories?.map((category) => {
+          const isCollapsed = expandedCategories.has(category.id);
+          return (
+            <Collapsible
+              key={category.id}
+              className="bg-white border dark:bg-gray-800 rounded-lg overflow-hidden w-full"
+              open={isCollapsed}
+              onOpenChange={() =>
+                category.subcategories.length > 0 && toggleCategory(category.id)
+              }
+            >
+              <div className="flex items-center justify-between space-x-4 px-2 py-2">
+                <div className="flex items-center gap-2">
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="items-left h-6 w-6"
+                      disabled={
+                        !category.subcategories ||
+                        category.subcategories.length === 0
+                      }
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                      <span className="sr-only">{t('common:toggle')}</span>
+                    </Button>
+                  </CollapsibleTrigger>
+                  <small className="text-sm font-medium leading-none">
+                    {category.name}
+                  </small>
+                  <div className="border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-primary text-primary-foreground ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                    {category.subcategories?.length ?? 0}
+                  </div>
                 </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6"
+                    >
+                      <MoreVertical className="h-4 w-4" />
+                      <span className="sr-only">{t('common:more')}</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setOpenCategoryModal(true);
+                        setSelectedCategory(category);
+                      }}
+                    >
+                      <Pencil className="h-3.5 w-3.5 mr-2" /> {t('common:edit')}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSelectedCategory(category);
+                        setOpenSubCategoryModal(true);
+                        setSelectedSubcategory(undefined);
+                      }}
+                    >
+                      <PlusCircle className="h-3.5 w-3.5 mr-2" />
+                      {t('categories:expense.add-subcategory')}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="text-red-500 focus:text-red-700"
+                      onClick={() => handleDeleteCategory(category.id)}
+                    >
+                      <Trash2 className="h-3.5 w-3.5 mr-2" />{' '}
+                      {t('common:delete')}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-6 w-6"
-                  >
-                    <MoreVertical className="h-4 w-4" />
-                    <span className="sr-only">{t('common:more')}</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setOpenCategoryModal(true);
-                      setSelectedCategory(category);
-                    }}
-                  >
-                    <Pencil className="h-3.5 w-3.5 mr-2" /> {t('common:edit')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setSelectedCategory(category);
-                      setOpenSubCategoryModal(true);
-                      setSelectedSubcategory(undefined);
-                    }}
-                  >
-                    <PlusCircle className="h-3.5 w-3.5 mr-2" />
-                    {t('categories:expense.add-subcategory')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="text-red-500 focus:text-red-700"
-                    onClick={() => handleDeleteCategory(category.id)}
-                  >
-                    <Trash2 className="h-3.5 w-3.5 mr-2" /> {t('common:delete')}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <CollapsibleContent>
-              {expandedCategories.has(category.id) &&
-                category.subcategories?.length > 0 &&
-                category.subcategories?.map((subcategory) => (
-                  <SubcategoryItem
-                    key={subcategory.id}
-                    categoryId={category.id}
-                    data={subcategory}
-                    mutateCategories={refetchExpenseCategories}
-                    onEdit={(subcategory) => {
-                      setOpenSubCategoryModal(true);
-                      setSelectedCategory(category);
-                      setSelectedSubcategory(subcategory);
-                    }}
-                  />
-                ))}
-            </CollapsibleContent>
-          </Collapsible>
-        ))
+              <CollapsibleContent>
+                {isCollapsed &&
+                  category.subcategories?.length > 0 &&
+                  category.subcategories?.map((subcategory) => (
+                    <SubcategoryItem
+                      key={subcategory.id}
+                      categoryId={category.id}
+                      data={subcategory}
+                      mutateCategories={refetchExpenseCategories}
+                      onEdit={(subcategory) => {
+                        setOpenSubCategoryModal(true);
+                        setSelectedCategory(category);
+                        setSelectedSubcategory(subcategory);
+                      }}
+                    />
+                  ))}
+              </CollapsibleContent>
+            </Collapsible>
+          );
+        })
       )}
 
       <AddExpenseCategoryForm

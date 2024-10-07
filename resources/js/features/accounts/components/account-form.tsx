@@ -25,11 +25,11 @@ import {
 } from '@/Components/ui/select';
 import { Link } from 'react-router-dom';
 import { SETTINGS_ROUTE } from '@/router/routes';
-import { ACCOUNT_GROUPS } from '../constants';
+import { ACCOUNT_GROUPS, CREDIT_CARD } from '../constants';
 import {
   AccountGroupEnum,
   CreateAccountForm,
-  CreateAccountFormSchema,
+  createAccountFormSchema,
 } from '../types';
 import { toast } from '@/hooks';
 import { useAccounts } from '../api/get-accounts';
@@ -60,7 +60,7 @@ export const AccountForm = ({
   const { createAccount, isCreating } = useCreateAccount();
   const { updateAccount, isUpdating } = useUpdateAccount();
   const [showPaymentOptions, setShowPaymentOptions] = useState(
-    group === 'CREDIT_CARD',
+    group === CREDIT_CARD,
   );
 
   const { t } = useTranslation('account', {
@@ -68,7 +68,7 @@ export const AccountForm = ({
   });
 
   const form = useForm<CreateAccountForm>({
-    resolver: zodResolver(CreateAccountFormSchema),
+    resolver: zodResolver(createAccountFormSchema),
     defaultValues: {
       name: name ?? '',
       balance,
@@ -154,7 +154,7 @@ export const AccountForm = ({
                 </FormLabel>
                 <Select
                   onValueChange={(value) => {
-                    if (value === 'CREDIT_CARD') {
+                    if (value === CREDIT_CARD) {
                       setShowPaymentOptions(true);
                     } else {
                       form.setValue('paymentAccountId', undefined);
@@ -226,7 +226,7 @@ export const AccountForm = ({
                     <SelectContent>
                       {allAccounts?.map(({ id, group, name }) =>
                         group === AccountGroup.CHEQUING ||
-                        group === AccountGroup.SAVINGS ? (
+                          group === AccountGroup.SAVINGS ? (
                           <SelectItem
                             key={id}
                             value={id}

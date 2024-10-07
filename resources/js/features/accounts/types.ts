@@ -1,4 +1,3 @@
-import { AccountGroup } from '@/types/api';
 import { z } from 'zod';
 
 const AccountGroupEnum = z.enum([
@@ -10,7 +9,7 @@ const AccountGroupEnum = z.enum([
 ]);
 export type AccountGroupEnum = z.infer<typeof AccountGroupEnum>;
 
-export const CreateAccountFormSchema = z.object({
+export const createAccountFormSchema = z.object({
   name: z.coerce
     .string()
     .min(3, { message: 'Must be 3 or more characters long' })
@@ -23,4 +22,4 @@ export const CreateAccountFormSchema = z.object({
   ),
 });
 
-export type CreateAccountForm = z.infer<typeof CreateAccountFormSchema>;
+export type CreateAccountForm = z.infer<typeof createAccountFormSchema>;

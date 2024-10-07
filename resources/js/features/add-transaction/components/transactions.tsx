@@ -7,17 +7,17 @@ import { IncomeForm } from './income-form';
 import { TransferForm } from './transfer-form';
 
 export const Transactions: React.FC<TransactionsProps> = React.memo(
-  ({ selectedTab, setSelectedTab }) => {
+  ({ selectedTab, setSelectedTab, setOpen }) => {
     const transactionTypes = useMemo(() => Object.values(TransactionTypes), []);
 
     const renderContent = useCallback((type: TransactionTypes) => {
       switch (type) {
         case TransactionTypes.EXPENSE:
-          return <ExpenseForm />;
+          return <ExpenseForm setOpen={setOpen} />;
         case TransactionTypes.INCOME:
-          return <IncomeForm />;
+          return <IncomeForm setOpen={setOpen} />;
         case TransactionTypes.TRANSFER:
-          return <TransferForm />;
+          return <TransferForm setOpen={setOpen} />;
         default:
           return null;
       }

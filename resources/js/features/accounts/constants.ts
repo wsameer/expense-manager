@@ -11,3 +11,5 @@ export const ACCOUNT_GROUPS = [
   { key: 'CREDIT_CARD', label: 'credit card', id: 4 },
   { key: 'INVESTMENTS', label: 'investments', id: 5 },
 ];
+
+export const CREDIT_CARD = 'CREDIT_CARD';

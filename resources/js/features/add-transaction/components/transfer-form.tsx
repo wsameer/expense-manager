@@ -14,9 +14,11 @@ import {
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 
-import { DateSelector } from './form-fields';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 import { OptionSelector } from '../../../Components/option-selector';
+import { DateSelector } from './form-fields/date-selector';
+import { FormProps } from '../types';
+import { cn } from '@/utils';
 
 const formSchema = z
   .object({
@@ -44,7 +46,7 @@ const formSchema = z
     path: ['toAccountId'],
   });
 
-export const TransferForm = () => {
+export const TransferForm = ({ setOpen }: FormProps) => {
   const [showAccountSelector, setShowAccountSelector] = useState<
     string | boolean
   >(false);
@@ -63,6 +65,7 @@ export const TransferForm = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.table(values);
+    return setOpen(false);
   }
 
   const getSelectedAccountName = useCallback(
@@ -209,10 +212,14 @@ export const TransferForm = () => {
           )}
         />
 
-        <div className="h-44 overflow-x-auto">
+        <div
+          className={cn('overflow-x-auto', {
+            'h-44': showAccountSelector,
+          })}
+        >
           {showAccountSelector && (
             <OptionSelector
-              options={allAccounts}
+              options={allAccounts ?? []}
               onSelect={(value: number) => {
                 // @ts-ignore
                 form.setValue(showAccountSelector, value);

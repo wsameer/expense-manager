@@ -1,27 +1,16 @@
+import { API_BASE_URL } from '@/utils/constants';
+
 export enum TransactionTypes {
   INCOME = 'income',
   EXPENSE = 'expense',
-  TRANSFER = 'transfer',
+  TRANSFER = 'bank_to_bank',
 }
 
 export type TransactionsProps = {
   selectedTab: TransactionTypes;
   setSelectedTab: (value: TransactionTypes) => void;
+  setOpen: (value: boolean) => void;
 };
-
-/**
- * @deprecated Get the data from API call
- */
-export const CATEGORIES = [
-  { label: 'Food', value: 'food' },
-  { label: 'Groceries', value: 'groceries' },
-  { label: 'Housing', value: 'housing' },
-  { label: 'Shopping', value: 'shopping' },
-  { label: 'Utilities', value: 'utilities' },
-  { label: 'Travel', value: 'travel' },
-  { label: 'Furniture', value: 'furniture' },
-  { label: 'Other', value: 'other' },
-] as const;
 
 export const ACCOUNTS = [
   { label: 'Chequing', value: 'chequing' },
@@ -29,3 +18,21 @@ export const ACCOUNTS = [
   { label: 'Credit Card', value: 'credit_card' },
   { label: 'Cash', value: 'cash' },
 ];
+
+export const TRANSACTIONS_API = API_BASE_URL + 'transactions';
+
+export type FormProps = {
+  setOpen: (value: boolean) => void;
+};
+
+export type CreateTransactionPayload = {
+  type: TransactionTypes;
+  date: string;
+  amount: number;
+  fromAccountId: number;
+  toAccountId?: number;
+  expenseCategoryId?: number;
+  incomeCategoryId?: number;
+  expenseSubcategoryId?: number;
+  note?: string;
+};

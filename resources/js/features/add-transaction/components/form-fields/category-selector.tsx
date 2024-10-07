@@ -5,7 +5,6 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from '@/Components/ui/popover';
-import { CATEGORIES } from '../../types';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import {
   Command,

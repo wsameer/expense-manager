@@ -55,7 +55,10 @@ export const SubcategoryItem = ({
       <div className="flex items-center justify-between space-x-4 pl-4 pr-2 py-2">
         <small className="text-sm font-medium leading-none">{data.name}</small>
         <div className="flex items-center space-x-1 mt-0">
-          <Separator orientation="vertical" className="mx-1 h-4" />
+          <Separator
+            orientation="vertical"
+            className="mx-1 h-4"
+          />
           <Button
             className="text-red-500 hover:text-red-700 h-6 w-6"
             variant="ghost"

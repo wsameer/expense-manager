@@ -13,12 +13,14 @@ import {
 } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
-import { DateSelector } from './form-fields';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 import { OptionSelector } from '../../../Components/option-selector';
 import { useIncomeCategories } from '@/features/income-category/api/use-categories';
 import { Account } from '@/types/api';
 import { useTranslation } from 'react-i18next';
+import { DateSelector } from './form-fields/date-selector';
+import { FormProps } from '../types';
+import { cn } from '@/utils';
 
 const formSchema = z.object({
   transactionDate: z.date({
@@ -41,7 +43,7 @@ const formSchema = z.object({
   ),
 });
 
-export const IncomeForm = () => {
+export const IncomeForm = ({ setOpen }: FormProps) => {
   const { t } = useTranslation('transaction');
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [showCategorySelector, setShowCategorySelector] = useState(false);
@@ -54,7 +56,7 @@ export const IncomeForm = () => {
     return incomeCategories.map((d) => {
       return {
         id: d.id,
-        name: d.name
+        name: d.name,
       };
     });
   }, []);
@@ -72,6 +74,7 @@ export const IncomeForm = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.table(values);
+    return setOpen(false);
   }
 
   const getSelectedAccountName = useCallback(
@@ -237,7 +240,11 @@ export const IncomeForm = () => {
           )}
         />
 
-        <div className="h-44 overflow-x-auto">
+        <div
+          className={cn('overflow-x-auto', {
+            'h-44': showAccountSelector || showCategorySelector,
+          })}
+        >
           {showAccountSelector && (
             <OptionSelector
               options={allAccounts!}

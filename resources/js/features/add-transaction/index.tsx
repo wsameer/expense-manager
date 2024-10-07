@@ -57,6 +57,7 @@ export const AddTransaction = () => {
               <Transactions
                 selectedTab={selectedTab}
                 setSelectedTab={setSelectedTab}
+                setOpen={setOpen}
               />
             </div>
             <DrawerFooter>
@@ -99,6 +100,7 @@ export const AddTransaction = () => {
             <Transactions
               selectedTab={selectedTab}
               setSelectedTab={setSelectedTab}
+              setOpen={setOpen}
             />
           </div>
           <DialogFooter>
