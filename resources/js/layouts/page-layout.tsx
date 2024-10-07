@@ -18,7 +18,7 @@ interface PageLayoutProps {
   backButton?: {
     url: string;
     title?: string;
-  },
+  };
 }
 
 export const PageLayout = React.memo<PageLayoutProps>(
@@ -28,7 +28,7 @@ export const PageLayout = React.memo<PageLayoutProps>(
     subTitle,
     rightElement,
     showHeader = false,
-    backButton
+    backButton,
   }) => {
     const { isMobile } = useResponsive();
     const pageTitleRef = useRef<HTMLDivElement>(null);
