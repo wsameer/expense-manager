@@ -14,10 +14,21 @@ import {
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 
-import { DateSelector } from './form-fields';
 import { OptionSelector } from '../../../Components/option-selector';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 import { useExpenseCategories } from '@/features/expense-category/api/use-expense-categories';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/Components/ui/select';
+import { DateSelector } from './form-fields/date-selector';
+import { useCreateTransaction } from '../api/create-transaction';
+import { toast } from '@/hooks';
+import { FormProps, TransactionTypes } from '../types';
+import { cn } from '@/utils';
 
 const formSchema = z.object({
   date: z.date({
@@ -29,10 +40,11 @@ const formSchema = z.object({
       invalid_type_error: 'Amount must be a number',
     })
     .nonnegative(),
-  categoryId: z.coerce.number({
+  expenseCategoryId: z.coerce.number({
     required_error: 'Please select a category',
   }),
-  accountId: z.coerce.number({
+  expenseSubcategoryId: z.optional(z.coerce.number()),
+  fromAccountId: z.coerce.number({
     required_error: 'Please select an account',
   }),
   note: z.optional(
@@ -40,10 +52,10 @@ const formSchema = z.object({
   ),
 });
 
-export const ExpenseForm = () => {
+export const ExpenseForm = ({ setOpen }: FormProps) => {
   const { allAccounts } = useAccounts();
   const { expenseCategories } = useExpenseCategories();
-
+  const { createTransaction } = useCreateTransaction();
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [showCategorySelector, setShowCategorySelector] = useState(false);
 
@@ -52,15 +64,24 @@ export const ExpenseForm = () => {
     defaultValues: {
       date: new Date(),
       amount: 0,
+      expenseCategoryId: -1,
+      fromAccountId: -1,
     },
   });
   const formErrors = form.formState.errors;
+  const expenseCategoryId = form.watch('expenseCategoryId') as
+    | number
+    | undefined;
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const selectedCategory = useMemo(() => {
+    return expenseCategories?.find(
+      (category) => expenseCategoryId === category.id,
+    );
+  }, [expenseCategoryId, expenseCategories]);
+
+  const subcategories = selectedCategory?.subcategories || [];
+  const isSubcategoriesEmpty =
+    Boolean(expenseCategoryId) && subcategories.length === 0;
 
   const getSelectedAccountName = useCallback(
     (id: number) => {
@@ -82,6 +103,28 @@ export const ExpenseForm = () => {
     },
     [expenseCategories],
   );
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!values) return false;
+    try {
+      await createTransaction({
+        ...values,
+        // Format: YYYY-MM-DD HH:MM:SS
+        date: new Date(values.date)
+          .toISOString()
+          .slice(0, 19)
+          .replace('T', ' '),
+        type: TransactionTypes.EXPENSE,
+      });
+      form.reset();
+      return setOpen(false);
+    } catch (error: any) {
+      toast({
+        title: 'Operation failed!',
+        description: error.message,
+      });
+    }
+  };
 
   return (
     <Form {...form}>
@@ -144,13 +187,13 @@ export const ExpenseForm = () => {
         />
 
         <FormField
-          name="categoryId"
+          name="expenseCategoryId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
-                  htmlFor="categoryId"
+                  htmlFor="expenseCategoryId"
                   className="w-1/4"
                 >
                   Category
@@ -159,11 +202,11 @@ export const ExpenseForm = () => {
                   <Input
                     className="w-3/4"
                     placeholder="Select a category"
-                    onClick={() => {
+                    value={getSelectedCategoryName(field.value)}
+                    onFocus={() => {
                       setShowAccountSelector(false);
                       setShowCategorySelector(true);
                     }}
-                    value={getSelectedCategoryName(field.value)}
                     readOnly
                   />
                 </FormControl>
@@ -174,13 +217,71 @@ export const ExpenseForm = () => {
         />
 
         <FormField
-          name="accountId"
+          name="expenseSubcategoryId"
+          control={form.control}
+          render={({ field }) => {
+            return (
+              <FormItem>
+                <div className="flex items-center mt-4 space-y-0 space-x-2">
+                  <FormLabel
+                    htmlFor="expenseSubcategoryId"
+                    className="w-1/4"
+                  >
+                    Subcategory
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value?.toString()}
+                    disabled={isSubcategoriesEmpty}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={
+                            !expenseCategoryId
+                              ? 'Select category first'
+                              : isSubcategoriesEmpty
+                                ? 'No subcategories'
+                                : 'Select a subcategory'
+                          }
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {isSubcategoriesEmpty ? (
+                        <SelectItem
+                          value={'empty'}
+                          disabled
+                        >
+                          No subcategories
+                        </SelectItem>
+                      ) : (
+                        subcategories.map((subcategory) => (
+                          <SelectItem
+                            key={subcategory.id}
+                            value={subcategory.id.toString()}
+                          >
+                            {subcategory.name}
+                          </SelectItem>
+                        ))
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <FormMessage role="alert" />
+              </FormItem>
+            );
+          }}
+        />
+
+        <FormField
+          name="fromAccountId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
-                  htmlFor="accountId"
+                  htmlFor="fromAccountId"
                   className="w-1/4"
                 >
                   Account
@@ -228,12 +329,16 @@ export const ExpenseForm = () => {
           )}
         />
 
-        <div className="h-44 overflow-x-auto">
+        <div
+          className={cn('overflow-x-auto', {
+            'h-44': showAccountSelector || showCategorySelector,
+          })}
+        >
           {showAccountSelector && (
             <OptionSelector
               options={allAccounts!}
               onSelect={(option) => {
-                form.setValue('accountId', option.id);
+                form.setValue('fromAccountId', option.id);
                 setShowAccountSelector(false);
               }}
             />
@@ -243,7 +348,7 @@ export const ExpenseForm = () => {
             <OptionSelector
               options={expenseCategories!}
               onSelect={(option) => {
-                form.setValue('categoryId', option.id);
+                form.setValue('expenseCategoryId', option.id);
                 setShowCategorySelector(false);
               }}
             />
