@@ -9,7 +9,7 @@ type Props = {
   backButton?: {
     url?: string;
     title?: string;
-  },
+  };
   rightElement?: ReactElement;
 };
 
@@ -17,7 +17,7 @@ export const MobileHeader = ({
   title,
   showStickyHeader,
   rightElement,
-  backButton
+  backButton,
 }: Props) => {
   return (
     <header
@@ -35,7 +35,11 @@ export const MobileHeader = ({
               >
                 <Link to={backButton.url}>
                   <ChevronLeft className="h-5 w-5 mr-0.5" />
-                  {backButton.title && <small className="text-sm font-medium leading-none">{backButton.title}</small>}
+                  {backButton.title && (
+                    <small className="text-sm font-medium leading-none">
+                      {backButton.title}
+                    </small>
+                  )}
                 </Link>
               </Button>
             )}
