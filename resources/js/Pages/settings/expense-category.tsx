@@ -10,7 +10,7 @@ export const ExpenseCategoryRoute = () => {
       showHeader={true}
       backButton={{
         url: SETTINGS_ROUTE,
-        title: 'Settings'
+        title: 'Settings',
       }}
     >
       <ExpenseCategoryList />

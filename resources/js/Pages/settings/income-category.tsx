@@ -10,7 +10,7 @@ export const IncomeCategoryRoute = () => {
       showHeader={true}
       backButton={{
         url: SETTINGS_ROUTE,
-        title: 'Settings'
+        title: 'Settings',
       }}
     >
       <IncomeCategoryList />
