@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { useTransactions } from '../api/get-transactions';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,7 @@ import { groupTransactionsByDate } from '../utils';
 import { TransactionItem } from './transaction-item';
 
 export const TransactionList = () => {
-  const { t } = useTranslation("transaction");
+  const { t } = useTranslation('transaction');
   const { allTransactions, isError, isLoading } = useTransactions();
 
   if (isError) {
@@ -29,22 +29,33 @@ export const TransactionList = () => {
   }
 
   const groupedTransactions = groupTransactionsByDate(allTransactions!);
-  const sortedDates = Object.keys(groupedTransactions).sort((a, b) => (new Date(b).getTime() - new Date(a).getTime()));
+  const sortedDates = Object.keys(groupedTransactions).sort(
+    (a, b) => new Date(b).getTime() - new Date(a).getTime(),
+  );
 
   return (
     <div>
       {sortedDates.map((date: string) => (
-        <div key={date} className="mb-4">
+        <div
+          key={date}
+          className="mb-4"
+        >
           <p className="text-sm mb-2">
-            {new Date(`${date}T00:00:00`).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' })}
+            {new Date(`${date}T00:00:00`).toLocaleDateString('en-US', {
+              weekday: 'short',
+              day: 'numeric',
+            })}
           </p>
           <div className="bg-white rounded-lg shadow">
-            {groupedTransactions[date].map(transaction => (
-              <TransactionItem key={transaction.id} transaction={transaction} />
+            {groupedTransactions[date].map((transaction) => (
+              <TransactionItem
+                key={transaction.id}
+                transaction={transaction}
+              />
             ))}
           </div>
         </div>
       ))}
     </div>
-  )
-}
+  );
+};

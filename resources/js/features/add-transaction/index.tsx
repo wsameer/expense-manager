@@ -30,7 +30,11 @@ export const AddTransaction = () => {
   const [selectedTab, setSelectedTab] = useState(TransactionTypes.EXPENSE);
   const { isMobile } = useResponsive();
 
-  const tabTitle = useMemo(() => selectedTab === TransactionTypes.TRANSFER ? 'transfer' : selectedTab, [selectedTab])
+  const tabTitle = useMemo(
+    () =>
+      selectedTab === TransactionTypes.TRANSFER ? 'transfer' : selectedTab,
+    [selectedTab],
+  );
 
   if (isMobile) {
     return (

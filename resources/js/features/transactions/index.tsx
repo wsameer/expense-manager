@@ -6,11 +6,17 @@ export const TransactionsPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const handlePrevMonth = () => {
-    setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    setCurrentDate(
+      (prevDate) =>
+        new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1),
+    );
   };
 
   const handleNextMonth = () => {
-    setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+    setCurrentDate(
+      (prevDate) =>
+        new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1),
+    );
   };
 
   return (

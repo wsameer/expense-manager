@@ -1,11 +1,13 @@
-import { Transaction } from "../types";
-import { parseDate } from "../utils";
+import { Transaction } from '../types';
+import { parseDate } from '../utils';
 
 type TransactionItemProps = {
   transaction: Transaction;
 };
 
-export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => (
+export const TransactionItem: React.FC<TransactionItemProps> = ({
+  transaction,
+}) => (
   <div className="flex justify-between items-center p-2 border-b">
     <div>
       <p className="font-semibold">{transaction.note}</p>
@@ -19,7 +21,9 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction })
         })}
       </p>
     </div>
-    <p className={`font-bold ${transaction.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+    <p
+      className={`font-bold ${transaction.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}
+    >
       ${Math.abs(transaction.amount).toFixed(2)}
     </p>
   </div>

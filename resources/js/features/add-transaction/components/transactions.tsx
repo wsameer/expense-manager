@@ -6,7 +6,6 @@ import { IncomeForm } from './income-form';
 import { TransferForm } from './transfer-form';
 import { TransactionTypes } from '@/features/transactions/types';
 
-
 type TransactionsProps = {
   selectedTab: TransactionTypes;
   setSelectedTab: (value: TransactionTypes) => void;
