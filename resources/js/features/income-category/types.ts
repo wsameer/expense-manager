@@ -1,11 +1,11 @@
-export interface Category {
+export interface IncomeCategory {
   id: number;
   name: string;
   description: string;
 }
 
 export interface ApiResponse {
-  data: Category[];
+  data: IncomeCategory[];
 }
 
 export type CategoryDeletePayload = {

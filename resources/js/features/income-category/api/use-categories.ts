@@ -1,6 +1,6 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import useSWR from 'swr';
-import { Category } from '../types';
+import { IncomeCategory } from '../types';
 import { INCOME_CATEGORIES_API } from '../constants';
 import axiosInstance from '@/lib/api-client';
 import { useCallback, useMemo } from 'react';
@@ -11,13 +11,15 @@ interface CategoryInput {
   description: string;
 }
 
-const fetchIncomeCategories = async (url: string): Promise<Category[]> => {
-  const res = await axiosInstance.get<Category[]>(url);
+const fetchIncomeCategories = async (
+  url: string,
+): Promise<IncomeCategory[]> => {
+  const res = await axiosInstance.get<IncomeCategory[]>(url);
   return res.data;
 };
 
 export const useIncomeCategories = () => {
-  const { data, error, mutate } = useSWR<Category[], AxiosError>(
+  const { data, error, mutate } = useSWR<IncomeCategory[], AxiosError>(
     INCOME_CATEGORIES_API,
     fetchIncomeCategories,
     {
@@ -28,8 +30,8 @@ export const useIncomeCategories = () => {
   );
 
   const createCategory = useCallback(
-    async (categoryData: CategoryInput): Promise<Category> => {
-      const response = await axiosInstance.post<Category>(
+    async (categoryData: CategoryInput): Promise<IncomeCategory> => {
+      const response = await axiosInstance.post<IncomeCategory>(
         INCOME_CATEGORIES_API,
         categoryData,
       );
@@ -43,8 +45,8 @@ export const useIncomeCategories = () => {
     async (
       categoryId: string,
       categoryData: CategoryInput,
-    ): Promise<Category> => {
-      const response = await axiosInstance.put<Category>(
+    ): Promise<IncomeCategory> => {
+      const response = await axiosInstance.put<IncomeCategory>(
         `${INCOME_CATEGORIES_API}/${categoryId}`,
         categoryData,
       );

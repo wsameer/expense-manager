@@ -30,13 +30,13 @@ import {
   DrawerTitle,
 } from '@/Components/ui/drawer';
 
-import { Category } from '../types';
+import { IncomeCategory } from '../types';
 import { useIncomeCategories } from '../api/use-categories';
 
 type Props = {
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  selectedCategory?: Category;
+  selectedCategory?: IncomeCategory;
 };
 
 const FormSchema = z.object({

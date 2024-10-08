@@ -4,7 +4,7 @@ import { INCOME_CATEGORIES_API } from '../constants';
 import { useSWRConfig } from 'swr';
 import { cache } from 'swr/_internal';
 import { handleError } from '@/lib/handle-error';
-import { Category } from '../types';
+import { IncomeCategory } from '../types';
 
 const deleteIncomeCategory = async (
   url: string,
@@ -32,7 +32,7 @@ export const useDeleteIncomeCategory = () => {
       // optimistic update
       mutate(
         INCOME_CATEGORIES_API,
-        (categories: Category[] | undefined) =>
+        (categories: IncomeCategory[] | undefined) =>
           categories?.filter((category) => category.id !== categoryId),
         false,
       );

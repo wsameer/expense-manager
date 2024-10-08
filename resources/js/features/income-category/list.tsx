@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/Components/ui/button';
 import { MoreVertical, Pencil, Plus, Trash } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Category } from './types';
+import { IncomeCategory } from './types';
 import { AddIncomeCategoryForm } from './components/add-income-form';
 import { Busy } from '@/Components/busy';
 import { ErrorMessage } from '@/Components/errors/error-message';
@@ -17,7 +17,6 @@ import {
 } from '@/Components/ui/dropdown-menu';
 import { toast } from '@/hooks';
 import { useDeleteIncomeCategory } from './api/delete-category';
-import { Skeleton } from '@/Components/ui/skeleton';
 
 export const IncomeCategoryList = () => {
   const { t } = useTranslation(['common', 'categories']);
@@ -26,7 +25,7 @@ export const IncomeCategoryList = () => {
   const { incomeCategories, isLoading, isError } = useIncomeCategories();
 
   const [openCategoryModal, setOpenCategoryModal] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const [selectedCategory, setSelectedCategory] = useState<IncomeCategory>();
 
   const handleDeleteCategory = (categoryId: number) => {
     openConfirmDialog({
