@@ -1,5 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { MonthNavigator } from './components/month-navigator';
+import { TransactionList } from './components/transactions-list';
 
 export const TransactionsPage = () => {
-  return <div>TransactionsPage</div>;
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const handlePrevMonth = () => {
+    setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+  };
+
+  return (
+    <div>
+      <MonthNavigator
+        currentDate={currentDate}
+        onPrevMonth={handlePrevMonth}
+        onNextMonth={handleNextMonth}
+      />
+      <TransactionList />
+    </div>
+  );
 };

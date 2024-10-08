@@ -3,7 +3,8 @@ import useSWRMutation from 'swr/mutation';
 import axiosInstance from '@/lib/api-client';
 import { handleError } from '@/lib/handle-error';
 import { useSWRConfig } from 'swr';
-import { CreateTransactionPayload, TRANSACTIONS_API } from '../types';
+import { CreateTransactionPayload } from '../types';
+import { TRANSACTIONS_API } from '@/features/transactions/constants';
 
 const createTransactionFetcher = async (
   url: string,

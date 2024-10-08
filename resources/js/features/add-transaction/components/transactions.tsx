@@ -1,10 +1,17 @@
 import React, { useCallback, useMemo } from 'react';
-import { TransactionsProps, TransactionTypes } from '../types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
 
 import { ExpenseForm } from './expense-form';
 import { IncomeForm } from './income-form';
 import { TransferForm } from './transfer-form';
+import { TransactionTypes } from '@/features/transactions/types';
+
+
+type TransactionsProps = {
+  selectedTab: TransactionTypes;
+  setSelectedTab: (value: TransactionTypes) => void;
+  setOpen: (value: boolean) => void;
+};
 
 export const Transactions: React.FC<TransactionsProps> = React.memo(
   ({ selectedTab, setSelectedTab, setOpen }) => {
@@ -35,7 +42,7 @@ export const Transactions: React.FC<TransactionsProps> = React.memo(
               value={type}
               className="w-full text-center capitalize"
             >
-              {type}
+              {type === TransactionTypes.TRANSFER ? 'Transfer' : type}
             </TabsTrigger>
           ))}
         </TabsList>

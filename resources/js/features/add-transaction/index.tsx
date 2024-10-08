@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useResponsive } from '@/hooks';
 import {
@@ -23,12 +23,14 @@ import {
 } from '@/Components/ui/dialog';
 
 import { Transactions } from './components/transactions';
-import { TransactionTypes } from './types';
+import { TransactionTypes } from '../transactions/types';
 
 export const AddTransaction = () => {
   const [open, setOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(TransactionTypes.EXPENSE);
   const { isMobile } = useResponsive();
+
+  const tabTitle = useMemo(() => selectedTab === TransactionTypes.TRANSFER ? 'transfer' : selectedTab, [selectedTab])
 
   if (isMobile) {
     return (
@@ -50,7 +52,7 @@ export const AddTransaction = () => {
             <DrawerHeader className="text-left">
               <DrawerTitle>
                 Record {selectedTab === TransactionTypes.TRANSFER ? 'a' : 'an'}{' '}
-                {selectedTab}
+                {tabTitle}
               </DrawerTitle>
             </DrawerHeader>
             <div className="px-4">

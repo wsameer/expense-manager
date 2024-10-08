@@ -13,8 +13,8 @@ import {
 } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
-
-import { OptionSelector } from '../../../Components/option-selector';
+import { OptionSelector } from '@/Components/option-selector';
+import { TransactionTypes } from '@/features/transactions/types';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 import { useExpenseCategories } from '@/features/expense-category/api/use-expense-categories';
 import {
@@ -27,7 +27,6 @@ import {
 import { DateSelector } from './form-fields/date-selector';
 import { useCreateTransaction } from '../api/create-transaction';
 import { toast } from '@/hooks';
-import { FormProps, TransactionTypes } from '../types';
 import { cn } from '@/utils';
 
 const formSchema = z.object({
@@ -51,6 +50,10 @@ const formSchema = z.object({
     z.string().max(128, { message: 'Note can be of max 128 characters' }),
   ),
 });
+
+type FormProps = {
+  setOpen: (value: boolean) => void;
+};
 
 export const ExpenseForm = ({ setOpen }: FormProps) => {
   const { allAccounts } = useAccounts();
