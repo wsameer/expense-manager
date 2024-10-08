@@ -29,14 +29,14 @@ export const TransactionList = () => {
   }
 
   const groupedTransactions = groupTransactionsByDate(allTransactions!);
-  const sortedDates = Object.keys(groupedTransactions).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+  const sortedDates = Object.keys(groupedTransactions).sort((a, b) => (new Date(b).getTime() - new Date(a).getTime()));
 
   return (
     <div>
-      {sortedDates.map(date => (
+      {sortedDates.map((date: string) => (
         <div key={date} className="mb-4">
           <p className="text-sm mb-2">
-            {new Date(date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' })}
+            {new Date(`${date}T00:00:00`).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' })}
           </p>
           <div className="bg-white rounded-lg shadow">
             {groupedTransactions[date].map(transaction => (

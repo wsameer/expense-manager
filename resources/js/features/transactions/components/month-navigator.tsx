@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { formatDate } from '../utils';
+import { getFullMonthAndDate } from '../utils';
 
 type MonthNavigatorProps = {
   currentDate: Date;
@@ -18,7 +18,7 @@ export const MonthNavigator = memo<MonthNavigatorProps>(({
       <button onClick={onPrevMonth} className="p-2">
         <ChevronLeft size={24} />
       </button>
-      <p className="text-l font-bold">{formatDate(currentDate)}</p>
+      <p className="text-l font-bold">{getFullMonthAndDate(currentDate)}</p>
       <button onClick={onNextMonth} className="p-2">
         <ChevronRight size={24} />
       </button>

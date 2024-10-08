@@ -27,7 +27,7 @@ import {
 import { DateSelector } from './form-fields/date-selector';
 import { useCreateTransaction } from '../api/create-transaction';
 import { toast } from '@/hooks';
-import { cn } from '@/utils';
+import { cn, getFormattedDateTime } from '@/utils';
 
 const formSchema = z.object({
   date: z.date({
@@ -113,10 +113,7 @@ export const ExpenseForm = ({ setOpen }: FormProps) => {
       await createTransaction({
         ...values,
         // Format: YYYY-MM-DD HH:MM:SS
-        date: new Date(values.date)
-          .toISOString()
-          .slice(0, 19)
-          .replace('T', ' '),
+        date: getFormattedDateTime(values.date),
         type: TransactionTypes.EXPENSE,
       });
       form.reset();
