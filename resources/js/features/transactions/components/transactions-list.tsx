@@ -4,6 +4,8 @@ import { Skeleton } from '@/Components/ui/skeleton';
 import { useTranslation } from 'react-i18next';
 import { groupTransactionsByDate } from '../utils';
 import { TransactionItem } from './transaction-item';
+import { ListItem } from '@/Components/list-group/list-item';
+import { Button } from '@/Components/ui/button';
 
 export const TransactionList = () => {
   const { t } = useTranslation('transaction');
@@ -34,26 +36,25 @@ export const TransactionList = () => {
   );
 
   return (
-    <div>
+    <div className='flex flex-wrap flex-col gap-4 mb-4'>
       {sortedDates.map((date: string) => (
         <div
           key={date}
-          className="mb-4"
         >
-          <p className="text-sm mb-2">
+          <p className="text-sm mb-1">
             {new Date(`${date}T00:00:00`).toLocaleDateString('en-US', {
               weekday: 'short',
               day: 'numeric',
             })}
           </p>
-          <div className="bg-white rounded-lg shadow">
+          <ul className="bg-white rounded-lg shadow">
             {groupedTransactions[date].map((transaction) => (
               <TransactionItem
                 key={transaction.id}
                 transaction={transaction}
               />
             ))}
-          </div>
+          </ul>
         </div>
       ))}
     </div>

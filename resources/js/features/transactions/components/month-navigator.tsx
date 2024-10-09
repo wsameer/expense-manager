@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { getFullMonthAndDate } from '../utils';
+import { Button } from '@/Components/ui/button';
 
 type MonthNavigatorProps = {
   currentDate: Date;
@@ -12,19 +13,13 @@ export const MonthNavigator = memo<MonthNavigatorProps>(
   ({ currentDate, onPrevMonth, onNextMonth }) => {
     return (
       <div className="flex items-center justify-between mb-2">
-        <button
-          onClick={onPrevMonth}
-          className="p-2"
-        >
-          <ChevronLeft size={24} />
-        </button>
+        <Button className='p-0' onClick={onPrevMonth} variant={"ghost"}>
+          <ChevronLeft size={20} />
+        </Button>
         <p className="text-l font-bold">{getFullMonthAndDate(currentDate)}</p>
-        <button
-          onClick={onNextMonth}
-          className="p-2"
-        >
-          <ChevronRight size={24} />
-        </button>
+        <Button className='p-0' onClick={onNextMonth} variant={"ghost"}>
+          <ChevronRight size={20} />
+        </Button>
       </div>
     );
   },
