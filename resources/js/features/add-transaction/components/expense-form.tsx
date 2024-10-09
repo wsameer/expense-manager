@@ -28,6 +28,8 @@ import { DateSelector } from './form-fields/date-selector';
 import { useCreateTransaction } from '../api/create-transaction';
 import { toast } from '@/hooks';
 import { cn, getFormattedDateTime } from '@/utils';
+import { FormProps } from '../types';
+import { useTranslation } from 'react-i18next';
 
 const formSchema = z.object({
   date: z.date({
@@ -51,16 +53,14 @@ const formSchema = z.object({
   ),
 });
 
-type FormProps = {
-  setOpen: (value: boolean) => void;
-};
-
 export const ExpenseForm = ({ setOpen }: FormProps) => {
+  const [showAccountSelector, setShowAccountSelector] = useState(false);
+  const [showCategorySelector, setShowCategorySelector] = useState(false);
+
+  const { t } = useTranslation('transaction');
   const { allAccounts } = useAccounts();
   const { expenseCategories } = useExpenseCategories();
   const { createTransaction } = useCreateTransaction();
-  const [showAccountSelector, setShowAccountSelector] = useState(false);
-  const [showCategorySelector, setShowCategorySelector] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

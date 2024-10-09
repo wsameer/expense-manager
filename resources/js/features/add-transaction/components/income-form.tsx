@@ -20,7 +20,10 @@ import { Account } from '@/types/api';
 import { useTranslation } from 'react-i18next';
 import { DateSelector } from './form-fields/date-selector';
 import { FormProps } from '../types';
-import { cn } from '@/utils';
+import { cn, getFormattedDateTime } from '@/utils';
+import { useCreateTransaction } from '../api/create-transaction';
+import { toast } from '@/hooks';
+import { TransactionTypes } from '@/features/transactions/types';
 
 const formSchema = z.object({
   transactionDate: z.date({
@@ -32,10 +35,10 @@ const formSchema = z.object({
       invalid_type_error: 'Amount must be a number',
     })
     .nonnegative(),
-  categoryId: z.coerce.number({
+  incomeCategoryId: z.coerce.number({
     required_error: 'Please select a category',
   }),
-  accountId: z.coerce.number({
+  fromAccountId: z.coerce.number({
     required_error: 'Please select an account',
   }),
   note: z.optional(
@@ -44,13 +47,15 @@ const formSchema = z.object({
 });
 
 export const IncomeForm = ({ setOpen }: FormProps) => {
-  const { t } = useTranslation('transaction');
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [showCategorySelector, setShowCategorySelector] = useState(false);
+
+  const { t } = useTranslation('transaction');
   const { allAccounts } = useAccounts();
   const { incomeCategories } = useIncomeCategories();
+  const { createTransaction } = useCreateTransaction();
 
-  const incomeCategoryOptions = useMemo(() => {
+  const incomeCategoryOptions = useCallback(() => {
     if (!incomeCategories) return [];
 
     return incomeCategories.map((d) => {
@@ -59,7 +64,7 @@ export const IncomeForm = ({ setOpen }: FormProps) => {
         name: d.name,
       };
     });
-  }, []);
+  }, [incomeCategories]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,13 +74,6 @@ export const IncomeForm = ({ setOpen }: FormProps) => {
     },
   });
   const formErrors = form.formState.errors;
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.table(values);
-    return setOpen(false);
-  }
 
   const getSelectedAccountName = useCallback(
     (id: number) => {
@@ -97,6 +95,25 @@ export const IncomeForm = ({ setOpen }: FormProps) => {
     },
     [incomeCategories],
   );
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!values) return false;
+    try {
+      await createTransaction({
+        ...values,
+        // Format: YYYY-MM-DD HH:MM:SS
+        date: getFormattedDateTime(values.transactionDate),
+        type: TransactionTypes.INCOME,
+      });
+      form.reset();
+      return setOpen(false);
+    } catch (error: any) {
+      toast({
+        title: 'Operation failed!',
+        description: error.message,
+      });
+    }
+  };
 
   return (
     <Form {...form}>
@@ -159,13 +176,13 @@ export const IncomeForm = ({ setOpen }: FormProps) => {
         />
 
         <FormField
-          name="categoryId"
+          name="incomeCategoryId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
-                  htmlFor="categoryId"
+                  htmlFor="incomeCategoryId"
                   className="w-1/4"
                 >
                   {t('transaction:category')}
@@ -189,13 +206,13 @@ export const IncomeForm = ({ setOpen }: FormProps) => {
         />
 
         <FormField
-          name="accountId"
+          name="fromAccountId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
-                  htmlFor="accountId"
+                  htmlFor="fromAccountId"
                   className="w-1/4"
                 >
                   {t('transaction:account')}
@@ -249,7 +266,7 @@ export const IncomeForm = ({ setOpen }: FormProps) => {
             <OptionSelector
               options={allAccounts!}
               onSelect={(value: Account) => {
-                form.setValue('accountId', value.id);
+                form.setValue('fromAccountId', value.id);
                 setShowAccountSelector(false);
               }}
             />
@@ -257,9 +274,9 @@ export const IncomeForm = ({ setOpen }: FormProps) => {
 
           {showCategorySelector && (
             <OptionSelector
-              options={incomeCategoryOptions!}
+              options={incomeCategoryOptions()}
               onSelect={(option) => {
-                form.setValue('categoryId', option.id);
+                form.setValue('incomeCategoryId', option.id);
                 setShowCategorySelector(false);
               }}
             />

@@ -1,6 +1,7 @@
 import { Button } from '@/Components/ui/button';
-import { Transaction } from '../types';
+import { Transaction, TransactionTypes } from '../types';
 import { parseDate } from '../utils';
+import { cn } from '@/utils';
 
 type TransactionItemProps = {
   transaction: Transaction;
@@ -29,7 +30,10 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
           </p>
         </div>
         <p
-          className={`text-sm font-mono font-semibold ${transaction.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}
+          className={cn('text-xs font-mono font-semibold', {
+            'text-green-600': transaction.type === TransactionTypes.INCOME,
+            'text-red-600': transaction.type === TransactionTypes.EXPENSE
+          })}
         >
           ${Math.abs(transaction.amount).toFixed(2)}
         </p>
