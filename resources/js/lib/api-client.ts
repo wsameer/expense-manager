@@ -10,12 +10,15 @@ const snakeToCamel = (str: string): string =>
 const camelToSnake = (str: string): string =>
   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 
-const isObject = (obj: any): boolean =>
-  obj !== null && typeof obj === 'object' && !Array.isArray(obj);
+const isObject = (obj: any): boolean => obj !== null && typeof obj === 'object';
 
 const convertKeys = (obj: any, converter: (key: string) => string): any => {
   if (!isObject(obj)) {
     return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map((item) => convertKeys(item, converter));
   }
 
   const newObj: any = {};
@@ -24,9 +27,7 @@ const convertKeys = (obj: any, converter: (key: string) => string): any => {
     const newKey = converter(key);
     newObj[newKey] = isObject(obj[key])
       ? convertKeys(obj[key], converter)
-      : Array.isArray(obj[key])
-        ? obj[key].map((item: any) => convertKeys(item, converter))
-        : obj[key];
+      : obj[key];
   });
 
   return newObj;
