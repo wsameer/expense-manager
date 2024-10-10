@@ -3,8 +3,8 @@ import useSWRMutation from 'swr/mutation';
 import axiosInstance from '@/lib/api-client';
 import { handleError } from '@/lib/handle-error';
 import { useSWRConfig } from 'swr';
-import { CreateTransactionPayload } from '../types';
 import { TRANSACTIONS_API } from '@/features/transactions/constants';
+import { CreateTransactionPayload } from '@/features/transactions/types';
 
 const createTransactionFetcher = async (
   url: string,
@@ -31,9 +31,14 @@ export const useCreateTransaction = () => {
     try {
       const result = await trigger(transactionData);
       mutate(
-        TRANSACTIONS_API,
-        (currentTransactions: any = []) => [...currentTransactions, result],
-        false,
+        (key: string) => {
+          return (
+            typeof key === 'string' &&
+            key.startsWith(`${TRANSACTIONS_API}?month=`)
+          );
+        },
+        undefined,
+        { revalidate: true },
       );
       return result;
     } catch (error) {
