@@ -2,14 +2,19 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Skeleton } from '@/Components/ui/skeleton';
+import { EmptyTransactions } from '@/Components/shared/empty-data';
 
 import { useTransactions } from '../api/get-transactions';
 import { groupTransactionsByDate } from '../utils';
 import { TransactionItem } from './transaction-item';
 
-export const TransactionList = () => {
+type Props = {
+  currentDate: Date;
+}
+
+export const TransactionList = ({ currentDate }: Props) => {
   const { t } = useTranslation('transaction');
-  const { allTransactions, isError, isLoading } = useTransactions();
+  const { allTransactions, isError, isLoading } = useTransactions(new Date(currentDate).toISOString().slice(0, 7));
 
   if (isError) {
     return (
@@ -30,6 +35,10 @@ export const TransactionList = () => {
     );
   }
 
+  if (allTransactions?.length === 0) {
+    return <EmptyTransactions />
+  }
+
   const groupedTransactions = groupTransactionsByDate(allTransactions!);
   const sortedDates = Object.keys(groupedTransactions).sort(
     (a, b) => new Date(b).getTime() - new Date(a).getTime(),
@@ -42,7 +51,7 @@ export const TransactionList = () => {
           key={date}
         >
           <p className="text-sm mb-1">
-            {new Date(`${date}T00:00:00`).toLocaleDateString('en-US', {
+            {new Date(`${date}T00:00:00`).toLocaleDateString('en-CA', {
               weekday: 'short',
               day: 'numeric',
             })}

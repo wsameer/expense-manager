@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
+import { Busy } from '@/Components/shared/busy';
 import { useTranslation } from 'react-i18next';
 import { useConfirmDialog } from '@/Components/ui/confirmable';
 import { toast } from '@/hooks';
@@ -25,7 +26,6 @@ import { useDeleteExpenseCategory } from './api/delete-category';
 import { AddExpenseSubCategory } from './components/add-expense-subcategory';
 import { Category, Subcategory } from './types';
 import { SubcategoryItem } from './components/subcategory';
-import { Busy } from '../../Components/busy';
 import { ErrorMessage } from '../../Components/errors/error-message';
 import { AddExpenseCategoryForm } from './components/add-category-form';
 

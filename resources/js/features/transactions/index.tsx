@@ -26,7 +26,7 @@ export const TransactionsPage = () => {
         onPrevMonth={handlePrevMonth}
         onNextMonth={handleNextMonth}
       />
-      <TransactionList />
+      <TransactionList currentDate={currentDate} />
     </div>
   );
 };

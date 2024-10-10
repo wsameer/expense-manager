@@ -14,9 +14,12 @@ const fetchTransactions = async (url: string): Promise<Transaction[]> => {
   }));
 };
 
-export const useTransactions = () => {
+/**
+ * @param month // YY-MM
+ */
+export const useTransactions = (month: string) => {
   const { data, error, mutate } = useSWR<Transaction[], AxiosError>(
-    TRANSACTIONS_API,
+    `${TRANSACTIONS_API}?month=${month}`,
     fetchTransactions,
     {
       revalidateOnFocus: false,

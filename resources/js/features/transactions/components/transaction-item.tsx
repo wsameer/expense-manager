@@ -10,6 +10,7 @@ type TransactionItemProps = {
 export const TransactionItem: React.FC<TransactionItemProps> = ({
   transaction,
 }) => {
+  // console.log("🚀 ~ transaction:", transaction)
   const onClickHandler = () => {
     console.log("Open add transaction drawer in edit mode");
   }
@@ -20,10 +21,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
         <div>
           <p className="text-sm font-semibold">{transaction.note}</p>
           <p className="text-xs text-gray-500">
-            {parseDate(transaction.date).toLocaleString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
+            {parseDate(transaction.date).toLocaleTimeString('en-CA', {
               hour: '2-digit',
               minute: '2-digit',
             })}

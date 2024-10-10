@@ -5,7 +5,7 @@ import { MoreVertical, Pencil, Plus, Trash } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { IncomeCategory } from './types';
 import { AddIncomeCategoryForm } from './components/add-income-form';
-import { Busy } from '@/Components/busy';
+import { Busy } from '@/Components/shared/busy';
 import { ErrorMessage } from '@/Components/errors/error-message';
 import { useConfirmDialog } from '@/Components/ui/confirmable';
 import { useIncomeCategories } from './api/use-categories';

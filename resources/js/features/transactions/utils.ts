@@ -1,7 +1,7 @@
 import { Transaction } from './types';
 
 export const getFullMonthAndDate = (date: Date): string => {
-  return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  return date.toLocaleDateString('en-CA', { month: 'long', year: 'numeric' });
 };
 
 export const parseDate = (dateString: string): Date => {
