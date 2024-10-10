@@ -17,7 +17,7 @@ import { Input } from '@/Components/ui/input';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 import { OptionSelector } from '../../../Components/option-selector';
 import { DateSelector } from './form-fields/date-selector';
-import { FormProps } from '../types';
+import { FormProps } from './types';
 import { cn } from '@/utils';
 
 const formSchema = z

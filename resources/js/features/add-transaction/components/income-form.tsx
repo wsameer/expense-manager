@@ -19,11 +19,11 @@ import { useIncomeCategories } from '@/features/income-category/api/use-categori
 import { Account } from '@/types/api';
 import { useTranslation } from 'react-i18next';
 import { DateSelector } from './form-fields/date-selector';
-import { FormProps } from '../types';
 import { cn, getFormattedDateTime } from '@/utils';
 import { useCreateTransaction } from '../api/create-transaction';
 import { toast } from '@/hooks';
 import { TransactionTypes } from '@/features/transactions/types';
+import { FormProps } from './types';
 
 const formSchema = z.object({
   transactionDate: z.date({

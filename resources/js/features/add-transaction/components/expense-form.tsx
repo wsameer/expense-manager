@@ -28,8 +28,8 @@ import { DateSelector } from './form-fields/date-selector';
 import { useCreateTransaction } from '../api/create-transaction';
 import { toast } from '@/hooks';
 import { cn, getFormattedDateTime } from '@/utils';
-import { FormProps } from '../types';
 import { useTranslation } from 'react-i18next';
+import { FormProps } from './types';
 
 const formSchema = z.object({
   date: z.date({
