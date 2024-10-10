@@ -13,16 +13,29 @@ class TransactionController extends Controller
   /**
    * Display a listing of the resource.
    */
-  public function index()
+  public function index(Request $request)
   {
+    $request->validate([
+      'month' => 'sometimes|required|date_format:Y-m',
+    ]);
+
     $this->authorize('viewAny', Transaction::class);
-    $transactions = auth()->user()->transactions()->with([
+
+    $query = auth()->user()->transactions()->with([
       'fromAccount',
       'toAccount',
       'expenseCategory',
       'expenseSubcategory',
       'incomeCategory'
-    ])->latest()->get();
+    ]);
+
+    if ($request->has('month')) {
+      $date = Carbon::createFromFormat('Y-m', $request->month);
+      $query->whereYear('date', $date->year)
+        ->whereMonth('date', $date->month);
+    }
+
+    $transactions = $query->latest()->get();
 
     return response()->json($transactions);
   }
