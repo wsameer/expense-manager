@@ -38,18 +38,18 @@ export const Navigation = () => {
 
   if (isMobile) {
     return (
-      <nav className="fixed px-3 bottom-0 left-0 right-0 grid grid-cols-5 gap-3 justify-items-center items-center bg-white border-t border-gray-200 h-20 z-10">
+      <nav className="fixed px-3 bottom-0 left-0 right-0 grid grid-cols-5 gap-3 justify-items-center items-center bg-white dark:bg-zinc-800 border-t border-zinc-200 dark:border-zinc-900 h-20 z-10">
         {navItems.slice(0, -1).map((item, index) => (
           <React.Fragment key={item.path}>
             <Button
               variant="ghost"
               size="icon"
-              className={cn(
-                'p-0 hover:bg-white',
-                location.pathname === item.path
-                  ? 'text-black'
-                  : 'text-gray-400',
-              )}
+              className={cn('p-0 hover:bg-white dark:hover:bg-zinc-800', {
+                'text-zinc-500 dark:text-zinc-300':
+                  location.pathname === item.path,
+                'text-zinc-500 dark:hover:text-zinc-300':
+                  location.pathname !== item.path,
+              })}
               onClick={() => navigate(item.path)}
             >
               <div className="flex flex-col items-center justify-center">
@@ -63,11 +63,14 @@ export const Navigation = () => {
         <Button
           variant="ghost"
           size="icon"
-          className={cn('hover:bg-white text-gray-400', {
-            'text-black': location.pathname.includes(
-              navItems[navItems.length - 1].path,
-            ),
-          })}
+          className={cn(
+            'p-0 hover:bg-white dark:hover:bg-zinc-800 text-zinc-500 dark:hover:text-zinc-300',
+            {
+              'text-zinc-500 dark:text-zinc-300': location.pathname.includes(
+                navItems[navItems.length - 1].path,
+              ),
+            },
+          )}
           onClick={() => navigate(navItems[navItems.length - 1].path)}
         >
           <div className="flex flex-col items-center justify-center">

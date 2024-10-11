@@ -36,7 +36,7 @@ export const AppHeader = () => {
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="rounded-full border border-gray-300"
+              className="rounded-full border border-zinc-300"
               asChild
             >
               <Avatar className="cursor-pointer">
