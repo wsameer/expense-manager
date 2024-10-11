@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -46,7 +46,7 @@ const formSchema = z.object({
   ),
 });
 
-export const IncomeForm = ({ setOpen }: FormProps) => {
+export const IncomeForm = ({ existingData, setOpen }: FormProps) => {
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [showCategorySelector, setShowCategorySelector] = useState(false);
 
@@ -114,6 +114,18 @@ export const IncomeForm = ({ setOpen }: FormProps) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (existingData) {
+      form.reset({
+        transactionDate: new Date(existingData.date),
+        amount: existingData.amount,
+        incomeCategoryId: existingData.incomeCategoryId!,
+        fromAccountId: existingData.fromAccountId,
+        note: existingData.note ?? '',
+      });
+    }
+  }, [existingData, form.reset]);
 
   return (
     <Form {...form}>
@@ -288,7 +300,7 @@ export const IncomeForm = ({ setOpen }: FormProps) => {
           variant="destructive"
           type="submit"
         >
-          {t('transaction:create')}
+          {existingData ? t('transaction:update') : t('transaction:create')}
         </Button>
       </form>
     </Form>
