@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -53,7 +53,7 @@ const formSchema = z.object({
   ),
 });
 
-export const ExpenseForm = ({ setOpen }: FormProps) => {
+export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [showCategorySelector, setShowCategorySelector] = useState(false);
 
@@ -125,6 +125,19 @@ export const ExpenseForm = ({ setOpen }: FormProps) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (existingData) {
+      form.reset({
+        date: new Date(existingData.date),
+        amount: existingData.amount,
+        expenseCategoryId: existingData.expenseCategoryId!,
+        expenseSubcategoryId: existingData.expenseSubcategoryId ?? -1,
+        fromAccountId: existingData.fromAccountId,
+        note: existingData.note ?? '',
+      });
+    }
+  }, [existingData, form.reset]);
 
   return (
     <Form {...form}>
@@ -231,7 +244,11 @@ export const ExpenseForm = ({ setOpen }: FormProps) => {
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    value={field.value?.toString()}
+                    value={
+                      existingData
+                        ? existingData.expenseSubcategoryId?.toString()
+                        : field.value?.toString()
+                    }
                     disabled={isSubcategoriesEmpty}
                   >
                     <FormControl>
@@ -360,7 +377,7 @@ export const ExpenseForm = ({ setOpen }: FormProps) => {
           variant="destructive"
           type="submit"
         >
-          Submit
+          {existingData ? t('transaction:update') : t('transaction:create')}
         </Button>
       </form>
     </Form>
