@@ -5,6 +5,7 @@
   "account": "Account",
   "note": "Note",
   "create": "Create",
+  "update": "Update",
   "select-a-category": "Select a category",
   "select-account": "Select an account",
   "get-error-message": "Error in getting Transactions. Please try again."
