@@ -121,16 +121,94 @@ class TransactionController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
+  public function update(Request $request, Transaction $transaction)
   {
-    //
+    $this->authorize('update', $transaction);
+
+    $validated = $request->validate([
+      'date' => 'sometimes|required|date',
+      'amount' => 'sometimes|required|numeric|min:0.01',
+      'expense_category_id' => [
+        Rule::requiredIf(function () use ($transaction) {
+          return $transaction->type === 'expense';
+        }),
+        'exists:expense_categories,id',
+      ],
+      'expense_subcategory_id' => [
+        'nullable',
+        Rule::requiredIf(function () use ($transaction, $request) {
+          return $transaction->type === 'expense' && $request->has('expense_category_id');
+        }),
+        'exists:expense_subcategories,id',
+      ],
+      'income_category_id' => [
+        Rule::requiredIf(function () use ($transaction) {
+          return $transaction->type === 'income';
+        }),
+        'exists:income_categories,id',
+      ],
+      'note' => 'nullable|string',
+    ]);
+
+    return DB::transaction(function () use ($validated, $transaction) {
+      $oldAmount = $transaction->amount;
+      $newAmount = $validated['amount'] ?? $oldAmount;
+
+      $transaction->update($validated);
+
+      if ($oldAmount !== $newAmount) {
+        switch ($transaction->type) {
+          case 'bank_to_bank':
+            $transaction->fromAccount->increment('balance', $oldAmount);
+            $transaction->fromAccount->decrement('balance', $newAmount);
+            $transaction->toAccount->decrement('balance', $oldAmount);
+            $transaction->toAccount->increment('balance', $newAmount);
+            break;
+          case 'income':
+            $transaction->fromAccount->decrement('balance', $oldAmount);
+            $transaction->fromAccount->increment('balance', $newAmount);
+            break;
+          case 'expense':
+            $transaction->fromAccount->increment('balance', $oldAmount);
+            $transaction->fromAccount->decrement('balance', $newAmount);
+            break;
+        }
+      }
+
+      return response()->json($transaction->fresh()->load([
+        'fromAccount',
+        'toAccount',
+        'expenseCategory',
+        'expenseSubcategory',
+        'incomeCategory'
+      ]));
+    });
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id)
+  public function destroy(Transaction $transaction)
   {
-    //
+    $this->authorize('delete', $transaction);
+
+    return \DB::transaction(function () use ($transaction) {
+      switch ($transaction->type) {
+        case 'bank_to_bank':
+          $transaction->fromAccount->increment('balance', $transaction->amount);
+          $transaction->toAccount->decrement('balance', $transaction->amount);
+          break;
+        case 'income':
+          $transaction->fromAccount->decrement('balance', $transaction->amount);
+          break;
+        case 'expense':
+          $transaction->fromAccount->increment('balance', $transaction->amount);
+          break;
+      }
+
+      $transaction->delete();
+
+      return response()->json(null, 204);
+    });
   }
 }
