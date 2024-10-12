@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -46,11 +47,13 @@ const formSchema = z
     path: ['toAccountId'],
   });
 
-export const TransferForm = ({ setOpen }: FormProps) => {
+export const TransferForm = ({ existingData, setOpen }: FormProps) => {
+  const { t } = useTranslation('transaction');
+  const { allAccounts } = useAccounts();
+
   const [showAccountSelector, setShowAccountSelector] = useState<
     string | boolean
   >(false);
-  const { allAccounts } = useAccounts();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -234,7 +237,7 @@ export const TransferForm = ({ setOpen }: FormProps) => {
           variant="destructive"
           type="submit"
         >
-          Submit
+          {existingData ? t('transaction:update') : t('transaction:create')}
         </Button>
       </form>
     </Form>

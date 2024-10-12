@@ -6,53 +6,80 @@ import { useCallback } from 'react';
 
 type TransactionItemProps = {
   transaction: Transaction;
+  onTransactionClick: (transaction: Transaction) => void;
 };
-
 
 export const TransactionItem: React.FC<TransactionItemProps> = ({
   transaction,
+  onTransactionClick,
 }) => {
-
-  const onClickHandler = () => {
-    console.log("Open add transaction drawer in edit mode");
-  }
-
   const getCategory = useCallback(() => {
-    if (transaction.type === TransactionTypes.EXPENSE && transaction.expenseCategory) {
+    if (
+      transaction.type === TransactionTypes.EXPENSE &&
+      transaction.expenseCategory
+    ) {
       return transaction.expenseCategory.name;
     }
 
-    if (transaction.type === TransactionTypes.INCOME && transaction.incomeCategory) {
+    if (
+      transaction.type === TransactionTypes.INCOME &&
+      transaction.incomeCategory
+    ) {
       return transaction.incomeCategory.name;
     }
 
     if (transaction.type === TransactionTypes.TRANSFER) {
       return 'Transfer';
     }
-  }, [transaction])
+  }, [transaction]);
 
+  const getSubcategory = useCallback(() => {
+    if (
+      transaction.type === TransactionTypes.EXPENSE &&
+      transaction.expenseSubcategory
+    ) {
+      return transaction.expenseSubcategory.name;
+    }
+  }, [transaction]);
 
   return (
-    <Button className='h-fit w-full px-2' variant="ghost" onClick={onClickHandler} asChild>
-      <li className='grid grid-cols-10 gap-2 items-center w-full border-b border-gray-200 text-sm'>
-        <div className="col-span-2">
-          <p className="text-xs text-gray-900 text-ellipsis overflow-hidden">{getCategory()}</p>
+    <Button
+      className="flex h-10 items-center justify-between py-1 px-2 bg-white dark:bg-zinc-800 dark:hover:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-900 cursor-pointer first:border-t-0"
+      onClick={() => onTransactionClick(transaction)}
+      variant="ghost"
+      asChild
+    >
+      <li className="grid grid-cols-10">
+        <div className="flex flex-col col-span-2">
+          <p className="text-xs text-zinc-900 dark:text-zinc-200 text-ellipsis overflow-hidden">
+            {getCategory()}
+          </p>
+          <p className="text-xs text-zinc-900 dark:text-zinc-200 text-ellipsis overflow-hidden">
+            {getSubcategory()}
+          </p>
         </div>
-        <div className="col-span-6">
-          <p className="text-xs text-gray-600">{transaction.note}</p>
-          <p className="text-xs text-gray-400" style={{ fontSize: '11px' }}>
+        <div className="col-span-6 text-ellipsis overflow-hidden px-1">
+          <p className="text-xs text-zinc-600 dark:text-white">
+            {transaction.note}
+          </p>
+          <p
+            className="text-xs text-zinc-400"
+            style={{ fontSize: '11px' }}
+          >
             {transaction.fromAccount.name}
           </p>
         </div>
         <div className="col-span-2 text-right">
-          <p className={cn("text-xs", {
-            'text-green-600': transaction.type === TransactionTypes.INCOME,
-            'text-red-600': transaction.type === TransactionTypes.EXPENSE
-          })}>
+          <p
+            className={cn('text-xs', {
+              'text-green-600': transaction.type === TransactionTypes.INCOME,
+              'text-red-600': transaction.type === TransactionTypes.EXPENSE,
+            })}
+          >
             ${Math.abs(transaction.amount).toFixed(2)}
           </p>
         </div>
       </li>
     </Button>
-  )
-}
+  );
+};

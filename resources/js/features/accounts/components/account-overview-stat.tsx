@@ -44,7 +44,7 @@ export const AccountOverviewStat = React.memo(({ label, queryKey }: Props) => {
   }, [label]);
 
   return (
-    <div className="flex-1 bg-white dark:bg-gray-800 border rounded-md h-14 flex flex-col items-center justify-center">
+    <div className="flex-1 bg-white dark:bg-zinc-800 border rounded-md h-14 flex flex-col items-center justify-center">
       {isLoading ? (
         <>
           <Skeleton className="h-4 w-16 mb-2 rounded-full" />

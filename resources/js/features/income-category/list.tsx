@@ -75,7 +75,7 @@ export const IncomeCategoryList = () => {
       ) : (
         <>
           {incomeCategories?.map((category) => (
-            <div className="bg-white border dark:bg-gray-800 rounded-lg overflow-hidden w-full">
+            <div className="bg-white border dark:bg-zinc-800 rounded-lg overflow-hidden w-full">
               <div className="flex items-center justify-between space-x-4 pl-4 pr-2 py-2">
                 <div className="flex items-center gap-2">
                   <small className="text-sm font-medium leading-none">

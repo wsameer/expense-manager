@@ -66,9 +66,9 @@ export const Settings = () => {
         <ListItem
           icon={
             theme === 'dark' ? (
-              <Moon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+              <Moon className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
             ) : (
-              <Sun className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+              <Sun className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
             )
           }
           label="Dark Mode (Beta)"
@@ -86,39 +86,39 @@ export const Settings = () => {
 
       <ListGroup title="Category/Accounts">
         <ListItem
-          icon={<Coins className="h-4 w-4 text-gray-600 dark:text-gray-300" />}
+          icon={<Coins className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />}
           label={'Income Category Setting'}
           onClick={() => onSettingItemClick(INCOME_CATEGORY_SETTINGS_ROUTE)}
           rightElement={
-            <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <ChevronRight className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
           }
         />
         <ListItem
           icon={
-            <WalletCards className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <WalletCards className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
           }
           label={'Expense Category Setting'}
           onClick={() => onSettingItemClick(EXPENSE_CATEGORY_SETTINGS_ROUTE)}
           rightElement={
-            <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <ChevronRight className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
           }
         />
         <ListItem
           icon={
-            <CreditCard className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <CreditCard className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
           }
           label={'Accounts Setting'}
           rightElement={
-            <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <ChevronRight className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
           }
         />
         <ListItem
           icon={
-            <PiggyBank className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <PiggyBank className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
           }
           label={'Budget Setting'}
           rightElement={
-            <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <ChevronRight className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
           }
         />
       </ListGroup>
