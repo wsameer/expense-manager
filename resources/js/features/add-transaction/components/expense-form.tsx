@@ -30,6 +30,7 @@ import { toast } from '@/hooks';
 import { cn, getFormattedDateTime } from '@/utils';
 import { useTranslation } from 'react-i18next';
 import { FormProps } from './types';
+import { useUpdateTransaction } from '../api/update-transaction';
 
 const formSchema = z.object({
   date: z.date({
@@ -53,6 +54,8 @@ const formSchema = z.object({
   ),
 });
 
+export type TransactionForm = z.infer<typeof formSchema>;
+
 export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [showCategorySelector, setShowCategorySelector] = useState(false);
@@ -61,6 +64,7 @@ export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
   const { allAccounts } = useAccounts();
   const { expenseCategories } = useExpenseCategories();
   const { createTransaction } = useCreateTransaction();
+  const { updateTransaction } = useUpdateTransaction();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,6 +73,7 @@ export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
       amount: 0,
       expenseCategoryId: -1,
       fromAccountId: -1,
+      expenseSubcategoryId: existingData?.expenseSubcategoryId ?? -1
     },
   });
   const formErrors = form.formState.errors;
@@ -107,15 +112,24 @@ export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
     [expenseCategories],
   );
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (
+    values: z.infer<typeof formSchema>,
+  ) => {
     if (!values) return false;
+
     try {
-      await createTransaction({
+      const transactionData = {
         ...values,
-        // Format: YYYY-MM-DD HH:MM:SS
         date: getFormattedDateTime(values.date),
         type: TransactionTypes.EXPENSE,
-      });
+      };
+
+      if (existingData) {
+        await updateTransaction(transactionData, existingData.id);
+      } else {
+        await createTransaction(transactionData);
+      }
+
       form.reset();
       return setOpen(false);
     } catch (error: any) {
@@ -123,6 +137,7 @@ export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
         title: 'Operation failed!',
         description: error.message,
       });
+      return false;
     }
   };
 
@@ -233,6 +248,7 @@ export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
           name="expenseSubcategoryId"
           control={form.control}
           render={({ field }) => {
+            console.log("🚀 ~ ExpenseForm ~ field:", field.value)
             return (
               <FormItem>
                 <div className="flex items-center mt-4 space-y-0 space-x-2">
@@ -244,18 +260,14 @@ export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    value={
-                      existingData
-                        ? existingData.expenseSubcategoryId?.toString()
-                        : field.value?.toString()
-                    }
+                    value={field.value?.toString()}
                     disabled={isSubcategoriesEmpty}
                   >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue
                           placeholder={
-                            !expenseCategoryId
+                            expenseCategoryId
                               ? 'Select category first'
                               : isSubcategoriesEmpty
                                 ? 'No subcategories'
