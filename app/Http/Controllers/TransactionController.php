@@ -128,6 +128,8 @@ class TransactionController extends Controller
     $validated = $request->validate([
       'date' => 'sometimes|required|date',
       'amount' => 'sometimes|required|numeric|min:0.01',
+      'from_account_id' => 'required|exists:accounts,id',
+      'to_account_id' => 'required_if:type,bank_to_bank|exists:accounts,id',
       'expense_category_id' => [
         Rule::requiredIf(function () use ($transaction) {
           return $transaction->type === 'expense';
