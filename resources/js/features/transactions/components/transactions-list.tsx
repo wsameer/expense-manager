@@ -18,16 +18,22 @@ import {
 import { Button } from '@/Components/ui/button';
 import { Transaction, TransactionTypes } from '../types';
 import { Transactions } from '@/features/add-transaction/components/transactions';
+import { Trash2 } from 'lucide-react';
+import { useConfirmDialog } from '@/Components/ui/confirmable';
+import { toast } from '@/hooks';
+import { useDeleteTransaction } from '../api/delete-transaction';
 
 type Props = {
   currentDate: Date;
 };
 
 export const TransactionList = ({ currentDate }: Props) => {
-  const { t } = useTranslation('transaction');
+  const { t } = useTranslation(['transaction', 'common']);
+  const { openConfirmDialog } = useConfirmDialog();
   const { allTransactions, isError, isLoading } = useTransactions(
     new Date(currentDate).toISOString().slice(0, 7),
   );
+  const { deleteTransaction } = useDeleteTransaction(new Date(currentDate).toISOString().slice(0, 7))
 
   const [open, setOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(TransactionTypes.EXPENSE);
@@ -45,6 +51,29 @@ export const TransactionList = ({ currentDate }: Props) => {
     [selectedTab],
   );
 
+  const handleDeleteTransaction = (id: number) => {
+    openConfirmDialog({
+      title: t('common:alert.are-you-sure'),
+      message: t('transaction:delete-warning-message'),
+      onConfirm: async () => {
+        try {
+          await deleteTransaction(id);
+          setOpen(false);
+          toast({
+            title: t('common:alert.deleted'),
+            description: t('transaction:transaction-is-deleted'),
+          });
+        } catch (error) {
+          console.error('Error deleting account:', error);
+          toast({
+            title: t('common:errors.operation-failed'),
+            description: t('transaction:failed-to-delete'),
+          });
+        }
+      },
+    });
+  };
+
   if (isError) {
     return (
       <div className="grid grid-cols-1 gap-4">
@@ -57,9 +86,26 @@ export const TransactionList = ({ currentDate }: Props) => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 gap-4">
-        <Skeleton className="h-[24px] w-full rounded-xl" />
-        <Skeleton className="h-[24px] w-full rounded-xl" />
+      <div className='flex flex-col gap-6'>
+        <div className="grid grid-cols-1 gap-2">
+          <Skeleton className="h-[25px] w-20 rounded-xl" />
+          <Skeleton className="h-[40px] w-full rounded-xl" />
+          <Skeleton className="h-[40px] w-full rounded-xl" />
+        </div>
+        <div className="grid grid-cols-1 gap-2">
+          <Skeleton className="h-[25px] w-20 rounded-xl" />
+          <Skeleton className="h-[40px] w-full rounded-xl" />
+          <Skeleton className="h-[40px] w-full rounded-xl" />
+        </div>
+        <div className="grid grid-cols-1 gap-2">
+          <Skeleton className="h-[25px] w-20 rounded-xl" />
+          <Skeleton className="h-[40px] w-full rounded-xl" />
+          <Skeleton className="h-[40px] w-full rounded-xl" />
+        </div>
+        <div className="grid grid-cols-1 gap-2">
+          <Skeleton className="h-[25px] w-20 rounded-xl" />
+          <Skeleton className="h-[40px] w-full rounded-xl" />
+        </div>
       </div>
     );
   }
@@ -101,11 +147,19 @@ export const TransactionList = ({ currentDate }: Props) => {
       >
         <DrawerContent>
           <div className="mx-auto w-full max-w-sm">
-            <DrawerHeader className="text-left">
+            <DrawerHeader className="flex justify-between items-center text-left">
               <DrawerTitle>
-                Record {selectedTab === TransactionTypes.TRANSFER ? 'a' : 'an'}{' '}
+                {t('record')} {selectedTab === TransactionTypes.TRANSFER ? 'a' : 'an'}{' '}
                 {tabTitle}
               </DrawerTitle>
+              <Button
+                className="text-red-500 hover:text-red-700 h-6 w-6"
+                variant="ghost"
+                size="icon"
+                onClick={() => handleDeleteTransaction(transactionToEdit!.id)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
             </DrawerHeader>
             <div className="px-4">
               <Transactions
@@ -117,7 +171,9 @@ export const TransactionList = ({ currentDate }: Props) => {
             </div>
             <DrawerFooter>
               <DrawerClose asChild>
-                <Button variant="secondary">Cancel</Button>
+                <Button variant="secondary">
+                  {t('cancel')}
+                </Button>
               </DrawerClose>
             </DrawerFooter>
           </div>
