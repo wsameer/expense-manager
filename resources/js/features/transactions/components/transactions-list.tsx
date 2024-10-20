@@ -33,7 +33,9 @@ export const TransactionList = ({ currentDate }: Props) => {
   const { allTransactions, isError, isLoading } = useTransactions(
     new Date(currentDate).toISOString().slice(0, 7),
   );
-  const { deleteTransaction } = useDeleteTransaction(new Date(currentDate).toISOString().slice(0, 7))
+  const { deleteTransaction } = useDeleteTransaction(
+    new Date(currentDate).toISOString().slice(0, 7),
+  );
 
   const [open, setOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(TransactionTypes.EXPENSE);
@@ -86,7 +88,7 @@ export const TransactionList = ({ currentDate }: Props) => {
 
   if (isLoading) {
     return (
-      <div className='flex flex-col gap-6'>
+      <div className="flex flex-col gap-6">
         <div className="grid grid-cols-1 gap-2">
           <Skeleton className="h-[25px] w-20 rounded-xl" />
           <Skeleton className="h-[40px] w-full rounded-xl" />
@@ -129,7 +131,7 @@ export const TransactionList = ({ currentDate }: Props) => {
               day: 'numeric',
             })}
           </p>
-          <ul className="bg-white border dark:bg-zinc-800 rounded-lg overflow-hidden">
+          <ul className="bg-white border dark:bg-zinc-800 rounded-xl overflow-hidden">
             {groupedTransactions[date].map((transaction) => (
               <TransactionItem
                 key={transaction.id}
@@ -149,7 +151,8 @@ export const TransactionList = ({ currentDate }: Props) => {
           <div className="mx-auto w-full max-w-sm">
             <DrawerHeader className="flex justify-between items-center text-left">
               <DrawerTitle>
-                {t('record')} {selectedTab === TransactionTypes.TRANSFER ? 'a' : 'an'}{' '}
+                {t('record')}{' '}
+                {selectedTab === TransactionTypes.TRANSFER ? 'a' : 'an'}{' '}
                 {tabTitle}
               </DrawerTitle>
               <Button
@@ -171,9 +174,7 @@ export const TransactionList = ({ currentDate }: Props) => {
             </div>
             <DrawerFooter>
               <DrawerClose asChild>
-                <Button variant="secondary">
-                  {t('cancel')}
-                </Button>
+                <Button variant="secondary">{t('cancel')}</Button>
               </DrawerClose>
             </DrawerFooter>
           </div>

@@ -31,7 +31,7 @@ export const AccountsPage = () => {
         'w-1/3': isDesktop,
       })}
     >
-      <div className="flex justify-between items-center space-x-3">
+      <div className="flex justify-between items-center space-x-2">
         {statsData.map((item) => (
           <AccountOverviewStat
             key={item.id}

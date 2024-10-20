@@ -20,7 +20,7 @@ export const TransactionsPage = () => {
   };
 
   return (
-    <div className='mb-4'>
+    <div className="mb-4">
       <MonthNavigator
         currentDate={currentDate}
         onPrevMonth={handlePrevMonth}

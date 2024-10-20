@@ -109,7 +109,7 @@ export const ExpenseCategoryList: React.FC = () => {
           return (
             <Collapsible
               key={category.id}
-              className="bg-white border dark:bg-zinc-800 rounded-lg overflow-hidden w-full"
+              className="bg-white border dark:bg-zinc-800 rounded-xl overflow-hidden w-full"
               open={isCollapsed}
               onOpenChange={() =>
                 category.subcategories.length > 0 && toggleCategory(category.id)

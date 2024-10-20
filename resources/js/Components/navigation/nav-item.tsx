@@ -18,7 +18,7 @@ export const NavItem = ({ item }: { item: SideNavigationItem }) => {
           key={item.label}
           to={item.path}
           className={cn(
-            'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
+            'flex h-9 w-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
             isActive && 'text-accent-foreground bg-accent',
           )}
         >

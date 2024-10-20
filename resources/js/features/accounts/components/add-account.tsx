@@ -38,7 +38,7 @@ export const AddAccount = ({ group }: { group: AccountGroupEnum }) => {
       >
         <DrawerTrigger asChild>
           <Button
-            className="w-full border-zinc-400"
+            className="w-full rounded-xl border-zinc-400"
             variant="dashed"
           >
             <Plus className="h-4 w-4 mr-2" />

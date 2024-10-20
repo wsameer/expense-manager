@@ -27,7 +27,7 @@ export const AppHeader = () => {
         <Input
           type="search"
           placeholder="Search..."
-          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+          className="w-full rounded-xl bg-background pl-8 md:w-[200px] lg:w-[336px]"
         />
       </div>
       <div className="flex justify-end gap-3">
