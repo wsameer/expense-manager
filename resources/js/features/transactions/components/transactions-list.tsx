@@ -16,15 +16,29 @@ import {
   DrawerTitle,
 } from '@/Components/ui/drawer';
 import { Button } from '@/Components/ui/button';
-import { Transaction, TransactionTypes } from '../types';
+import { Transaction, TransactionTypes, TypeTotals } from '../types';
 import { Transactions } from '@/features/add-transaction/components/transactions';
 import { Trash2 } from 'lucide-react';
 import { useConfirmDialog } from '@/Components/ui/confirmable';
 import { toast } from '@/hooks';
 import { useDeleteTransaction } from '../api/delete-transaction';
+import { Stats } from './stats';
 
 type Props = {
   currentDate: Date;
+};
+
+const calculateTotalsByType = (transactions: Transaction[]): TypeTotals => {
+  const initialTotals: TypeTotals = {
+    [TransactionTypes.INCOME]: 0,
+    [TransactionTypes.EXPENSE]: 0,
+  };
+
+  return transactions.reduce((acc, { type, amount }) => {
+    // @ts-ignore
+    acc[type] += amount;
+    return acc;
+  }, initialTotals);
 };
 
 export const TransactionList = ({ currentDate }: Props) => {
@@ -33,6 +47,7 @@ export const TransactionList = ({ currentDate }: Props) => {
   const { allTransactions, isError, isLoading } = useTransactions(
     new Date(currentDate).toISOString().slice(0, 7),
   );
+
   const { deleteTransaction } = useDeleteTransaction(
     new Date(currentDate).toISOString().slice(0, 7),
   );
@@ -121,8 +136,26 @@ export const TransactionList = ({ currentDate }: Props) => {
     (a, b) => new Date(b).getTime() - new Date(a).getTime(),
   );
 
+  const monthlyStats = calculateTotalsByType(allTransactions!);
+  console.log('🚀 ~ TransactionList ~ monthlyStats:', monthlyStats);
+
   return (
     <div className="flex flex-wrap flex-col gap-4 mb-4">
+      <div className="flex justify-between items-center gap-2">
+        <Stats
+          value={monthlyStats.income}
+          label="Income"
+        />
+        <Stats
+          value={monthlyStats.expense}
+          label="Expense"
+        />
+        <Stats
+          value={monthlyStats.income - monthlyStats.expense}
+          label="Totals"
+        />
+      </div>
+
       {sortedDates.map((date: string) => (
         <div key={date}>
           <p className="text-sm mb-1">
