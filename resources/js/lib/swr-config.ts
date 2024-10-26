@@ -25,6 +25,7 @@ export default function useRequest<Data = any, Error = AxiosError>(
     error,
     isValidating,
     mutate,
+    // @ts-ignore̦
   } = useSWR<AxiosResponse<Data>, Error>(
     request && JSON.stringify(request),
     () => axiosInstance(request!),

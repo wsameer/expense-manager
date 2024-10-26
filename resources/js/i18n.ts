@@ -10,7 +10,6 @@ import account from '../locales/en/account.json';
 import categories from '../locales/en/categories.json';
 import transaction from '../locales/en/transaction.json';
 
-export const defaultNS = 'ns1';
 export const resources = {
   en: {
     common,
@@ -37,5 +36,3 @@ i18n
     resources,
     defaultNS: 'common',
   });
-
-export default i18n;
