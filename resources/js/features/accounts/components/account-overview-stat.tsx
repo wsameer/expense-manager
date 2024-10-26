@@ -44,17 +44,17 @@ export const AccountOverviewStat = React.memo(({ label, queryKey }: Props) => {
   }, [label]);
 
   return (
-    <div className="flex-1 bg-white dark:bg-zinc-800 border rounded-xl h-12 flex flex-col items-center justify-center">
+    <div className="flex-1 bg-white dark:bg-zinc-800 border rounded-xl h-14 flex flex-col items-center justify-center">
       {isLoading ? (
         <>
-          <Skeleton className="h-3 w-14 mb-2 rounded-full" />
-          <Skeleton className="h-3 w-20 rounded-full" />
+          <Skeleton className="h-4 w-14 mb-2 rounded-full" />
+          <Skeleton className="h-4 w-20 rounded-full" />
         </>
       ) : (
         <>
-          <small className="text-xs font-medium leading-none">{label}</small>
+          <small className="text-sm font-medium leading-none">{label}</small>
           <small
-            className={cn('text-xs mt-2 font-medium leading-none', labelColor)}
+            className={cn('text-sm mt-2 font-medium leading-none', labelColor)}
           >
             {formattedBalance}
           </small>

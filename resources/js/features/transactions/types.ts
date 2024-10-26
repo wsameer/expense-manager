@@ -47,3 +47,8 @@ export interface Transaction {
   expenseSubcategory: Category | null;
   incomeCategory: IncomeCategory | null;
 }
+
+export interface TypeTotals {
+  [TransactionTypes.INCOME]: number;
+  [TransactionTypes.EXPENSE]: number;
+}
