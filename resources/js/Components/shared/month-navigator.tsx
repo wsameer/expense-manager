@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { getFullMonthAndDate } from '../utils';
+import { getFullMonthAndDate } from '../../features/transactions/utils';
 import { Button } from '@/Components/ui/button';
 
 type MonthNavigatorProps = {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MonthNavigator } from './components/month-navigator';
+import { MonthNavigator } from '../../Components/shared/month-navigator';
 import { TransactionList } from './components/transactions-list';
 
 export const TransactionsPage = () => {

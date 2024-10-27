@@ -246,7 +246,6 @@ export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
           name="expenseSubcategoryId"
           control={form.control}
           render={({ field }) => {
-            console.log('🚀 ~ ExpenseForm ~ field:', field.value);
             return (
               <FormItem>
                 <div className="flex items-center mt-4 space-y-0 space-x-2">

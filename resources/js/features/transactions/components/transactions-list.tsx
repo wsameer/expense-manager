@@ -137,7 +137,6 @@ export const TransactionList = ({ currentDate }: Props) => {
   );
 
   const monthlyStats = calculateTotalsByType(allTransactions!);
-  console.log('🚀 ~ TransactionList ~ monthlyStats:', monthlyStats);
 
   return (
     <div className="flex flex-wrap flex-col gap-4 mb-4">
