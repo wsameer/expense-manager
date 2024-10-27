@@ -24,6 +24,7 @@ export const DashboardPage = () => {
         currentDate={currentDate}
         onPrevMonth={handlePrevMonth}
         onNextMonth={handleNextMonth}
+        options={{ timeJump: true }}
       />
     </div>
   );
