@@ -49,9 +49,9 @@ export const Navigation = () => {
               variant="ghost"
               size="icon"
               className={cn('p-0 hover:bg-white dark:hover:bg-zinc-800', {
-                'text-zinc-800 dark:text-zinc-300':
+                'text-zinc-800 dark:text-zinc-100':
                   location.pathname === item.path,
-                'text-zinc-400 dark:hover:text-zinc-300':
+                'text-zinc-400 dark:hover:text-zinc-100':
                   location.pathname !== item.path,
               })}
               onClick={() => navigate(item.path)}
@@ -68,9 +68,9 @@ export const Navigation = () => {
           variant="ghost"
           size="icon"
           className={cn(
-            'p-0 hover:bg-white dark:hover:bg-zinc-800 text-zinc-500 dark:hover:text-zinc-300',
+            'p-0 hover:bg-white dark:hover:bg-zinc-800 text-zinc-400 dark:hover:text-zinc-100',
             {
-              'text-zinc-500 dark:text-zinc-300': location.pathname.includes(
+              'text-zinc-400 dark:text-zinc-100': location.pathname.includes(
                 navItems[navItems.length - 1].path,
               ),
             },

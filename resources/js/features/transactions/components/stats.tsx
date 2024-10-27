@@ -1,4 +1,5 @@
 import React from 'react';
+import { CAD } from '@/utils/constants';
 
 type Props = {
   label: string;
@@ -13,7 +14,7 @@ export const Stats = ({ label, value, additionalClass }: Props) => {
       <small
         className={`text-sm mt-2 font-medium leading-none ${additionalClass}`}
       >
-        {value}
+        {CAD.format(value)}
       </small>
     </div>
   );

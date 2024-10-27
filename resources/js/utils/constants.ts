@@ -9,3 +9,8 @@ export const REGISTRATION_API = AUTH + 'register';
 export const LOGIN_API = AUTH + 'login';
 export const LOGOUT_API = AUTH + 'logout';
 export const GET_USER_API = AUTH + 'me';
+
+export const CAD = new Intl.NumberFormat('en-CA', {
+  style: 'currency',
+  currency: 'CAD',
+});

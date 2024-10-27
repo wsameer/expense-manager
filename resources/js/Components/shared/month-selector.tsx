@@ -48,7 +48,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
     if (selectedYear === currentYear && monthIndex > currentMonth) {
       return; // Do nothing for future months
     }
-    onSelectMonth(selectedYear, monthIndex + 1);
+    onSelectMonth(selectedYear, monthIndex);
   };
 
   const getMonthStyle = (index: number): string => {
@@ -65,7 +65,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
       if (index === selectedMonth) {
         return 'bg-red-800 text-white hover:bg-red-900';
       }
-      return 'bg-zinc-800 text-white hover:bg-zinc-900';
+      return 'bg-zinc-800 text-white hover:bg-zinc-900 border border-zinc-500';
     }
 
     // Selected month
@@ -87,7 +87,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
         >
           <ChevronLeft size={20} />
         </Button>
-        <span className="text-xl font-semibold">{selectedYear}</span>
+        <span className="text-l font-semibold">{selectedYear}</span>
         <Button
           className="p-0"
           onClick={handleNextYear}

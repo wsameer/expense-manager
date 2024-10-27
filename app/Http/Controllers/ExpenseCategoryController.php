@@ -60,7 +60,6 @@ class ExpenseCategoryController extends Controller
     } catch (ModelNotFoundException $e) {
       return response()->json(['error' => 'Expense category not found'], 404);
     } catch (\Exception $e) {
-      Log::error('Error retrieving expense category: ' . $e->getMessage());
       return response()->json([
         'error' => 'Internal Server Error',
         'message' => 'An error occurred while retrieving the expense category'

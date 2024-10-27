@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import {
@@ -21,8 +21,10 @@ type MonthNavigatorProps = {
 
 export const MonthNavigator = memo<MonthNavigatorProps>(
   ({ currentDate, handleMonthChange, options }) => {
+    const [monthSelectorOpen, setMonthSelectorOpen] = useState(false);
+
     const handleMonthSelect = (year: number, month: number) => {
-      console.log(year, month);
+      setMonthSelectorOpen(false);
       return handleMonthChange(year, month);
     };
 
@@ -50,7 +52,10 @@ export const MonthNavigator = memo<MonthNavigatorProps>(
           <ChevronLeft size={20} />
         </Button>
         {options?.timeJump ? (
-          <Popover>
+          <Popover
+            open={monthSelectorOpen}
+            onOpenChange={setMonthSelectorOpen}
+          >
             <PopoverTrigger className="font-bold">
               {getFullMonthAndDate(currentDate)}
             </PopoverTrigger>

@@ -4,11 +4,7 @@ import useSWR from 'swr';
 import { ACCOUNTS_STATS_API } from '../constants';
 import axiosInstance from '@/lib/api-client';
 import { Skeleton } from '@/Components/ui/skeleton';
-
-const CAD = new Intl.NumberFormat('en-CA', {
-  style: 'currency',
-  currency: 'CAD',
-});
+import { CAD } from '@/utils/constants';
 
 type Props = {
   label: string;
