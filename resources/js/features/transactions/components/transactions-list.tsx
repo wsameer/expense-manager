@@ -144,17 +144,17 @@ export const TransactionList = ({ currentDate }: Props) => {
         <Stats
           value={monthlyStats.income}
           label="Income"
-          color="green"
+          additionalClass="text-green-600"
         />
         <Stats
           value={monthlyStats.expense}
           label="Expense"
-          color="red"
+          additionalClass="text-red-600"
         />
         <Stats
           value={monthlyStats.income - monthlyStats.expense}
           label="Totals"
-          color="zinc"
+          additionalClass="text-zinc-600 dark:text-zinc-200"
         />
       </div>
 
