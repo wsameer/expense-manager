@@ -4,26 +4,15 @@ import { MonthNavigator } from '@/Components/shared/month-navigator';
 export const DashboardPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const handlePrevMonth = () => {
-    setCurrentDate(
-      (prevDate) =>
-        new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1),
-    );
-  };
-
-  const handleNextMonth = () => {
-    setCurrentDate(
-      (prevDate) =>
-        new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1),
-    );
+  const handleMonthChange = (year: number, month: number) => {
+    setCurrentDate(new Date(year, month));
   };
 
   return (
     <div className="mb-4">
       <MonthNavigator
         currentDate={currentDate}
-        onPrevMonth={handlePrevMonth}
-        onNextMonth={handleNextMonth}
+        handleMonthChange={handleMonthChange}
         options={{ timeJump: true }}
       />
     </div>

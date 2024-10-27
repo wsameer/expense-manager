@@ -13,24 +13,38 @@ import { MonthSelector } from './month-selector';
 
 type MonthNavigatorProps = {
   currentDate: Date;
-  onPrevMonth: () => void;
-  onNextMonth: () => void;
+  handleMonthChange: (year: number, month: number) => void;
   options?: {
     timeJump?: boolean;
   };
 };
 
 export const MonthNavigator = memo<MonthNavigatorProps>(
-  ({ currentDate, onPrevMonth, onNextMonth, options }) => {
+  ({ currentDate, handleMonthChange, options }) => {
     const handleMonthSelect = (year: number, month: number) => {
       console.log(year, month);
+      return handleMonthChange(year, month);
+    };
+
+    const handlePreviousMonth = () => {
+      return handleMonthChange(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - 1,
+      );
+    };
+
+    const handleNextMonth = () => {
+      return handleMonthChange(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+      );
     };
 
     return (
       <div className="flex items-center justify-between mb-2">
         <Button
           className="p-0"
-          onClick={onPrevMonth}
+          onClick={handlePreviousMonth}
           variant={'ghost'}
         >
           <ChevronLeft size={20} />
@@ -52,7 +66,7 @@ export const MonthNavigator = memo<MonthNavigatorProps>(
         )}
         <Button
           className="p-0"
-          onClick={onNextMonth}
+          onClick={handleNextMonth}
           variant={'ghost'}
         >
           <ChevronRight size={20} />

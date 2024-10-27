@@ -138,26 +138,29 @@ export const TransactionList = ({ currentDate }: Props) => {
 
   const monthlyStats = calculateTotalsByType(allTransactions!);
 
+  const renderMonthlyFinanceStats = () => (
+    <div className="flex justify-between items-center gap-2">
+      <Stats
+        value={monthlyStats.income}
+        label="Income"
+        additionalClass="text-green-600"
+      />
+      <Stats
+        value={monthlyStats.expense}
+        label="Expense"
+        additionalClass="text-red-600"
+      />
+      <Stats
+        value={monthlyStats.income - monthlyStats.expense}
+        label="Totals"
+        additionalClass="text-zinc-600 dark:text-zinc-200"
+      />
+    </div>
+  );
+
   return (
     <div className="flex flex-wrap flex-col gap-4 mb-4">
-      <div className="flex justify-between items-center gap-2">
-        <Stats
-          value={monthlyStats.income}
-          label="Income"
-          additionalClass="text-green-600"
-        />
-        <Stats
-          value={monthlyStats.expense}
-          label="Expense"
-          additionalClass="text-red-600"
-        />
-        <Stats
-          value={monthlyStats.income - monthlyStats.expense}
-          label="Totals"
-          additionalClass="text-zinc-600 dark:text-zinc-200"
-        />
-      </div>
-
+      {renderMonthlyFinanceStats()}
       {sortedDates.map((date: string) => (
         <div key={date}>
           <p className="text-sm mb-1">
