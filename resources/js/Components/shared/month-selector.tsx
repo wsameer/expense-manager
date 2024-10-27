@@ -1,51 +1,85 @@
 import React, { useState } from 'react';
-import { Button } from '@/Components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { cn } from '@/utils';
+
+import { Button } from '@/Components/ui/button';
 
 interface MonthSelectorProps {
+  currentDate?: Date;
   onSelectMonth: (year: number, month: number) => void;
 }
 
+const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 export const MonthSelector: React.FC<MonthSelectorProps> = ({
+  currentDate = new Date(),
   onSelectMonth,
 }) => {
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth();
 
-  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
 
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
+  const selectedMonth = currentDate.getMonth();
 
   const handlePreviousYear = () => {
-    setSelectedYear((prev) => prev - 1);
+    setSelectedYear((prev: number) => prev - 1);
   };
 
   const handleNextYear = () => {
-    setSelectedYear((prev) => prev + 1);
+    setSelectedYear((prev: number) => prev + 1);
   };
 
   const handleMonthClick = (monthIndex: number) => {
+    // Check if the month is in the future
+    if (selectedYear === currentYear && monthIndex > currentMonth) {
+      return; // Do nothing for future months
+    }
     onSelectMonth(selectedYear, monthIndex + 1);
+  };
+
+  const getMonthStyle = (index: number): string => {
+    if (
+      selectedYear > currentYear ||
+      (selectedYear === currentYear && index > currentMonth)
+    ) {
+      return 'bg-zinc-800 text-zinc-400 hover:text-zinc-400 hover:bg-zinc-800 cursor-not-allowed';
+    }
+
+    // Current month in current year
+    if (selectedYear === currentYear && index === currentMonth) {
+      // If it's also selected
+      if (index === selectedMonth) {
+        return 'bg-red-800 text-white hover:bg-red-900';
+      }
+      return 'bg-zinc-800 text-white hover:bg-zinc-900';
+    }
+
+    // Selected month
+    if (index === selectedMonth && selectedYear === currentDate.getFullYear()) {
+      return 'bg-red-800 text-white hover:bg-red-900';
+    }
+
+    // Default state
+    return 'bg-white dark:bg-zinc-800 dark:hover:bg-zinc-900';
   };
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="flex items-center justify-between gap-4 mb-6">
+      <div className="flex items-center justify-between gap-4 mb-2">
         <Button
           className="p-0"
           onClick={handlePreviousYear}
@@ -64,18 +98,15 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
       </div>
 
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-        {months.map((month, index) => (
+        {MONTHS.map((month, index) => (
           <Button
             variant="ghost"
             key={month}
             onClick={() => handleMonthClick(index)}
-            className={cn(
-              'p-2 rounded-lg text-center text-xs transition-colors',
-              {
-                'bg-red-800 hover:bg-red-900':
-                  selectedYear === currentYear && index === currentMonth,
-              },
-            )}
+            className={`
+              p-2 rounded-lg text-center text-xs transition-colors
+              ${getMonthStyle(index)}
+            `}
           >
             {month}
           </Button>

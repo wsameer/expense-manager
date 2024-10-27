@@ -7,8 +7,8 @@ import {
   PopoverTrigger,
 } from '@/Components/ui/popover';
 import { Button } from '@/Components/ui/button';
+import { getFullMonthAndDate } from '@/features/transactions/utils';
 
-import { getFullMonthAndDate } from '../../features/transactions/utils';
 import { MonthSelector } from './month-selector';
 
 type MonthNavigatorProps = {
@@ -41,7 +41,10 @@ export const MonthNavigator = memo<MonthNavigatorProps>(
               {getFullMonthAndDate(currentDate)}
             </PopoverTrigger>
             <PopoverContent>
-              <MonthSelector onSelectMonth={handleMonthSelect} />
+              <MonthSelector
+                currentDate={currentDate}
+                onSelectMonth={handleMonthSelect}
+              />
             </PopoverContent>
           </Popover>
         ) : (
