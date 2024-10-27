@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   CreditCardIcon,
   EllipsisIcon,
@@ -25,11 +25,15 @@ export const Navigation = () => {
   const { isMobile } = useResponsive();
   const navigate = useNavigate();
 
+  const date = new Date();
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = date.toLocaleString('default', { month: 'short' });
+
   const navItems = [
     { icon: HomeIcon, label: 'Home', path: DASHBOARD_ROUTE },
     {
       icon: FileTextIcon,
-      label: 'Trans',
+      label: `${day}-${month}`,
       path: TRANSACTIONS_ROUTE,
     },
     { icon: CreditCardIcon, label: 'Accounts', path: ACCOUNTS_ROUTE },
