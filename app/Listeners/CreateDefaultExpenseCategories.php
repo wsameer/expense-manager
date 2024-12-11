@@ -21,6 +21,7 @@ class CreateDefaultExpenseCategories
   public function handle(Registered $event)
   {
     $user = $event->user;
+
     $defaultCategories = [
       'Food',
       'Groceries',

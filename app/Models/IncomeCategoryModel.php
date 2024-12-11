@@ -10,7 +10,7 @@ class IncomeCategoryModel extends Model
   use HasFactory;
 
   protected $table = 'income_categories';
-  protected $fillable = ['name', 'description'];
+  protected $fillable = ['user_id', 'name', 'description'];
 
   public function user()
   {

@@ -1,6 +1,7 @@
 <?php
 
 use App\Listeners\CreateDefaultExpenseCategories;
+use App\Listeners\CreateDefaultIncomeCategories;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Support\ServiceProvider;
