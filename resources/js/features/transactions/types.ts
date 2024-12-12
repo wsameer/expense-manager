@@ -23,7 +23,7 @@ export type CreateTransactionPayload = {
   toAccountId?: number;
   expenseCategoryId?: number;
   incomeCategoryId?: number;
-  expenseSubcategoryId?: number;
+  expenseSubcategoryId?: number | null;
   note?: string;
 };
 

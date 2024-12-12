@@ -45,7 +45,7 @@ const formSchema = z.object({
   expenseCategoryId: z.coerce.number({
     required_error: 'Please select a category',
   }),
-  expenseSubcategoryId: z.optional(z.coerce.number()),
+  expenseSubcategoryId: z.coerce.number().nullable(),
   fromAccountId: z.coerce.number({
     required_error: 'Please select an account',
   }),
@@ -73,7 +73,7 @@ export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
       amount: 0,
       expenseCategoryId: -1,
       fromAccountId: -1,
-      expenseSubcategoryId: existingData?.expenseSubcategoryId ?? -1,
+      expenseSubcategoryId: existingData?.expenseSubcategoryId ?? null,
     },
   });
   const formErrors = form.formState.errors;
@@ -145,7 +145,7 @@ export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
         date: new Date(existingData.date),
         amount: existingData.amount,
         expenseCategoryId: existingData.expenseCategoryId!,
-        expenseSubcategoryId: existingData.expenseSubcategoryId ?? -1,
+        expenseSubcategoryId: existingData.expenseSubcategoryId ?? null,
         fromAccountId: existingData.fromAccountId,
         note: existingData.note ?? '',
       });
@@ -257,14 +257,14 @@ export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    value={field.value?.toString()}
+                    value={field.value?.toString() || undefined}
                     disabled={isSubcategoriesEmpty}
                   >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue
                           placeholder={
-                            expenseCategoryId
+                            !expenseCategoryId
                               ? 'Select category first'
                               : isSubcategoriesEmpty
                                 ? 'No subcategories'

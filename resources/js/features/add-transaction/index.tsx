@@ -24,8 +24,10 @@ import {
 
 import { Transactions } from './components/transactions';
 import { TransactionTypes } from '../transactions/types';
+import { useTranslation } from 'react-i18next';
 
 export const AddTransaction = () => {
+  const { t } = useTranslation('transaction');
   const [open, setOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(TransactionTypes.EXPENSE);
   const { isMobile } = useResponsive();
@@ -68,7 +70,7 @@ export const AddTransaction = () => {
             </div>
             <DrawerFooter>
               <DrawerClose asChild>
-                <Button variant="secondary">Cancel</Button>
+                <Button variant="secondary">{t('cancel')}</Button>
               </DrawerClose>
             </DrawerFooter>
           </div>
@@ -99,7 +101,7 @@ export const AddTransaction = () => {
               {selectedTab}
             </DialogTitle>
             <DialogDescription>
-              Enter and submit the details of your transaction
+              {t('enter-and-submit-your-transaction')}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 pt-4">
@@ -115,7 +117,7 @@ export const AddTransaction = () => {
                 className="w-full"
                 variant="secondary"
               >
-                Cancel
+                {t('cancel')}
               </Button>
             </DialogClose>
           </DialogFooter>
