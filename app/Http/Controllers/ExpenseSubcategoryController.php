@@ -124,8 +124,7 @@ class ExpenseSubcategoryController extends Controller
         // Subcategory ownership and existence
         $subCategory = $category->subcategories()->findOrFail($subcategoryId);
 
-        // TODO
-        if ($request->user()->can('delete', $subCategory)) {
+        if (!$request->user()->can('delete', $subCategory)) {
           return response()->json(['error' => 'Unauthorized'], 403);
         }
 
