@@ -97,7 +97,10 @@ export const AddExpenseSubCategory = ({
 
   const renderForm = useCallback(() => {
     return (
-      <Form {...form}>
+      <Form
+        key={selectedCategory.id}
+        {...form}
+      >
         <form
           onSubmit={form.handleSubmit(handleExpenseSubcategorySubmit)}
           className="space-y-6"
@@ -145,13 +148,18 @@ export const AddExpenseSubCategory = ({
         </form>
       </Form>
     );
-  }, []);
+  }, [selectedCategory, form]);
 
   useEffect(() => {
-    form.reset({
-      categoryName: selectedCategory ? selectedCategory.name : '',
-      subCategoryName: selectedSubcategory ? selectedSubcategory.name : '',
-    });
+    form.reset(
+      {
+        categoryName: selectedCategory?.name || '',
+        subCategoryName: selectedSubcategory?.name || '',
+      },
+      {
+        keepDefaultValues: false, // Ensure it completely resets
+      },
+    );
   }, [selectedCategory, selectedSubcategory, form.reset]);
 
   if (isMobile) {
