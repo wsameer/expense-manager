@@ -1,6 +1,6 @@
+import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
 import { Account } from '@/types/api';
-import React from 'react';
 
 type Props = {
   data: Account;
@@ -15,11 +15,9 @@ export const AccountDetails = React.memo(({ data }: Props) => {
           <TabsTrigger value="monthly">Monthly</TabsTrigger>
           <TabsTrigger value="annually">Annually</TabsTrigger>
         </TabsList>
-        <TabsContent value="daily">
-          Make changes to your account here.
-        </TabsContent>
-        <TabsContent value="monthly">Change your password here.</TabsContent>
-        <TabsContent value="annually">Change your username here.</TabsContent>
+        <TabsContent value="daily">Daily transactions</TabsContent>
+        <TabsContent value="monthly">Monthly transactions</TabsContent>
+        <TabsContent value="annually">Yearly transactions</TabsContent>
       </Tabs>
     </div>
   );

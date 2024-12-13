@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { MonthNavigator } from '@/Components/shared/month-navigator';
+import { ChartContainer } from './components/chart-container';
 
 export const DashboardPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -15,6 +16,8 @@ export const DashboardPage = () => {
         handleMonthChange={handleMonthChange}
         options={{ timeJump: true }}
       />
+
+      <ChartContainer currentDate={currentDate} />
     </div>
   );
 };
