@@ -22,7 +22,7 @@ export const MobileHeader = ({
   return (
     <header
       id="mobile-header"
-      className="sticky top-0 h-14 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      className="sticky top-0 h-14 z-50 w-full border-border/40 bg-background/15 backdrop-blur supports-[backdrop-filter]:bg-background/20"
     >
       {showStickyHeader ? (
         <div className="container flex h-14 max-w-screen-2xl items-center">
