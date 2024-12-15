@@ -23,15 +23,6 @@ export const ChartContainer = memo(({ currentDate }: Props) => {
     { category: 'Miscellaneous', amount: 100 },
   ];
 
-  const chartConfig = {
-    ...Object.fromEntries(
-      expenseData.map((entry, index) => [
-        entry.category,
-        { label: entry.category, color: COLORS[index % COLORS.length] },
-      ]),
-    ),
-  };
-
   return (
     <Tabs
       defaultValue="expenses"
@@ -42,16 +33,10 @@ export const ChartContainer = memo(({ currentDate }: Props) => {
         <TabsTrigger value="expenses">Expenses</TabsTrigger>
       </TabsList>
       <TabsContent value="expenses">
-        <DashboardPieChart
-          chartConfig={chartConfig}
-          chartData={expenseData}
-        />
+        <DashboardPieChart chartData={expenseData} />
       </TabsContent>
       <TabsContent value="income">
-        <DashboardPieChart
-          chartConfig={chartConfig}
-          chartData={expenseData}
-        />
+        <DashboardPieChart chartData={expenseData} />
       </TabsContent>
     </Tabs>
   );

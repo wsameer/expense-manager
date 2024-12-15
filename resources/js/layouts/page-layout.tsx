@@ -13,7 +13,7 @@ interface PageLayoutProps {
   title?: string;
   subTitle?: string;
   children?: ReactNode;
-  showHeader?: boolean;
+  showHeaderText?: boolean;
   rightElement?: ReactElement;
   backButton?: {
     url: string;
@@ -27,12 +27,12 @@ export const PageLayout = React.memo<PageLayoutProps>(
     children,
     subTitle,
     rightElement,
-    showHeader = false,
+    showHeaderText = false,
     backButton,
   }) => {
     const { isMobile } = useResponsive();
     const pageTitleRef = useRef<HTMLDivElement>(null);
-    const [showStickyHeader, setShowStickyHeader] = useState(showHeader);
+    const [showStickyHeader, setShowStickyHeader] = useState(showHeaderText);
 
     useEffect(() => {
       const handleScroll = () => {
@@ -49,7 +49,7 @@ export const PageLayout = React.memo<PageLayoutProps>(
 
       window.addEventListener('scroll', handleScroll);
       return () => window.removeEventListener('scroll', handleScroll);
-    }, [showHeader]);
+    }, [showHeaderText]);
 
     return (
       <div className="flex flex-col sm:gap-2 md:pt-0 sm:pl-14">
@@ -69,7 +69,7 @@ export const PageLayout = React.memo<PageLayoutProps>(
           <div className="container pb-24">
             <div className="mx-auto w-full min-w-0">
               <div className="space-y-2">
-                {!showHeader && (
+                {!showHeaderText && (
                   <h1
                     ref={pageTitleRef}
                     className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl"
@@ -84,7 +84,7 @@ export const PageLayout = React.memo<PageLayoutProps>(
               </div>
               <div
                 className={cn({
-                  'pt-6': !showHeader,
+                  'pt-6': !showHeaderText,
                 })}
               >
                 {children}

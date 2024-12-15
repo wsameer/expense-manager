@@ -7,7 +7,7 @@ export const IncomeCategoryRoute = () => {
   return (
     <PageLayout
       title="Income Categories"
-      showHeader={true}
+      showHeaderText={true}
       backButton={{
         url: SETTINGS_ROUTE,
         title: 'Settings',
