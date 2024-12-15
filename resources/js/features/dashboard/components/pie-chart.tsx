@@ -1,16 +1,15 @@
-import React from 'react'
+import React from 'react';
 
 import { Pie, Cell, PieChart } from 'recharts';
 
-import { ChartConfig, ChartContainer } from '@/Components/ui/chart'
+import { ChartConfig, ChartContainer } from '@/Components/ui/chart';
 import { COLORS } from '../constants';
 import { ChartData } from '../types';
-
 
 type Props = {
   chartConfig: ChartConfig;
   chartData: Array<ChartData>;
-}
+};
 
 export const DashboardPieChart = ({ chartConfig, chartData }: Props) => {
   return (
@@ -33,12 +32,15 @@ export const DashboardPieChart = ({ chartConfig, chartData }: Props) => {
               label
             >
               {chartData.map((_entry: any, index: number) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
               ))}
             </Pie>
           </PieChart>
         </ChartContainer>
       </div>
     </div>
-  )
-}
+  );
+};

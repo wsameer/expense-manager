@@ -152,7 +152,7 @@ class TransactionController extends Controller
       'note' => 'nullable|string',
     ]);
 
-    return DB::transaction(function () use ($validated, $transaction) {
+    return \DB::transaction(function () use ($validated, $transaction) {
       $oldAmount = $transaction->amount;
       $newAmount = $validated['amount'] ?? $oldAmount;
 
