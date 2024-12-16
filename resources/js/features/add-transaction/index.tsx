@@ -23,18 +23,18 @@ import {
 } from '@/Components/ui/dialog';
 
 import { Transactions } from './components/transactions';
-import { TransactionTypes } from '../transactions/types';
+
 import { useTranslation } from 'react-i18next';
+import { TransactionType } from '@/types';
 
 export const AddTransaction = () => {
   const { t } = useTranslation('transaction');
   const [open, setOpen] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(TransactionTypes.EXPENSE);
+  const [selectedTab, setSelectedTab] = useState(TransactionType.EXPENSE);
   const { isMobile } = useResponsive();
 
   const tabTitle = useMemo(
-    () =>
-      selectedTab === TransactionTypes.TRANSFER ? 'transfer' : selectedTab,
+    () => (selectedTab === TransactionType.TRANSFER ? 'transfer' : selectedTab),
     [selectedTab],
   );
 
@@ -57,7 +57,7 @@ export const AddTransaction = () => {
           <div className="mx-auto w-full max-w-sm">
             <DrawerHeader className="text-left">
               <DrawerTitle>
-                Record {selectedTab === TransactionTypes.TRANSFER ? 'a' : 'an'}{' '}
+                Record {selectedTab === TransactionType.TRANSFER ? 'a' : 'an'}{' '}
                 {tabTitle}
               </DrawerTitle>
             </DrawerHeader>
@@ -97,7 +97,7 @@ export const AddTransaction = () => {
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>
-              Record {selectedTab === TransactionTypes.TRANSFER ? 'a' : 'an'}{' '}
+              Record {selectedTab === TransactionType.TRANSFER ? 'a' : 'an'}{' '}
               {selectedTab}
             </DialogTitle>
             <DialogDescription>

@@ -35,7 +35,7 @@ export const CustomLabel = ({
         dominantBaseline="central"
         className="text-xs font-medium"
       >
-        {`${category.length > 10 ? `${category.slice(0, 8)}...` : category}`}
+        {`${category.length > 14 ? `${category.slice(0, 14)}...` : category}`}
       </text>
       <text
         x={x}

@@ -22,7 +22,7 @@ import { DateSelector } from './form-fields/date-selector';
 import { cn, getFormattedDateTime } from '@/utils';
 import { useCreateTransaction } from '../api/create-transaction';
 import { toast } from '@/hooks';
-import { TransactionTypes } from '@/features/transactions/types';
+import { TransactionType } from '@/types';
 import { FormProps } from './types';
 
 const formSchema = z.object({
@@ -103,7 +103,7 @@ export const IncomeForm = ({ existingData, setOpen }: FormProps) => {
         ...values,
         // Format: YYYY-MM-DD HH:MM:SS
         date: getFormattedDateTime(values.transactionDate),
-        type: TransactionTypes.INCOME,
+        type: TransactionType.INCOME,
       });
       form.reset();
       return setOpen(false);

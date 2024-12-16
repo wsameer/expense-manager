@@ -1,12 +1,7 @@
 import { Account } from '@/types/api';
 import { Category } from '../expense-category/types';
 import { IncomeCategory } from '../income-category/types';
-
-export enum TransactionTypes {
-  INCOME = 'income',
-  EXPENSE = 'expense',
-  TRANSFER = 'bank_to_bank',
-}
+import { TransactionType } from '@/types';
 
 export const ACCOUNTS = [
   { label: 'Chequing', value: 'chequing' },
@@ -16,7 +11,7 @@ export const ACCOUNTS = [
 ];
 
 export type CreateTransactionPayload = {
-  type: TransactionTypes;
+  type: TransactionType;
   date: string;
   amount: number;
   fromAccountId: number;
@@ -30,7 +25,7 @@ export type CreateTransactionPayload = {
 export interface Transaction {
   id: number;
   user_id: number;
-  type: TransactionTypes;
+  type: TransactionType;
   date: string;
   amount: number;
   fromAccountId: number;
@@ -49,6 +44,6 @@ export interface Transaction {
 }
 
 export interface TypeTotals {
-  [TransactionTypes.INCOME]: number;
-  [TransactionTypes.EXPENSE]: number;
+  [TransactionType.INCOME]: number;
+  [TransactionType.EXPENSE]: number;
 }

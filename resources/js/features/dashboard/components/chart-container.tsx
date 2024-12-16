@@ -1,42 +1,55 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
 
 import { DashboardPieChart } from './pie-chart';
-import { ChartData } from '../types';
-import { COLORS } from '../constants';
+import { useChartData } from '../api/get-chart-data';
+import { Skeleton } from '@/Components/ui/skeleton';
+import { TransactionType } from '@/types';
 
 type Props = {
-  currentDate: Date;
+  currentDate: string;
 };
 
 export const ChartContainer = memo(({ currentDate }: Props) => {
-  // const { data } = useChartData();
+  const [transactionType, setTransactionType] = useState<TransactionType>(
+    TransactionType.EXPENSE,
+  );
 
-  const expenseData: ChartData[] = [
-    { category: 'Housing', amount: 300 },
-    { category: 'Food', amount: 500 },
-    { category: 'Transportation', amount: 300 },
-    { category: 'Utilities', amount: 200 },
-    { category: 'Entertainment', amount: 150 },
-    { category: 'Healthcare', amount: 250 },
-    { category: 'Miscellaneous', amount: 100 },
-  ];
+  const month = new Date(currentDate).toISOString().slice(0, 7);
+
+  const { pieChartData, isLoading } = useChartData(month, transactionType);
+
+  const handleTabChange = (value: string) => {
+    setTransactionType(value as TransactionType);
+  };
 
   return (
     <Tabs
-      defaultValue="expenses"
-      onValueChange={(value: string) => console.log(value)}
+      defaultValue={TransactionType.EXPENSE}
+      onValueChange={handleTabChange}
     >
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="income">Income</TabsTrigger>
-        <TabsTrigger value="expenses">Expenses</TabsTrigger>
+        <TabsTrigger value={TransactionType.INCOME}>
+          {TransactionType.INCOME}
+        </TabsTrigger>
+        <TabsTrigger value={TransactionType.EXPENSE}>
+          {TransactionType.EXPENSE}
+        </TabsTrigger>
       </TabsList>
-      <TabsContent value="expenses">
-        <DashboardPieChart chartData={expenseData} />
+      <TabsContent value={TransactionType.EXPENSE}>
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          <DashboardPieChart chartData={pieChartData ?? []} />
+        )}
       </TabsContent>
-      <TabsContent value="income">
-        <DashboardPieChart chartData={expenseData} />
+      <TabsContent value={TransactionType.INCOME}>
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          <DashboardPieChart chartData={pieChartData ?? []} />
+        )}
       </TabsContent>
     </Tabs>
   );

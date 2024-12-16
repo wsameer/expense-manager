@@ -9,11 +9,11 @@ import {
   ChartTooltipContent,
 } from '@/Components/ui/chart';
 import { COLORS } from '../constants';
-import { ChartData } from '../types';
+import { PieChartData } from '../types';
 import { CustomLabel } from './custom-label';
 
 type Props = {
-  chartData: Array<ChartData>;
+  chartData: Array<PieChartData>;
 };
 
 export const DashboardPieChart = ({ chartData }: Props) => {
@@ -39,7 +39,7 @@ export const DashboardPieChart = ({ chartData }: Props) => {
           <PieChart>
             <Pie
               data={chartData}
-              dataKey="amount"
+              dataKey="totalAmount"
               nameKey="category"
               cx="50%"
               cy="50%"
@@ -59,7 +59,7 @@ export const DashboardPieChart = ({ chartData }: Props) => {
               cursor={false}
               content={
                 <ChartTooltipContent
-                  labelKey="amount"
+                  labelKey="totalAmount"
                   nameKey="category"
                   hideIndicator
                 />

@@ -1,39 +1,40 @@
 import React, { useCallback, useMemo } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
+import { TransactionType } from '@/types';
 
 import { ExpenseForm } from './expense-form';
 import { IncomeForm } from './income-form';
 import { TransferForm } from './transfer-form';
-import { Transaction, TransactionTypes } from '@/features/transactions/types';
+import { Transaction } from '@/features/transactions/types';
 
 type TransactionsProps = {
-  selectedTab: TransactionTypes;
-  setSelectedTab: (value: TransactionTypes) => void;
+  selectedTab: TransactionType;
+  setSelectedTab: (value: TransactionType) => void;
   setOpen: (value: boolean) => void;
   data?: Transaction;
 };
 
 export const Transactions: React.FC<TransactionsProps> = React.memo(
   ({ selectedTab, data, setSelectedTab, setOpen }) => {
-    const transactionTypes = useMemo(() => Object.values(TransactionTypes), []);
+    const transactionTypes = useMemo(() => Object.values(TransactionType), []);
 
-    const renderContent = useCallback((type: TransactionTypes) => {
+    const renderContent = useCallback((type: TransactionType) => {
       switch (type) {
-        case TransactionTypes.EXPENSE:
+        case TransactionType.EXPENSE:
           return (
             <ExpenseForm
               setOpen={setOpen}
               existingData={data}
             />
           );
-        case TransactionTypes.INCOME:
+        case TransactionType.INCOME:
           return (
             <IncomeForm
               setOpen={setOpen}
               existingData={data}
             />
           );
-        case TransactionTypes.TRANSFER:
+        case TransactionType.TRANSFER:
           return (
             <TransferForm
               setOpen={setOpen}
@@ -48,7 +49,7 @@ export const Transactions: React.FC<TransactionsProps> = React.memo(
     return (
       <Tabs
         defaultValue={selectedTab}
-        onValueChange={(value) => setSelectedTab(value as TransactionTypes)}
+        onValueChange={(value) => setSelectedTab(value as TransactionType)}
       >
         <TabsList className="grid w-full grid-cols-3">
           {transactionTypes.map((type) => (
@@ -57,7 +58,7 @@ export const Transactions: React.FC<TransactionsProps> = React.memo(
               value={type}
               className="w-full text-center capitalize"
             >
-              {type === TransactionTypes.TRANSFER ? 'Transfer' : type}
+              {type === TransactionType.TRANSFER ? 'Transfer' : type}
             </TabsTrigger>
           ))}
         </TabsList>
@@ -66,7 +67,7 @@ export const Transactions: React.FC<TransactionsProps> = React.memo(
             key={type}
             value={type}
           >
-            {renderContent(type as TransactionTypes)}
+            {renderContent(type as TransactionType)}
           </TabsContent>
         ))}
       </Tabs>

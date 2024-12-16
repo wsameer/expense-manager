@@ -1,6 +1,6 @@
 import { Button } from '@/Components/ui/button';
-import { Transaction, TransactionTypes } from '../types';
-import { parseDate } from '../utils';
+import { Transaction } from '../types';
+import { TransactionType } from '@/types';
 import { cn } from '@/utils';
 import { useCallback } from 'react';
 
@@ -15,27 +15,27 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
 }) => {
   const getCategory = useCallback(() => {
     if (
-      transaction.type === TransactionTypes.EXPENSE &&
+      transaction.type === TransactionType.EXPENSE &&
       transaction.expenseCategory
     ) {
       return transaction.expenseCategory.name;
     }
 
     if (
-      transaction.type === TransactionTypes.INCOME &&
+      transaction.type === TransactionType.INCOME &&
       transaction.incomeCategory
     ) {
       return transaction.incomeCategory.name;
     }
 
-    if (transaction.type === TransactionTypes.TRANSFER) {
+    if (transaction.type === TransactionType.TRANSFER) {
       return 'Transfer';
     }
   }, [transaction]);
 
   const getSubcategory = useCallback(() => {
     if (
-      transaction.type === TransactionTypes.EXPENSE &&
+      transaction.type === TransactionType.EXPENSE &&
       transaction.expenseSubcategory
     ) {
       return transaction.expenseSubcategory.name;
@@ -72,8 +72,8 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
         <div className="col-span-2 text-right">
           <p
             className={cn('text-xs', {
-              'text-green-600': transaction.type === TransactionTypes.INCOME,
-              'text-red-600': transaction.type === TransactionTypes.EXPENSE,
+              'text-green-600': transaction.type === TransactionType.INCOME,
+              'text-red-600': transaction.type === TransactionType.EXPENSE,
             })}
           >
             ${Math.abs(transaction.amount).toFixed(2)}

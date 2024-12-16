@@ -14,7 +14,6 @@ import {
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { OptionSelector } from '@/Components/option-selector';
-import { TransactionTypes } from '@/features/transactions/types';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 import { useExpenseCategories } from '@/features/expense-category/api/use-expense-categories';
 import {
@@ -31,6 +30,7 @@ import { cn, getFormattedDateTime } from '@/utils';
 import { useTranslation } from 'react-i18next';
 import { FormProps } from './types';
 import { useUpdateTransaction } from '../api/update-transaction';
+import { TransactionType } from '@/types';
 
 const formSchema = z.object({
   date: z.date({
@@ -119,7 +119,7 @@ export const ExpenseForm = ({ existingData, setOpen }: FormProps) => {
       const transactionData = {
         ...values,
         date: getFormattedDateTime(values.date),
-        type: TransactionTypes.EXPENSE,
+        type: TransactionType.EXPENSE,
       };
 
       if (existingData) {

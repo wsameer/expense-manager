@@ -16,7 +16,8 @@ import {
   DrawerTitle,
 } from '@/Components/ui/drawer';
 import { Button } from '@/Components/ui/button';
-import { Transaction, TransactionTypes, TypeTotals } from '../types';
+import { Transaction, TypeTotals } from '../types';
+import { TransactionType } from '@/types';
 import { Transactions } from '@/features/add-transaction/components/transactions';
 import { Trash2 } from 'lucide-react';
 import { useConfirmDialog } from '@/Components/ui/confirmable';
@@ -30,8 +31,8 @@ type Props = {
 
 const calculateTotalsByType = (transactions: Transaction[]): TypeTotals => {
   const initialTotals: TypeTotals = {
-    [TransactionTypes.INCOME]: 0,
-    [TransactionTypes.EXPENSE]: 0,
+    [TransactionType.INCOME]: 0,
+    [TransactionType.EXPENSE]: 0,
   };
 
   return transactions.reduce((acc, { type, amount }) => {
@@ -53,7 +54,7 @@ export const TransactionList = ({ currentDate }: Props) => {
   );
 
   const [open, setOpen] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(TransactionTypes.EXPENSE);
+  const [selectedTab, setSelectedTab] = useState(TransactionType.EXPENSE);
   const [transactionToEdit, setTransactionToEdit] = useState<Transaction>();
 
   const onTransactionClick = (t: Transaction) => {
@@ -63,8 +64,7 @@ export const TransactionList = ({ currentDate }: Props) => {
   };
 
   const tabTitle = useMemo(
-    () =>
-      selectedTab === TransactionTypes.TRANSFER ? 'transfer' : selectedTab,
+    () => (selectedTab === TransactionType.TRANSFER ? 'transfer' : selectedTab),
     [selectedTab],
   );
 
@@ -190,7 +190,7 @@ export const TransactionList = ({ currentDate }: Props) => {
             <DrawerHeader className="flex justify-between items-center text-left">
               <DrawerTitle>
                 {t('record')}{' '}
-                {selectedTab === TransactionTypes.TRANSFER ? 'a' : 'an'}{' '}
+                {selectedTab === TransactionType.TRANSFER ? 'a' : 'an'}{' '}
                 {tabTitle}
               </DrawerTitle>
               <Button
