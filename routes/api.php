@@ -3,7 +3,9 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountStatController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\ExpenseCategoryTotalController;
 use App\Http\Controllers\ExpenseSubcategoryController;
 use App\Http\Controllers\IncomeCategoryController;
 use App\Http\Controllers\TransactionController;
@@ -21,6 +23,9 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/auth/logout', [AuthController::class, 'logout']);
 
   Route::apiResource('accounts', AccountController::class);
+
+  Route::get('expense-categories/totals', ExpenseCategoryTotalController::class)
+    ->name('expense-categories.totals');
 
   Route::apiResource('expense-categories', ExpenseCategoryController::class);
 
