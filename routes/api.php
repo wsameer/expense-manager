@@ -8,6 +8,7 @@ use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseCategoryTotalController;
 use App\Http\Controllers\ExpenseSubcategoryController;
 use App\Http\Controllers\IncomeCategoryController;
+use App\Http\Controllers\IncomeCategoryTotalController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,9 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::apiResource('transactions', TransactionController::class);
 
   Route::get('/accounts-stats', [AccountStatController::class, 'index'])->name('accountstat.index');
+
+  Route::get('income-categories/totals', IncomeCategoryTotalController::class)
+    ->name('income-categories.totals');
 
   Route::apiResource('income-categories', IncomeCategoryController::class);
 });
