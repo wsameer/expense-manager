@@ -6,12 +6,17 @@ import { DashboardPieChart } from './pie-chart';
 import { useChartData } from '../api/get-chart-data';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { TransactionType } from '@/types';
+import { PieChartData } from '../types';
+import { useTranslation } from 'react-i18next';
+import { capitalize } from '@/utils';
 
 type Props = {
   currentDate: string;
 };
 
+
 export const ChartContainer = memo(({ currentDate }: Props) => {
+  const { t } = useTranslation('common');
   const [transactionType, setTransactionType] = useState<TransactionType>(
     TransactionType.EXPENSE,
   );
@@ -24,6 +29,16 @@ export const ChartContainer = memo(({ currentDate }: Props) => {
     setTransactionType(value as TransactionType);
   };
 
+  const renderNoData = () => {
+    return (
+      <div className='flex items-center justify-center mt-8'>
+        <p className="text-sm text-muted-foreground">
+          {t('no-data-for-this-month')}
+        </p>
+      </div>
+    )
+  }
+
   return (
     <Tabs
       defaultValue={TransactionType.EXPENSE}
@@ -31,25 +46,27 @@ export const ChartContainer = memo(({ currentDate }: Props) => {
     >
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value={TransactionType.INCOME}>
-          {TransactionType.INCOME}
+          {capitalize(TransactionType.INCOME)}
         </TabsTrigger>
         <TabsTrigger value={TransactionType.EXPENSE}>
-          {TransactionType.EXPENSE}
+          {capitalize(TransactionType.EXPENSE)}
         </TabsTrigger>
       </TabsList>
       <TabsContent value={TransactionType.EXPENSE}>
-        {isLoading ? (
-          <Skeleton />
-        ) : (
-          <DashboardPieChart chartData={pieChartData ?? []} />
-        )}
+        {isLoading && <div className='flex items-center justify-center mt-8'>
+          <Skeleton className="h-40 w-40 rounded-full" />
+        </div>}
+        {!isLoading && pieChartData!.length < 1 ? (
+          renderNoData()
+        ) : <DashboardPieChart chartData={pieChartData ?? []} />}
       </TabsContent>
       <TabsContent value={TransactionType.INCOME}>
-        {isLoading ? (
-          <Skeleton />
-        ) : (
-          <DashboardPieChart chartData={pieChartData ?? []} />
-        )}
+        {isLoading && <div className='flex items-center justify-center mt-8'>
+          <Skeleton className="h-40 w-40 rounded-full" />
+        </div>}
+        {!isLoading && pieChartData!.length < 1 ? (
+          renderNoData()
+        ) : <DashboardPieChart chartData={pieChartData ?? []} />}
       </TabsContent>
     </Tabs>
   );

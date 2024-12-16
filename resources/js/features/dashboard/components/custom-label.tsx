@@ -5,7 +5,6 @@ export const CustomLabel = ({
   cx,
   cy,
   midAngle,
-  innerRadius,
   outerRadius,
   percent,
   index,
@@ -24,6 +23,7 @@ export const CustomLabel = ({
   const radius = outerRadius + 25;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const percentage = +(percent * 100).toFixed(0);
 
   return (
     <g>
@@ -37,7 +37,7 @@ export const CustomLabel = ({
       >
         {`${category.length > 14 ? `${category.slice(0, 14)}...` : category}`}
       </text>
-      <text
+      {percentage > 3 ? <text
         x={x}
         y={y + 10}
         fill={COLORS[index % COLORS.length]}
@@ -45,8 +45,8 @@ export const CustomLabel = ({
         dominantBaseline="central"
         className="text-xs font-medium"
       >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
+        {`${percentage}%`}
+      </text> : null}
       <path
         d={`M${cx},${cy}L${x},${y}`}
         stroke={COLORS[index % COLORS.length]}
