@@ -37,16 +37,18 @@ export const CustomLabel = ({
       >
         {`${category.length > 14 ? `${category.slice(0, 14)}...` : category}`}
       </text>
-      {percentage > 3 ? <text
-        x={x}
-        y={y + 10}
-        fill={COLORS[index % COLORS.length]}
-        textAnchor={x > cx ? 'start' : 'end'}
-        dominantBaseline="central"
-        className="text-xs font-medium"
-      >
-        {`${percentage}%`}
-      </text> : null}
+      {percentage > 3 ? (
+        <text
+          x={x}
+          y={y + 10}
+          fill={COLORS[index % COLORS.length]}
+          textAnchor={x > cx ? 'start' : 'end'}
+          dominantBaseline="central"
+          className="text-xs font-medium"
+        >
+          {`${percentage}%`}
+        </text>
+      ) : null}
       <path
         d={`M${cx},${cy}L${x},${y}`}
         stroke={COLORS[index % COLORS.length]}

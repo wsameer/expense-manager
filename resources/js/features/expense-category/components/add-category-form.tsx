@@ -63,7 +63,6 @@ export const AddExpenseCategoryForm = ({
     if (!values) return false;
 
     const isEditing = !!selectedCategory;
-
     try {
       if (isEditing) {
         await updateCategory(selectedCategory.id.toString(), {
@@ -83,41 +82,38 @@ export const AddExpenseCategoryForm = ({
     }
   };
 
-  const renderForm = useCallback(
-    () => (
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleExpenseCategorySubmit)}
-          className="space-y-6"
+  const renderForm = () => (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handleExpenseCategorySubmit)}
+        className="space-y-6"
+      >
+        <FormField
+          name="categoryName"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="categoryName">
+                {t('categories:category-name')}
+              </FormLabel>
+              <Input
+                placeholder="Category Name"
+                {...field}
+              />
+              <FormMessage role="alert" />
+            </FormItem>
+          )}
+        />
+        <Button
+          type="submit"
+          className="w-full"
         >
-          <FormField
-            name="categoryName"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="categoryName">
-                  {t('categories:category-name')}
-                </FormLabel>
-                <Input
-                  placeholder="Category Name"
-                  {...field}
-                />
-                <FormMessage role="alert" />
-              </FormItem>
-            )}
-          />
-          <Button
-            type="submit"
-            className="w-full"
-          >
-            {selectedCategory
-              ? t('categories:save-changes')
-              : t('categories:create')}
-          </Button>
-        </form>
-      </Form>
-    ),
-    [],
+          {selectedCategory
+            ? t('categories:save-changes')
+            : t('categories:create')}
+        </Button>
+      </form>
+    </Form>
   );
 
   useEffect(() => {

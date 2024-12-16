@@ -14,7 +14,6 @@ type Props = {
   currentDate: string;
 };
 
-
 export const ChartContainer = memo(({ currentDate }: Props) => {
   const { t } = useTranslation('common');
   const [transactionType, setTransactionType] = useState<TransactionType>(
@@ -31,13 +30,13 @@ export const ChartContainer = memo(({ currentDate }: Props) => {
 
   const renderNoData = () => {
     return (
-      <div className='flex items-center justify-center mt-8'>
+      <div className="flex items-center justify-center mt-8">
         <p className="text-sm text-muted-foreground">
           {t('no-data-for-this-month')}
         </p>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <Tabs
@@ -53,20 +52,28 @@ export const ChartContainer = memo(({ currentDate }: Props) => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value={TransactionType.EXPENSE}>
-        {isLoading && <div className='flex items-center justify-center mt-8'>
-          <Skeleton className="h-40 w-40 rounded-full" />
-        </div>}
+        {isLoading && (
+          <div className="flex items-center justify-center mt-8">
+            <Skeleton className="h-40 w-40 rounded-full" />
+          </div>
+        )}
         {!isLoading && pieChartData!.length < 1 ? (
           renderNoData()
-        ) : <DashboardPieChart chartData={pieChartData ?? []} />}
+        ) : (
+          <DashboardPieChart chartData={pieChartData ?? []} />
+        )}
       </TabsContent>
       <TabsContent value={TransactionType.INCOME}>
-        {isLoading && <div className='flex items-center justify-center mt-8'>
-          <Skeleton className="h-40 w-40 rounded-full" />
-        </div>}
+        {isLoading && (
+          <div className="flex items-center justify-center mt-8">
+            <Skeleton className="h-40 w-40 rounded-full" />
+          </div>
+        )}
         {!isLoading && pieChartData!.length < 1 ? (
           renderNoData()
-        ) : <DashboardPieChart chartData={pieChartData ?? []} />}
+        ) : (
+          <DashboardPieChart chartData={pieChartData ?? []} />
+        )}
       </TabsContent>
     </Tabs>
   );

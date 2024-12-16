@@ -152,8 +152,8 @@ export const ExpenseCategoryList: React.FC = () => {
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem
                       onClick={() => {
-                        setOpenCategoryModal(true);
                         setSelectedCategory(category);
+                        setOpenCategoryModal(true);
                       }}
                     >
                       <Pencil className="h-3.5 w-3.5 mr-2" /> {t('common:edit')}

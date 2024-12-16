@@ -77,7 +77,7 @@ export const AddExpenseSubCategory = ({
     const isEditing = !!selectedCategory;
 
     try {
-      if (isEditing) {
+      if (!isEditing) {
         await createSubcategory({ name: values.subCategoryName });
       } else {
         await updateSubcategory(selectedSubcategory?.id!, {
@@ -95,60 +95,58 @@ export const AddExpenseSubCategory = ({
     }
   };
 
-  const renderForm = useCallback(() => {
-    return (
-      <Form
-        key={selectedCategory.id}
-        {...form}
+  const renderForm = () => (
+    <Form
+      key={selectedCategory.id}
+      {...form}
+    >
+      <form
+        onSubmit={form.handleSubmit(handleExpenseSubcategorySubmit)}
+        className="space-y-6"
       >
-        <form
-          onSubmit={form.handleSubmit(handleExpenseSubcategorySubmit)}
-          className="space-y-6"
+        <FormField
+          name="categoryName"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="categoryName">
+                {t('categories:category-name')}
+              </FormLabel>
+              <Input
+                placeholder="Category Name"
+                value={selectedCategory.name}
+                readOnly
+              />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="subCategoryName"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="subCategoryName">
+                {t('categories:subcategory-name')}
+              </FormLabel>
+              <Input
+                placeholder="Subcategory Name"
+                {...field}
+              />
+              <FormMessage role="alert" />
+            </FormItem>
+          )}
+        />
+        <Button
+          type="submit"
+          className="w-full"
         >
-          <FormField
-            name="categoryName"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="categoryName">
-                  {t('categories:category-name')}
-                </FormLabel>
-                <Input
-                  placeholder="Category Name"
-                  value={selectedCategory.name}
-                  readOnly
-                />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="subCategoryName"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="subCategoryName">
-                  {t('categories:subcategory-name')}
-                </FormLabel>
-                <Input
-                  placeholder="Subcategory Name"
-                  {...field}
-                />
-                <FormMessage role="alert" />
-              </FormItem>
-            )}
-          />
-          <Button
-            type="submit"
-            className="w-full"
-          >
-            {selectedSubcategory
-              ? t('categories:save-changes')
-              : t('categories:expense.create-subcategory')}
-          </Button>
-        </form>
-      </Form>
-    );
-  }, [selectedCategory, form]);
+          {selectedSubcategory
+            ? t('categories:save-changes')
+            : t('categories:expense.create-subcategory')}
+        </Button>
+      </form>
+    </Form>
+  );
 
   useEffect(() => {
     form.reset(
