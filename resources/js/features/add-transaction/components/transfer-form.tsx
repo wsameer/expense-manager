@@ -15,15 +15,20 @@ import {
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 
+import { Account } from '@/types/api';
 import { useAccounts } from '@/features/accounts/api/get-accounts';
 import { OptionSelector } from '../../../Components/option-selector';
 import { DateSelector } from './form-fields/date-selector';
 import { FormProps } from './types';
-import { cn } from '@/utils';
+import { cn, getFormattedDateTime } from '@/utils';
+import { toast } from '@/hooks';
+import { TransactionType } from '@/types';
+import { useCreateTransaction } from '../api/create-transaction';
+import { useUpdateTransaction } from '../api/update-transaction';
 
 const formSchema = z
   .object({
-    transactionDate: z.date({
+    date: z.date({
       required_error: 'A date is required',
     }),
     amount: z.coerce
@@ -50,26 +55,45 @@ const formSchema = z
 export const TransferForm = ({ existingData, setOpen }: FormProps) => {
   const { t } = useTranslation('transaction');
   const { allAccounts } = useAccounts();
+  const { createTransaction } = useCreateTransaction();
+  const { updateTransaction } = useUpdateTransaction();
 
-  const [showAccountSelector, setShowAccountSelector] = useState<
-    string | boolean
-  >(false);
+  const [showAccountSelector, setShowAccountSelector] = useState<'fromAccountId' | 'toAccountId' | false>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      transactionDate: new Date(),
+      date: new Date(),
       amount: 0,
     },
   });
   const formErrors = form.formState.errors;
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.table(values);
-    return setOpen(false);
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!values) return false;
+    try {
+
+      const transactionData = {
+        ...values,
+        // Format: YYYY-MM-DD HH:MM:SS
+        date: getFormattedDateTime(values.date),
+        type: TransactionType.TRANSFER,
+      };
+
+      if (existingData) {
+        await updateTransaction(transactionData, existingData.id);
+      } else {
+        await createTransaction(transactionData);
+      }
+      form.reset();
+      return setOpen(false);
+    } catch (error: any) {
+      toast({
+        title: 'Operation failed!',
+        description: error.message,
+      });
+    }
+  };
 
   const getSelectedAccountName = useCallback(
     (id: number) => {
@@ -88,19 +112,19 @@ export const TransferForm = ({ existingData, setOpen }: FormProps) => {
         className="space-y-4"
       >
         <FormField
-          name="transactionDate"
+          name="date"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center mt-4 space-y-0 space-x-2">
                 <FormLabel
-                  htmlFor="transactionDate"
+                  htmlFor="date"
                   className="w-1/4"
                 >
                   Date
                 </FormLabel>
                 <DateSelector
-                  aria-invalid={formErrors.transactionDate ? 'true' : 'false'}
+                  aria-invalid={formErrors.date ? 'true' : 'false'}
                   selected={field.value}
                   onSelect={(value: Date) => field.onChange(value)}
                   closeOtherControls={() => setShowAccountSelector(false)}
@@ -223,9 +247,8 @@ export const TransferForm = ({ existingData, setOpen }: FormProps) => {
           {showAccountSelector && (
             <OptionSelector
               options={allAccounts ?? []}
-              onSelect={(value: number) => {
-                // @ts-ignore
-                form.setValue(showAccountSelector, value);
+              onSelect={(value: Account) => {
+                form.setValue(showAccountSelector, value.id);
                 setShowAccountSelector(false);
               }}
             />

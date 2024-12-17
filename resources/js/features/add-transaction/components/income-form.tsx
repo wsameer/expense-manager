@@ -24,6 +24,7 @@ import { useCreateTransaction } from '../api/create-transaction';
 import { toast } from '@/hooks';
 import { TransactionType } from '@/types';
 import { FormProps } from './types';
+import { useUpdateTransaction } from '../api/update-transaction';
 
 const formSchema = z.object({
   transactionDate: z.date({
@@ -54,6 +55,7 @@ export const IncomeForm = ({ existingData, setOpen }: FormProps) => {
   const { allAccounts } = useAccounts();
   const { incomeCategories } = useIncomeCategories();
   const { createTransaction } = useCreateTransaction();
+  const { updateTransaction } = useUpdateTransaction();
 
   const incomeCategoryOptions = useCallback(() => {
     if (!incomeCategories) return [];
@@ -99,12 +101,19 @@ export const IncomeForm = ({ existingData, setOpen }: FormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!values) return false;
     try {
-      await createTransaction({
+
+      const transactionData = {
         ...values,
         // Format: YYYY-MM-DD HH:MM:SS
         date: getFormattedDateTime(values.transactionDate),
         type: TransactionType.INCOME,
-      });
+      };
+
+      if (existingData) {
+        await updateTransaction(transactionData, existingData.id);
+      } else {
+        await createTransaction(transactionData);
+      }
       form.reset();
       return setOpen(false);
     } catch (error: any) {
