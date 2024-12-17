@@ -35,7 +35,7 @@ export const DashboardPieChart = ({ chartData }: Props) => {
       <div className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto w-full h-[240px]"
+          className="mx-auto w-full h-[280px]"
         >
           <PieChart>
             <ChartTooltip
@@ -53,7 +53,7 @@ export const DashboardPieChart = ({ chartData }: Props) => {
               nameKey="category"
               cx="50%"
               cy="50%"
-              outerRadius={75}
+              outerRadius={80}
               animationDuration={400}
               label={CustomLabel}
               labelLine={false}

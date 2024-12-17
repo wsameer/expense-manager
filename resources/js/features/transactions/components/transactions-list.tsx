@@ -19,11 +19,22 @@ import { Button } from '@/Components/ui/button';
 import { Transaction, TypeTotals } from '../types';
 import { TransactionType } from '@/types';
 import { Transactions } from '@/features/add-transaction/components/transactions';
-import { Trash2 } from 'lucide-react';
+import {
+  ArrowDownRight,
+  ArrowRightLeft,
+  ArrowUpRight,
+  CircleArrowDown,
+  CircleArrowUp,
+  CircleDollarSign,
+  CircleEqual,
+  DollarSign,
+  Trash2,
+} from 'lucide-react';
 import { useConfirmDialog } from '@/Components/ui/confirmable';
 import { toast } from '@/hooks';
 import { useDeleteTransaction } from '../api/delete-transaction';
-import { Stats } from './stats';
+import { StatCard } from './stat-card';
+import { Separator } from '@/Components/ui/separator';
 
 type Props = {
   currentDate: Date;
@@ -139,22 +150,29 @@ export const TransactionList = ({ currentDate }: Props) => {
   const monthlyStats = calculateTotalsByType(allTransactions!);
 
   const renderMonthlyFinanceStats = () => (
-    <div className="flex justify-between items-center gap-2">
-      <Stats
-        value={monthlyStats.income}
-        label="Income"
-        additionalClass="text-green-600"
-      />
-      <Stats
-        value={monthlyStats.expense}
-        label="Expense"
-        additionalClass="text-red-600"
-      />
-      <Stats
-        value={monthlyStats.income - monthlyStats.expense}
-        label="Totals"
-        additionalClass="text-zinc-600 dark:text-zinc-200"
-      />
+    <div className="bg-white border dark:bg-zinc-800 rounded-2xl p-2 shadow-sm">
+      <div className="grid grid-flow-col gap-2">
+        <StatCard
+          icon={CircleArrowUp}
+          value={monthlyStats.income}
+          label="Income"
+          iconClass="text-green-500 rotate-45"
+        />
+        <Separator orientation="vertical" />
+        <StatCard
+          icon={CircleArrowDown}
+          value={monthlyStats.expense}
+          label="Expense"
+          iconClass="text-red-500 rotate-45"
+        />
+        <Separator orientation="vertical" />
+        <StatCard
+          icon={CircleDollarSign}
+          value={monthlyStats.income - monthlyStats.expense}
+          label="Total"
+          iconClass="text-zinc-500 dark:text-zinc-200"
+        />
+      </div>
     </div>
   );
 
