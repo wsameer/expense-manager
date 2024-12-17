@@ -11,6 +11,7 @@ import {
 import { COLORS } from '../constants';
 import { PieChartData } from '../types';
 import { CustomLabel } from './custom-label';
+import { CustomTooltip } from './custom-tooltip';
 
 type Props = {
   chartData: Array<PieChartData>;
@@ -37,6 +38,15 @@ export const DashboardPieChart = ({ chartData }: Props) => {
           className="mx-auto w-full h-[240px]"
         >
           <PieChart>
+            <ChartTooltip
+              cursor={false}
+              content={
+                <CustomTooltip
+                  showCategory
+                  showAmount
+                />
+              }
+            />
             <Pie
               data={chartData}
               dataKey="totalAmount"
@@ -55,16 +65,6 @@ export const DashboardPieChart = ({ chartData }: Props) => {
                 />
               ))}
             </Pie>
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  labelKey="totalAmount"
-                  nameKey="category"
-                  hideIndicator
-                />
-              }
-            />
           </PieChart>
         </ChartContainer>
       </div>
