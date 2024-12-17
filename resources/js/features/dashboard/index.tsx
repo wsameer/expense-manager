@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { MonthNavigator } from '@/Components/shared/month-navigator';
-import { ChartContainer } from './components/chart-container';
+import { Container } from './components/container';
 import { useResponsive } from '@/hooks';
 import { cn } from '@/utils';
 
@@ -23,7 +23,7 @@ export const DashboardPage = () => {
         handleMonthChange={handleMonthChange}
         options={{ timeJump: true }}
       />
-      <ChartContainer currentDate={currentDate} />
+      <Container currentDate={currentDate} />
     </div>
   );
 };

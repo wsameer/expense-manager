@@ -13,7 +13,7 @@ type Props = {
   currentDate: Date;
 };
 
-export const ChartContainer = memo(({ currentDate }: Props) => {
+export const Container = memo(({ currentDate }: Props) => {
   const { t } = useTranslation('common');
   const [transactionType, setTransactionType] = useState<TransactionType>(
     TransactionType.EXPENSE,
@@ -78,4 +78,4 @@ export const ChartContainer = memo(({ currentDate }: Props) => {
   );
 });
 
-ChartContainer.displayName = 'ChartContainer';
+Container.displayName = 'Container';

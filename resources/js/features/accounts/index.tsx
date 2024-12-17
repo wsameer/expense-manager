@@ -22,7 +22,7 @@ const statsData = [
   },
   {
     id: 3,
-    label: 'Total',
+    label: 'Available',
     queryKey: 'total' as QueryKey,
     icon: DollarSign,
   },
@@ -37,7 +37,7 @@ export const AccountsPage = () => {
         'w-1/3': isDesktop,
       })}
     >
-      <div className="bg-white border dark:bg-zinc-800 rounded-2xl p-2 shadow-sm">
+      <div className="bg-white border dark:bg-zinc-800 rounded-2xl p-3 shadow-sm">
         <div className="grid grid-flow-col gap-2">
           {statsData.map((item, index) => (
             <React.Fragment key={item.id}>

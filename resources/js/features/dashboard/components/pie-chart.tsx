@@ -1,23 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Pie, Cell, PieChart } from 'recharts';
+import { Pie, Cell, PieChart, Sector } from 'recharts';
 
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
 } from '@/Components/ui/chart';
 import { COLORS } from '../constants';
 import { PieChartData } from '../types';
 import { CustomLabel } from './custom-label';
 import { CustomTooltip } from './custom-tooltip';
+import { PieSectorDataItem } from 'recharts/types/polar/Pie';
 
 type Props = {
   chartData: Array<PieChartData>;
 };
 
 export const DashboardPieChart = ({ chartData }: Props) => {
+  const [activePie, setActivePie] = useState<number>();
   const chartConfig = {
     amount: {
       label: 'Total Expense',
@@ -29,6 +30,25 @@ export const DashboardPieChart = ({ chartData }: Props) => {
       ]),
     ),
   } satisfies ChartConfig;
+
+  const onPieEnter = (_: any, index: number) => setActivePie(index);
+
+  const renderActiveShape = (props: PieSectorDataItem) => {
+    const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props
+    return (
+      <g>
+        <Sector
+          cx={cx}
+          cy={cy}
+          innerRadius={innerRadius}
+          outerRadius={outerRadius! + 10}
+          startAngle={startAngle}
+          endAngle={endAngle}
+          fill={fill}
+        />
+      </g>
+    )
+  }
 
   return (
     <div className="flex flex-col">
@@ -57,6 +77,9 @@ export const DashboardPieChart = ({ chartData }: Props) => {
               animationDuration={400}
               label={CustomLabel}
               labelLine={false}
+              activeIndex={activePie}
+              activeShape={renderActiveShape}
+              onClick={onPieEnter}
             >
               {chartData.map((_entry: any, index: number) => (
                 <Cell

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
@@ -67,6 +67,8 @@ export const TransferForm = ({ existingData, setOpen }: FormProps) => {
     defaultValues: {
       date: new Date(),
       amount: 0,
+      toAccountId: -1,
+      fromAccountId: -1,
     },
   });
   const formErrors = form.formState.errors;
@@ -105,6 +107,18 @@ export const TransferForm = ({ existingData, setOpen }: FormProps) => {
     },
     [allAccounts],
   );
+
+  useEffect(() => {
+    if (existingData) {
+      form.reset({
+        date: new Date(existingData.date),
+        amount: existingData.amount,
+        fromAccountId: existingData.fromAccountId,
+        toAccountId: existingData.toAccountId!,
+        note: existingData.note ?? '',
+      });
+    }
+  }, [existingData, form.reset]);
 
   return (
     <Form {...form}>

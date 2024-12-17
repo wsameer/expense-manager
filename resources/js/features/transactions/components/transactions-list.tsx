@@ -145,7 +145,7 @@ export const TransactionList = ({ currentDate }: Props) => {
   const monthlyStats = calculateTotalsByType(allTransactions!);
 
   const renderMonthlyFinanceStats = () => (
-    <div className="bg-white border dark:bg-zinc-800 rounded-2xl p-2 shadow-sm">
+    <div className="bg-white border dark:bg-zinc-800 rounded-2xl p-3 shadow-sm">
       <div className="grid grid-flow-col gap-2">
         <StatCard
           icon={CircleArrowUp}
