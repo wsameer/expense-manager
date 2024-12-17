@@ -23,3 +23,5 @@ export const createAccountFormSchema = z.object({
 });
 
 export type CreateAccountForm = z.infer<typeof createAccountFormSchema>;
+
+export type QueryKey = 'asset' | 'debt' | 'total';

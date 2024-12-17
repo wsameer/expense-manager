@@ -13,7 +13,7 @@ type Props = {
 export const StatCard = ({ label, value, iconClass, icon: Icon }: Props) => {
   return (
     <div className="flex items-center gap-2">
-      {Icon && <Icon className={`h-4 w-4 ${iconClass}`} />}
+      {Icon && <Icon className={`h-5 w-5 ${iconClass}`} />}
       <div className="flex-1 space-y-1">
         <p
           className="font-medium leading-none"

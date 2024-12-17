@@ -5,24 +5,25 @@ import { AccountGroups } from './components/account-groups';
 import { useResponsive } from '@/hooks';
 import { cn } from '@/utils';
 import { Separator } from '@/Components/ui/separator';
+import { QueryKey } from './types';
 
 const statsData = [
   {
     id: 1,
     label: 'Assets',
-    queryKey: 'asset',
+    queryKey: 'asset' as QueryKey,
     icon: TrendingUp,
   },
   {
     id: 2,
     label: 'Liabilities',
-    queryKey: 'debt',
+    queryKey: 'debt' as QueryKey,
     icon: TrendingDown,
   },
   {
     id: 3,
     label: 'Total',
-    queryKey: undefined,
+    queryKey: 'total' as QueryKey,
     icon: DollarSign,
   },
 ];

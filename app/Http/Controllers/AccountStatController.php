@@ -18,24 +18,36 @@ class AccountStatController extends BaseController
   {
     $statType = $request->query('type');
 
-    if (!in_array($statType, ['asset', 'debt'])) {
-
-      return $this->sendError('Invalid parameters', ['Invalid account type. Must be either "asset" or "debt".'], 400);
+    if (!in_array($statType, ['asset', 'debt', 'total'])) {
+      return $this->sendError(
+        'Invalid parameters',
+        ['Invalid account type. Must be "asset", "debt", or "total".'],
+        400
+      );
     }
 
-    $query = Account::query();
+    switch ($statType) {
+      case 'debt':
+        $totalBalance = Account::where('group', AccountGroup::CREDIT_CARD)->sum('balance');
+        break;
 
-    if ($statType === 'debt') {
-      $query->where('group', AccountGroup::CREDIT_CARD);
-    } else {
-      $query->where('group', '!=', AccountGroup::CREDIT_CARD);
+      case 'asset':
+        $totalBalance = Account::where('group', '!=', AccountGroup::CREDIT_CARD)->sum('balance');
+        break;
+
+      case 'total':
+        $assets = Account::where('group', '!=', AccountGroup::CREDIT_CARD)->sum('balance');
+        $debts = Account::where('group', AccountGroup::CREDIT_CARD)->sum('balance');
+        $totalBalance = $assets - $debts;
+        break;
+
+      default:
+        $totalBalance = 0;
     }
-
-    $sum = $query->sum('balance');
 
     return $this->sendResponse([
       'stat_type' => $statType,
-      'total_balance' => $sum
+      'total_balance' => $totalBalance
     ]);
   }
 }

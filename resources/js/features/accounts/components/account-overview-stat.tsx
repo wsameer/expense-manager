@@ -6,10 +6,11 @@ import axiosInstance from '@/lib/api-client';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { CAD } from '@/utils/constants';
 import { LucideIcon } from 'lucide-react';
+import { QueryKey } from '../types';
 
 type Props = {
   label: string;
-  queryKey?: string;
+  queryKey: QueryKey
   icon: LucideIcon;
 };
 
@@ -17,7 +18,7 @@ export const AccountOverviewStat = React.memo(
   ({ label, queryKey, icon: Icon }: Props) => {
 
     const { data, isLoading } = useSWR(
-      queryKey ? ACCOUNTS_STATS_API + queryKey : undefined,
+      ACCOUNTS_STATS_API + queryKey,
       async () => {
         const res = await axiosInstance.get(ACCOUNTS_STATS_API, {
           params: { type: queryKey },
@@ -38,10 +39,11 @@ export const AccountOverviewStat = React.memo(
     }, [data?.data?.totalBalance]);
 
     const labelColor = useMemo(() => {
-      if (label === 'Liabilities') return 'text-red-600';
-      if (label === 'Assets') return 'text-green-600';
+      if (queryKey === 'asset') return 'text-red-600';
+      if (queryKey === 'debt') return 'text-green-600';
+      if (queryKey === 'total') return 'text-green-600';
       return '';
-    }, [label]);
+    }, [queryKey]);
 
     return (
       <div className="flex items-center gap-2">

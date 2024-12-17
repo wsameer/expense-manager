@@ -20,14 +20,9 @@ import { Transaction, TypeTotals } from '../types';
 import { TransactionType } from '@/types';
 import { Transactions } from '@/features/add-transaction/components/transactions';
 import {
-  ArrowDownRight,
-  ArrowRightLeft,
-  ArrowUpRight,
   CircleArrowDown,
   CircleArrowUp,
   CircleDollarSign,
-  CircleEqual,
-  DollarSign,
   Trash2,
 } from 'lucide-react';
 import { useConfirmDialog } from '@/Components/ui/confirmable';
