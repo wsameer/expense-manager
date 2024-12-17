@@ -43,7 +43,7 @@ export const MonthNavigator = memo<MonthNavigatorProps>(
     };
 
     return (
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between">
         <Button
           className="p-0"
           onClick={handlePreviousMonth}

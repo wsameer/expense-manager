@@ -84,7 +84,7 @@ export const PageLayout = React.memo<PageLayoutProps>(
               </div>
               <div
                 className={cn({
-                  'pt-6': !showHeaderText,
+                  'pt-4': !showHeaderText,
                 })}
               >
                 {children}

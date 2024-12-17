@@ -24,7 +24,9 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = ({
         </p>
       )}
       {showAmount && (
-        <small className="text-xs font-medium leading-none">$ {totalAmount.toLocaleString()}</small>
+        <small className="text-xs font-medium leading-none">
+          $ {totalAmount.toLocaleString()}
+        </small>
       )}
     </div>
   );

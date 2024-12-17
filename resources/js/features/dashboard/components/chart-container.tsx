@@ -6,12 +6,11 @@ import { DashboardPieChart } from './pie-chart';
 import { useChartData } from '../api/get-chart-data';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { TransactionType } from '@/types';
-import { PieChartData } from '../types';
 import { useTranslation } from 'react-i18next';
 import { capitalize } from '@/utils';
 
 type Props = {
-  currentDate: string;
+  currentDate: Date;
 };
 
 export const ChartContainer = memo(({ currentDate }: Props) => {

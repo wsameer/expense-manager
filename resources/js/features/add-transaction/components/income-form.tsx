@@ -43,7 +43,7 @@ const formSchema = z.object({
     required_error: 'Please select an account',
   }),
   note: z.optional(
-    z.string().max(128, { message: 'note can be of max 128 characters' }),
+    z.string().max(128, { message: 'Note can be of max 128 characters' }),
   ),
 });
 
@@ -101,7 +101,6 @@ export const IncomeForm = ({ existingData, setOpen }: FormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!values) return false;
     try {
-
       const transactionData = {
         ...values,
         // Format: YYYY-MM-DD HH:MM:SS

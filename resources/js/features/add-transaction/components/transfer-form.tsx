@@ -44,7 +44,7 @@ const formSchema = z
       required_error: 'Please select an account',
     }),
     note: z.optional(
-      z.string().max(128, { message: 'note can be of max 128 characters' }),
+      z.string().max(128, { message: 'Note can be of max 128 characters' }),
     ),
   })
   .refine((data) => data.fromAccountId !== data.toAccountId, {
@@ -58,7 +58,9 @@ export const TransferForm = ({ existingData, setOpen }: FormProps) => {
   const { createTransaction } = useCreateTransaction();
   const { updateTransaction } = useUpdateTransaction();
 
-  const [showAccountSelector, setShowAccountSelector] = useState<'fromAccountId' | 'toAccountId' | false>(false);
+  const [showAccountSelector, setShowAccountSelector] = useState<
+    'fromAccountId' | 'toAccountId' | false
+  >(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,7 +74,6 @@ export const TransferForm = ({ existingData, setOpen }: FormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!values) return false;
     try {
-
       const transactionData = {
         ...values,
         // Format: YYYY-MM-DD HH:MM:SS

@@ -14,7 +14,7 @@ export const DashboardPage = () => {
 
   return (
     <div
-      className={cn('grid grid-cols-1 gap-2', {
+      className={cn('grid grid-cols-1 gap-3', {
         'w-1/3': isDesktop,
       })}
     >
