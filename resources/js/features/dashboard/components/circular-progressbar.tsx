@@ -12,8 +12,8 @@ interface CircularProgressBarProps {
 export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
   percentage,
   size = 28,
-  strokeColor = '#4B5563',
-  strokeWidth = 2,
+  strokeColor,
+  strokeWidth = 3,
 }) => {
   const center = size / 2;
   const radius = (size - strokeWidth * 2) / 2;
@@ -29,7 +29,8 @@ export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
           cy={center}
           r={radius}
           fill="none"
-          className="stroke-current text-gray-200 dark:text-neutral-700"
+          className="stroke-current opacity-30"
+          style={{ color: strokeColor }}
           strokeWidth={strokeWidth}
         />
 

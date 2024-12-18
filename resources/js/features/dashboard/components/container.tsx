@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { capitalize } from '@/utils';
 import { CAD } from '@/utils/constants';
 import { Card } from '@/Components/ui/card';
-import { HorizontalBarLoader } from './horizontal-bar-loader';
 import { COLORS } from '../constants';
 import { CircularProgressBar } from './circular-progressbar';
 
