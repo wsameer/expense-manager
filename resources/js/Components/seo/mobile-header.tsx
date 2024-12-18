@@ -45,7 +45,7 @@ export const MobileHeader = ({
             )}
           </div>
           <div className="flex text-center">
-            <p className="text-sm font-medium leading-none">{title}</p>
+            <p className="text-m font-bold leading-none">{title}</p>
           </div>
           <div className="flex-1 text-right">{rightElement}</div>
         </div>
