@@ -34,14 +34,14 @@ export const DashboardPieChart = ({ chartData }: Props) => {
   const onPieEnter = (_: any, index: number) => setActivePie(index);
 
   const renderActiveShape = (props: PieSectorDataItem) => {
-    const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props
+    const { cx, cy, innerRadius, outerRadius = 0, startAngle, endAngle, fill } = props
     return (
       <g>
         <Sector
           cx={cx}
           cy={cy}
           innerRadius={innerRadius}
-          outerRadius={outerRadius! + 10}
+          outerRadius={outerRadius + 10}
           startAngle={startAngle}
           endAngle={endAngle}
           fill={fill}

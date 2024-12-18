@@ -8,6 +8,11 @@ import { Skeleton } from '@/Components/ui/skeleton';
 import { TransactionType } from '@/types';
 import { useTranslation } from 'react-i18next';
 import { capitalize } from '@/utils';
+import { CAD } from '@/utils/constants';
+import { Card } from '@/Components/ui/card';
+import { HorizontalBarLoader } from './horizontal-bar-loader';
+import { COLORS } from '../constants';
+import { CircularProgressBar } from './circular-progressbar';
 
 type Props = {
   currentDate: Date;
@@ -23,6 +28,8 @@ export const Container = memo(({ currentDate }: Props) => {
 
   const { pieChartData, isLoading } = useChartData(month, transactionType);
 
+  const totalAmount = pieChartData?.reduce((acc, item) => acc + item.totalAmount, 0);
+
   const handleTabChange = (value: string) => {
     setTransactionType(value as TransactionType);
   };
@@ -36,6 +43,24 @@ export const Container = memo(({ currentDate }: Props) => {
       </div>
     );
   };
+
+  const renderCategoryList = () => {
+    return pieChartData?.map((data, index) => (
+      <Card key={data.id} className='flex justify-between bg-white dark:bg-zinc-800 rounded-2xl px-4 py-2 mb-2'>
+        <div className='flex gap-4'>
+          <CircularProgressBar
+            strokeColor={COLORS[index % COLORS.length]}
+            percentage={Number.parseInt(((data.totalAmount / (totalAmount ?? 100)) * 100).toFixed(0))} />
+          <small className='text-zinc-900 dark:text-white text-sm font-medium leading-7'>
+            {data.category}
+          </small>
+        </div>
+        <small className='text-zinc-900 dark:text-white text-sm font-mono leading-7'>
+          {CAD.format(data.totalAmount)}
+        </small>
+      </Card>
+    ))
+  }
 
   return (
     <Tabs
@@ -59,7 +84,10 @@ export const Container = memo(({ currentDate }: Props) => {
         {!isLoading && pieChartData!.length < 1 ? (
           renderNoData()
         ) : (
-          <DashboardPieChart chartData={pieChartData ?? []} />
+          <>
+            <DashboardPieChart chartData={pieChartData ?? []} />
+            {renderCategoryList()}
+          </>
         )}
       </TabsContent>
       <TabsContent value={TransactionType.INCOME}>
@@ -71,7 +99,10 @@ export const Container = memo(({ currentDate }: Props) => {
         {!isLoading && pieChartData!.length < 1 ? (
           renderNoData()
         ) : (
-          <DashboardPieChart chartData={pieChartData ?? []} />
+          <>
+            <DashboardPieChart chartData={pieChartData ?? []} />
+            {renderCategoryList()}
+          </>
         )}
       </TabsContent>
     </Tabs>
