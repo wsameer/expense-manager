@@ -63,7 +63,7 @@ export const AccountOverviewStat = React.memo(
           {isLoading ? (
             <Skeleton className='h-4 w-14 rounded-full' />
           ) : (
-            <p className="text-sm font-medium">{formattedBalance}</p>
+            <p className="text-sm font-mono">{formattedBalance}</p>
           )}
         </div>
       </div>

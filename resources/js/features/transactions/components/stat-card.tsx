@@ -21,7 +21,7 @@ export const StatCard = ({ label, value, iconClass, icon: Icon }: Props) => {
         >
           {label}
         </p>
-        <p className="text-sm font-medium">{CAD.format(value)}</p>
+        <p className="text-sm font-mono">{CAD.format(value)}</p>
       </div>
     </div>
   );
