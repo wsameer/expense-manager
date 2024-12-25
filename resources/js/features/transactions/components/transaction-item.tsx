@@ -74,7 +74,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
         </div>
         <div className="col-span-3 text-right">
           <p
-            className={cn('text-sm font-mono', {
+            className={cn('text-xs font-mono', {
               'text-green-600 dark:text-green-400':
                 transaction.type === TransactionType.INCOME,
               'text-red-600 dark:text-red-400':

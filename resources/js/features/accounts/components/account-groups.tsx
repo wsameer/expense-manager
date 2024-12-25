@@ -71,7 +71,7 @@ export const AccountGroups = () => {
                       })
                     }
                     rightElement={
-                      <p className="text-sm font-mono">
+                      <p className="text-xs font-mono">
                         {formattedAmount(balance)}
                       </p>
                     }

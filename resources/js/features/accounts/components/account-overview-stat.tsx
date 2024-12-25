@@ -47,7 +47,7 @@ export const AccountOverviewStat = React.memo(
     return (
       <div className="flex items-center gap-2">
         <Icon className={`h-4 w-4 ${labelColor}`} />
-        <div className="flex-1 space-y-1">
+        <div className="flex-1 space-y-1.5">
           {isLoading ? (
             <Skeleton className="h-3 w-8 rounded-full" />
           ) : (
@@ -62,7 +62,7 @@ export const AccountOverviewStat = React.memo(
           {isLoading ? (
             <Skeleton className="h-4 w-14 rounded-full" />
           ) : (
-            <p className="text-sm font-mono">{formattedBalance}</p>
+            <p className="text-xs font-mono">{formattedBalance}</p>
           )}
         </div>
       </div>
