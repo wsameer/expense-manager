@@ -17,3 +17,4 @@ export const EXPENSE_CATEGORY_SETTINGS_ROUTE =
   SETTINGS_ROUTE + '/expense-category';
 export const INCOME_CATEGORY_SETTINGS_ROUTE =
   SETTINGS_ROUTE + '/income-category';
+export const DATA_SETTINGS_ROUTE = SETTINGS_ROUTE + '/data';

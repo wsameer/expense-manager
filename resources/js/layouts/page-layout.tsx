@@ -52,7 +52,7 @@ export const PageLayout = React.memo<PageLayoutProps>(
     }, [showHeaderText]);
 
     return (
-      <div className="flex flex-col sm:gap-2 md:pt-0 sm:pl-14">
+      <div className="flex flex-col sm:gap-2 md:pt-0 md:pl-14">
         <Head title={title} />
         {isMobile ? (
           <MobileHeader

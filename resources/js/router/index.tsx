@@ -11,6 +11,7 @@ import {
   SETTINGS_ROUTE,
   EXPENSE_CATEGORY_SETTINGS_ROUTE,
   INCOME_CATEGORY_SETTINGS_ROUTE,
+  DATA_SETTINGS_ROUTE,
 } from './routes';
 import { MainErrorFallback } from '@/Components/errors';
 import { AppRoot } from '@/pages/root';
@@ -98,6 +99,15 @@ export const createRouter = () =>
               '../pages/settings/income-category'
             );
             return { Component: IncomeCategoryRoute };
+          },
+        },
+        {
+          path: DATA_SETTINGS_ROUTE,
+          lazy: async () => {
+            const { DataSettingsRoute } = await import(
+              '../pages/settings/data-settings'
+            );
+            return { Component: DataSettingsRoute };
           },
         },
         {

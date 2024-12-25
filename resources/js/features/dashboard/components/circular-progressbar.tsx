@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 interface CircularProgressBarProps {
   percentage: number;
@@ -21,8 +21,14 @@ export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className="relative" style={{ width: size, height: size }}>
-      <svg className="-rotate-90 w-full h-full" viewBox={`0 0 ${size} ${size}`}>
+    <div
+      className="relative"
+      style={{ width: size, height: size }}
+    >
+      <svg
+        className="-rotate-90 w-full h-full"
+        viewBox={`0 0 ${size} ${size}`}
+      >
         {/* Background Circle */}
         <circle
           cx={center}
@@ -51,7 +57,10 @@ export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
 
       {/* Percentage Text */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <small className="text-center dark:text-white" style={{ fontSize: '8px' }}>
+        <small
+          className="text-center dark:text-white"
+          style={{ fontSize: '8px' }}
+        >
           {percentage}%
         </small>
       </div>

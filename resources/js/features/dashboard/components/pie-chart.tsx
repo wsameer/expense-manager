@@ -34,7 +34,15 @@ export const DashboardPieChart = ({ chartData }: Props) => {
   const onPieEnter = (_: any, index: number) => setActivePie(index);
 
   const renderActiveShape = (props: PieSectorDataItem) => {
-    const { cx, cy, innerRadius, outerRadius = 0, startAngle, endAngle, fill } = props
+    const {
+      cx,
+      cy,
+      innerRadius,
+      outerRadius = 0,
+      startAngle,
+      endAngle,
+      fill,
+    } = props;
     return (
       <g>
         <Sector
@@ -47,8 +55,8 @@ export const DashboardPieChart = ({ chartData }: Props) => {
           fill={fill}
         />
       </g>
-    )
-  }
+    );
+  };
 
   return (
     <div className="flex flex-col">

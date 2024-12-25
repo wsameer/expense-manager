@@ -5,6 +5,7 @@ import {
   ChevronRight,
   Coins,
   CreditCard,
+  Import,
   Moon,
   PiggyBank,
   Search,
@@ -23,6 +24,7 @@ import { ListItem } from '@/Components/list-group/list-item';
 import { useTheme } from '../theme/theme-provider';
 import {
   EXPENSE_CATEGORY_SETTINGS_ROUTE,
+  DATA_SETTINGS_ROUTE,
   INCOME_CATEGORY_SETTINGS_ROUTE,
 } from '@/router/routes';
 
@@ -117,6 +119,14 @@ export const Settings = () => {
             <PiggyBank className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
           }
           label={'Budget Setting'}
+          rightElement={
+            <ChevronRight className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
+          }
+        />
+        <ListItem
+          icon={<Import className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />}
+          label={'Data Setting'}
+          onClick={() => onSettingItemClick(DATA_SETTINGS_ROUTE)}
           rightElement={
             <ChevronRight className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
           }

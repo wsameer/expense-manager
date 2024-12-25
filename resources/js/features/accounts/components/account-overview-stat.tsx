@@ -10,13 +10,12 @@ import { QueryKey } from '../types';
 
 type Props = {
   label: string;
-  queryKey: QueryKey
+  queryKey: QueryKey;
   icon: LucideIcon;
 };
 
 export const AccountOverviewStat = React.memo(
   ({ label, queryKey, icon: Icon }: Props) => {
-
     const { data, isLoading } = useSWR(
       ACCOUNTS_STATS_API + queryKey,
       async () => {
@@ -50,7 +49,7 @@ export const AccountOverviewStat = React.memo(
         <Icon className={`h-4 w-4 ${labelColor}`} />
         <div className="flex-1 space-y-1">
           {isLoading ? (
-            <Skeleton className='h-3 w-8 rounded-full' />
+            <Skeleton className="h-3 w-8 rounded-full" />
           ) : (
             <p
               className="font-medium leading-none"
@@ -61,7 +60,7 @@ export const AccountOverviewStat = React.memo(
           )}
 
           {isLoading ? (
-            <Skeleton className='h-4 w-14 rounded-full' />
+            <Skeleton className="h-4 w-14 rounded-full" />
           ) : (
             <p className="text-sm font-mono">{formattedBalance}</p>
           )}

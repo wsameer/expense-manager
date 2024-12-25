@@ -75,8 +75,10 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
         <div className="col-span-3 text-right">
           <p
             className={cn('text-sm font-mono', {
-              'text-green-600 dark:text-green-400': transaction.type === TransactionType.INCOME,
-              'text-red-600 dark:text-red-400': transaction.type === TransactionType.EXPENSE,
+              'text-green-600 dark:text-green-400':
+                transaction.type === TransactionType.INCOME,
+              'text-red-600 dark:text-red-400':
+                transaction.type === TransactionType.EXPENSE,
             })}
           >
             ${Math.abs(transaction.amount).toFixed(2)}
