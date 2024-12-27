@@ -14,7 +14,7 @@ type Props = {
 
 const variantStyles: Record<Variant, string> = {
   default: 'bg-white dark:bg-zinc-800 dark:hover:bg-zinc-900',
-  danger: 'bg-red hover:bg-red-100 dark:bg-zinc-800 dark:hover:bg-zinc-900'
+  danger: 'bg-red hover:bg-red-100 dark:bg-red-900 dark:hover:bg-red-950'
 }
 
 
