@@ -9,6 +9,7 @@ import auth from '../locales/en/auth.json';
 import account from '../locales/en/account.json';
 import categories from '../locales/en/categories.json';
 import transaction from '../locales/en/transaction.json';
+import settings from '../locales/en/settings.json';
 
 export const resources = {
   en: {
@@ -17,6 +18,7 @@ export const resources = {
     account,
     categories,
     transaction,
+    settings,
   },
 } as const;
 
