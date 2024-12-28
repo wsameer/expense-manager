@@ -38,8 +38,8 @@ export const AccountOverviewStat = React.memo(
     }, [data?.data?.totalBalance]);
 
     const labelColor = useMemo(() => {
-      if (queryKey === 'asset') return 'text-red-600';
-      if (queryKey === 'debt') return 'text-green-600';
+      if (queryKey === 'debt') return 'text-red-600';
+      if (queryKey === 'asset') return 'text-green-600';
       if (queryKey === 'total') return 'text-green-600';
       return '';
     }, [queryKey]);

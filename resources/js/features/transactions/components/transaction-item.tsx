@@ -69,11 +69,9 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
             className="mt-0.5 text-muted-foreground"
             style={{ fontSize: '11px' }}
           >
-            {
-              transaction.type === TransactionType.TRANSFER
-                ? `${transaction.fromAccount.name} → ${transaction.toAccount?.name}`
-                : transaction.fromAccount.name
-            }
+            {transaction.type === TransactionType.TRANSFER
+              ? `${transaction.fromAccount.name} → ${transaction.toAccount?.name}`
+              : transaction.fromAccount.name}
           </p>
         </div>
         <div className="col-span-3 text-right">

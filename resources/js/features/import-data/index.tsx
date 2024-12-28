@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FileUp, Loader2 } from 'lucide-react';
+import { CheckCircle, FileUp, Loader2, XCircle } from 'lucide-react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -45,7 +45,6 @@ import { useIncomeCategories } from '../income-category/api/use-categories';
 import { Subcategory } from '../expense-category/types';
 import { Progress } from '@/Components/ui/progress';
 
-
 const csvFileSchema = z.object({
   file: z
     .instanceof(File, {
@@ -88,6 +87,15 @@ export const ImportDataDialog = () => {
     resolver: zodResolver(csvFileSchema),
   });
 
+  useEffect(() => {
+    return () => {
+      form.reset();
+      setIsUploading(false);
+      setParseProgress(0);
+      setUploadProgress(0);
+      setFailedRows([]);
+    };
+  }, []);
 
   const handleError = (error: unknown) => {
     const errorMessage =
@@ -103,8 +111,14 @@ export const ImportDataDialog = () => {
   };
 
   const getSubCategoryId = (transaction: Transaction) => {
-    const category = expenseCategories?.find(expense => cleanString(expense.name) === cleanString(transaction.Category));
-    const subcategory = category?.subcategories?.find((subC: Subcategory) => cleanString(subC.name) === cleanString(transaction.Subcategory));
+    const category = expenseCategories?.find(
+      (expense) =>
+        cleanString(expense.name) === cleanString(transaction.Category),
+    );
+    const subcategory = category?.subcategories?.find(
+      (subC: Subcategory) =>
+        cleanString(subC.name) === cleanString(transaction.Subcategory),
+    );
     return subcategory?.id;
   };
 
@@ -112,40 +126,68 @@ export const ImportDataDialog = () => {
     let transactionPayload = null;
 
     switch (transaction.Type) {
-      case "bank_to_bank":
+      case 'bank_to_bank':
         transactionPayload = {
           // Format: YYYY-MM-DD HH:MM:SS
           date: getFormattedDateTime(transaction.Period),
           type: TransactionType.TRANSFER,
           amount: transaction.Amount,
-          fromAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.FromAccount))?.id ?? 0,
-          toAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.ToAccount))?.id ?? 0,
-          note: transaction.Note
+          fromAccountId:
+            allAccounts?.find(
+              (account) =>
+                cleanString(account.name) ===
+                cleanString(transaction.FromAccount),
+            )?.id ?? 0,
+          toAccountId:
+            allAccounts?.find(
+              (account) =>
+                cleanString(account.name) ===
+                cleanString(transaction.ToAccount),
+            )?.id ?? 0,
+          note: transaction.Note,
         };
         break;
 
-      case "expense":
+      case 'expense':
         transactionPayload = {
           // Format: YYYY-MM-DD HH:MM:SS
           date: getFormattedDateTime(transaction.Period),
           type: TransactionType.EXPENSE,
           amount: transaction.Amount,
-          fromAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.FromAccount))?.id ?? 0,
-          expenseCategoryId: expenseCategories?.find(expense => cleanString(expense.name) === cleanString(transaction.Category))?.id ?? 0,
+          fromAccountId:
+            allAccounts?.find(
+              (account) =>
+                cleanString(account.name) ===
+                cleanString(transaction.FromAccount),
+            )?.id ?? 0,
+          expenseCategoryId:
+            expenseCategories?.find(
+              (expense) =>
+                cleanString(expense.name) === cleanString(transaction.Category),
+            )?.id ?? 0,
           expenseSubcategoryId: getSubCategoryId(transaction),
-          note: transaction.Note
+          note: transaction.Note,
         };
         break;
 
-      case "income":
+      case 'income':
         transactionPayload = {
           // Format: YYYY-MM-DD HH:MM:SS
           date: getFormattedDateTime(transaction.Period),
-          type: TransactionType.TRANSFER,
+          type: TransactionType.INCOME,
           amount: transaction.Amount,
-          incomeCategoryId: incomeCategories?.find(income => income.name === cleanString(transaction.Category))?.id ?? 0,
-          fromAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.FromAccount))?.id ?? 0,
-          note: transaction.Note
+          incomeCategoryId:
+            incomeCategories?.find(
+              (income) =>
+                cleanString(income.name) === cleanString(transaction.Category),
+            )?.id ?? 0,
+          fromAccountId:
+            allAccounts?.find(
+              (account) =>
+                cleanString(account.name) ===
+                cleanString(transaction.FromAccount),
+            )?.id ?? 0,
+          note: transaction.Note,
         };
         break;
 
@@ -153,14 +195,11 @@ export const ImportDataDialog = () => {
         break;
     }
 
-    console.log("🚀 ~ postTransaction ~ transactionPayload:", transactionPayload);
-
     if (!transactionPayload) return;
 
-    const response = await createTransaction(transactionPayload);
-    console.log("🚀 ~ postTransaction ~ response:", response);
+    await createTransaction(transactionPayload);
     return true;
-  }
+  };
 
   const onSubmit = async (data: CSVFormData) => {
     if (!data.file) return;
@@ -191,20 +230,17 @@ export const ImportDataDialog = () => {
 
             for (let i = 0; i < totalTransactions; i++) {
               try {
-                await postTransaction(validTransactions[i])
-                setResults(prev => ({ ...prev, success: prev.success + 1 }))
+                await postTransaction(validTransactions[i]);
+                setResults((prev) => ({ ...prev, success: prev.success + 1 }));
               } catch (error) {
-                setResults(prev => ({ ...prev, failed: prev.failed + 1 }))
-                setFailedRows(prev => [...prev, { row: i + 2, error: 'API error' }])
+                setResults((prev) => ({ ...prev, failed: prev.failed + 1 }));
+                setFailedRows((prev) => [
+                  ...prev,
+                  { row: i + 2, error: 'API error' },
+                ]);
               }
-              setUploadProgress(((i + 1) / totalTransactions) * 100)
+              setUploadProgress(((i + 1) / totalTransactions) * 100);
             }
-
-            form.reset();
-            toast({
-              title: "Upload complete",
-              description: `Successfully uploaded ${results.success} transactions. ${results.failed} failed.`,
-            });
           } catch (error) {
             handleError(error);
           }
@@ -214,6 +250,7 @@ export const ImportDataDialog = () => {
     } catch (error) {
       handleError(error);
     } finally {
+      form.reset();
       setIsUploading(false);
     }
   };
@@ -305,17 +342,22 @@ export const ImportDataDialog = () => {
           <DrawerTitle>{t('data.upload-csv-file')}</DrawerTitle>
           <DrawerDescription>{t('data.upload-csv-hint')}</DrawerDescription>
         </DrawerHeader>
-        {renderForm()}
 
         {isUploading && (
-          <div className="space-y-4">
+          <div className="px-4 py-2 space-y-4">
             <div>
               <p className="text-sm font-medium mb-1">File Parsing Progress</p>
-              <Progress value={parseProgress} className="w-full" />
+              <Progress
+                value={parseProgress}
+                className="w-full"
+              />
             </div>
             <div>
               <p className="text-sm font-medium mb-1">Upload Progress</p>
-              <Progress value={uploadProgress} className="w-full" />
+              <Progress
+                value={uploadProgress}
+                className="w-full"
+              />
             </div>
             <div className="flex justify-between text-sm text-gray-600">
               <span>Processed: {results.success + results.failed}</span>
@@ -324,6 +366,27 @@ export const ImportDataDialog = () => {
             </div>
           </div>
         )}
+
+        {!isUploading && (results.success > 0 || results.failed > 0) && (
+          <div className="grid gap-2 px-4 py-2 rounded-lg">
+            <h2 className="text-m font-semibold mb-2">Upload Results</h2>
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="text-green-500" />
+              <small className="text-sm font-medium leading-none">
+                Successfully uploaded: {results.success}
+              </small>
+            </div>
+            <div className="flex items-center space-x-2">
+              <XCircle className="text-red-500" />
+              <small className="text-sm font-medium leading-none">
+                Failed to upload: {results.failed}
+              </small>
+              <p></p>
+            </div>
+          </div>
+        )}
+
+        {renderForm()}
 
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
