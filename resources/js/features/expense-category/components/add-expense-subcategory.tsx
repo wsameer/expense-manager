@@ -74,7 +74,7 @@ export const AddExpenseSubCategory = ({
   ) => {
     if (!values) return false;
 
-    const isEditing = !!selectedCategory;
+    const isEditing = !!selectedSubcategory;
 
     try {
       if (!isEditing) {

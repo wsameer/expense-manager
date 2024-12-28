@@ -213,4 +213,32 @@ class TransactionController extends Controller
       return response()->json(null, 204);
     });
   }
+
+  public function destroyAll(Request $request)
+  {
+    $this->authorize('deleteAll', Transaction::class);
+
+    return \DB::transaction(function () {
+      Transaction::where('user_id', auth()->id())
+        ->chunkById(100, function ($transactions) {
+          foreach ($transactions as $transaction) {
+            switch ($transaction->type) {
+              case 'bank_to_bank':
+                $transaction->fromAccount->increment('balance', $transaction->amount);
+                $transaction->toAccount->decrement('balance', $transaction->amount);
+                break;
+              case 'income':
+                $transaction->fromAccount->decrement('balance', $transaction->amount);
+                break;
+              case 'expense':
+                $transaction->fromAccount->increment('balance', $transaction->amount);
+                break;
+            }
+          }
+          $transactions->each->delete();
+        });
+
+      return response()->json(['message' => 'All transactions deleted successfully'], 200);
+    });
+  }
 }

@@ -63,4 +63,9 @@ class TransactionPolicy
   {
     return $user->id === $transaction->user_id;
   }
+
+  public function deleteAll(User $user)
+  {
+    return true;
+  }
 }

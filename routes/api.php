@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::apiResource('expense-categories.subcategories', ExpenseSubcategoryController::class);
 
+  Route::delete('transactions/all', [TransactionController::class, 'destroyAll'])->name('transactions.destroyAll');
   Route::apiResource('transactions', TransactionController::class);
 
   Route::get('/accounts-stats', [AccountStatController::class, 'index'])->name('accountstat.index');

@@ -14,5 +14,6 @@
   "delete-warning-message": "This operation is irreversible. Please double check before proceeding",
   "failed-to-delete": "Failed to delete the transaction. Please try again.",
   "transaction-is-deleted": "Transaction is deleted",
-  "enter-and-submit-your-transaction": "Enter and submit the details of your transaction"
+  "enter-and-submit-your-transaction": "Enter and submit the details of your transaction",
+  "all-transactions-deleted": "You have just deleted all transactions."
 }

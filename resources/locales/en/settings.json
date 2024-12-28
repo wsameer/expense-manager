@@ -5,6 +5,7 @@
   "export-to-pdf": "Export to PDF",
   "other": "Other",
   "erase-data": "Erase All Content and Settings",
+  "delete-all-transactions": "Delete All Transactions",
   "submit": "Upload & Process CSV",
   "uploading": "Uploading...",
   "data": {

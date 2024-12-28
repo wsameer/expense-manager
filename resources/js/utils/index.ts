@@ -27,11 +27,8 @@ export const formattedAmount = (amount: number): string => {
   });
 };
 
-export const cleanString = (input: string): string => {
-  return input
-    .toLowerCase()
-    .replace(/\s+/g, '')
-    .replace(/[^a-z0-9]/gi, '');
+export const cleanString = (str: string): string => {
+  return str.toLowerCase().replace(/[^a-zA-Z0-9]/g, '');
 };
 
 export const getFormattedDateTime = (dateTime: Date): string => {
