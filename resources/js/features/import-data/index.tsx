@@ -43,6 +43,7 @@ import { useAccounts } from '../accounts/api/get-accounts';
 import { TransactionType } from '@/types';
 import { useIncomeCategories } from '../income-category/api/use-categories';
 import { Subcategory } from '../expense-category/types';
+import { Progress } from '@/Components/ui/progress';
 
 
 const csvFileSchema = z.object({
@@ -108,42 +109,42 @@ export const ImportDataDialog = () => {
   };
 
   const postTransaction = async (transaction: Transaction) => {
-    let transactionData = null;
+    let transactionPayload = null;
 
     switch (transaction.Type) {
       case "bank_to_bank":
-        transactionData = {
+        transactionPayload = {
           // Format: YYYY-MM-DD HH:MM:SS
           date: getFormattedDateTime(transaction.Period),
           type: TransactionType.TRANSFER,
           amount: transaction.Amount,
-          fromAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.FromAccount))?.id,
-          toAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.ToAccount))?.id,
+          fromAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.FromAccount))?.id ?? 0,
+          toAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.ToAccount))?.id ?? 0,
           note: transaction.Note
         };
         break;
 
       case "expense":
-        transactionData = {
+        transactionPayload = {
           // Format: YYYY-MM-DD HH:MM:SS
           date: getFormattedDateTime(transaction.Period),
           type: TransactionType.EXPENSE,
           amount: transaction.Amount,
-          fromAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.FromAccount))?.id,
-          expenseCategoryId: expenseCategories?.find(expense => cleanString(expense.name) === cleanString(transaction.Category))?.id,
+          fromAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.FromAccount))?.id ?? 0,
+          expenseCategoryId: expenseCategories?.find(expense => cleanString(expense.name) === cleanString(transaction.Category))?.id ?? 0,
           expenseSubcategoryId: getSubCategoryId(transaction),
           note: transaction.Note
         };
         break;
 
       case "income":
-        transactionData = {
+        transactionPayload = {
           // Format: YYYY-MM-DD HH:MM:SS
           date: getFormattedDateTime(transaction.Period),
           type: TransactionType.TRANSFER,
           amount: transaction.Amount,
-          incomeCategoryId: incomeCategories?.find(income => income.name === cleanString(transaction.Category))?.id,
-          fromAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.FromAccount))?.id,
+          incomeCategoryId: incomeCategories?.find(income => income.name === cleanString(transaction.Category))?.id ?? 0,
+          fromAccountId: allAccounts?.find(account => cleanString(account.name) === cleanString(transaction.FromAccount))?.id ?? 0,
           note: transaction.Note
         };
         break;
@@ -152,11 +153,13 @@ export const ImportDataDialog = () => {
         break;
     }
 
-    console.log("🚀 ~ postTransaction ~ transactionData:", transactionData);
+    console.log("🚀 ~ postTransaction ~ transactionPayload:", transactionPayload);
 
-    // const response = await createTransaction(transactionData as any);
-    // console.log("🚀 ~ postTransaction ~ response:", response)
+    if (!transactionPayload) return;
 
+    const response = await createTransaction(transactionPayload);
+    console.log("🚀 ~ postTransaction ~ response:", response);
+    return true;
   }
 
   const onSubmit = async (data: CSVFormData) => {
@@ -181,9 +184,6 @@ export const ImportDataDialog = () => {
               data.file,
             );
 
-            // console.log("🚀 ~ fileReader.onload= ~ failedRows:", failedRows)
-            // console.log("🚀 ~ fileReader.onload= ~ validTransactions:", validTransactions)
-
             setFailedRows(failedRows);
             setResults((prev) => ({ ...prev, failed: failedRows.length }));
 
@@ -200,6 +200,7 @@ export const ImportDataDialog = () => {
               setUploadProgress(((i + 1) / totalTransactions) * 100)
             }
 
+            form.reset();
             toast({
               title: "Upload complete",
               description: `Successfully uploaded ${results.success} transactions. ${results.failed} failed.`,
@@ -305,6 +306,25 @@ export const ImportDataDialog = () => {
           <DrawerDescription>{t('data.upload-csv-hint')}</DrawerDescription>
         </DrawerHeader>
         {renderForm()}
+
+        {isUploading && (
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm font-medium mb-1">File Parsing Progress</p>
+              <Progress value={parseProgress} className="w-full" />
+            </div>
+            <div>
+              <p className="text-sm font-medium mb-1">Upload Progress</p>
+              <Progress value={uploadProgress} className="w-full" />
+            </div>
+            <div className="flex justify-between text-sm text-gray-600">
+              <span>Processed: {results.success + results.failed}</span>
+              <span>Success: {results.success}</span>
+              <span>Failed: {results.failed}</span>
+            </div>
+          </div>
+        )}
+
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button
