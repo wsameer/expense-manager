@@ -1,6 +1,10 @@
 import { useMemo } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import { MainErrorFallback } from '@/Components/errors';
+import { AppRoot } from '@/pages/root';
+import { ProtectedRoute } from '@/lib/auth-api';
+
 import {
   ACCOUNTS_ROUTE,
   APP_ROUTE,
@@ -13,9 +17,6 @@ import {
   INCOME_CATEGORY_SETTINGS_ROUTE,
   DATA_SETTINGS_ROUTE,
 } from './routes';
-import { MainErrorFallback } from '@/Components/errors';
-import { AppRoot } from '@/pages/root';
-import { ProtectedRoute } from '@/lib/auth-api';
 
 export const createRouter = () =>
   createBrowserRouter([
