@@ -1,0 +1,12 @@
+# Exclude node_modules, frontend, and other unnecessary files
+node_modules
+build
+dist
+src
+package.json
+tsconfig.json
+pnpm-lock.yaml
+*.tsx
+*.ts
+*.js
+*.jsx
