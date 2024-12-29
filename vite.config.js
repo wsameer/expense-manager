@@ -18,10 +18,18 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: 'public/build',
     manifest: true,
+    outDir: 'public/build',
     rollupOptions: {
-      input: 'resources/js/main.tsx'
+      input: {
+        main: 'resources/js/main.tsx',
+        css: 'resources/css/app.css'
+      }
+    }
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './resources/js'),
     }
   }
 });
