@@ -28,8 +28,14 @@ WORKDIR /var/www
 # Copy existing application directory contents
 COPY . .
 
+# Copy .env.example to .env
+RUN cp .env.example .env
+
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader
+
+# Generate key
+RUN php artisan key:generate
 
 # Cache optimizations
 RUN php artisan config:cache
@@ -43,9 +49,6 @@ RUN chmod -R 777 /opt/render/project/data
 
 # Create directory where logs are written
 RUN mkdir -p /opt/render/project/data/logs
-
-# Generate key
-RUN php artisan key:generate
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage
