@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo pdo_sqlite mbstring exif pcntl bcmath gd
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -28,12 +28,20 @@ WORKDIR /var/www
 COPY . .
 
 # Install dependencies
-RUN composer install
+RUN composer install --no-dev --optimize-autoloader
+
+# Cache optimizations
+RUN php artisan config:cache
+RUN php artisan route:cache
+RUN php artisan view:cache
 
 # Create persistent data directory and SQLite database
 RUN mkdir -p /opt/render/project/data
 RUN touch /opt/render/project/data/database.sqlite
 RUN chmod -R 777 /opt/render/project/data
+
+# Create directory where logs are written
+RUN mkdir -p /opt/render/project/data/logs
 
 # Generate key
 RUN php artisan key:generate
