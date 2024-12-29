@@ -11,25 +11,19 @@ export default defineConfig({
     }),
     react(),
   ],
+  base: '',
+  build: {
+    manifest: true,
+    outDir: 'public/build',
+    assetsDir: 'assets',
+    rollupOptions: {
+      input: path.resolve(__dirname, 'index.html'),
+    }
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './resources/js'),
       'ziggy-js': path.resolve(__dirname, './vendor/tightenco/ziggy'),
     }
   },
-  build: {
-    manifest: true,
-    outDir: 'public/build',
-    rollupOptions: {
-      input: {
-        main: 'resources/js/main.tsx',
-        css: 'resources/css/app.css'
-      }
-    }
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './resources/js'),
-    }
-  }
 });

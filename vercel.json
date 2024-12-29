@@ -9,8 +9,16 @@
   "installCommand": "pnpm install",
   "routes": [
     {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
       "src": "/build/(.*)",
       "dest": "/build/$1"
+    },
+    {
+      "src": "/(.*)\\.(.+)",
+      "dest": "/$1.$2"
     },
     {
       "src": "/(.*)",
