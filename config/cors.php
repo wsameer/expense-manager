@@ -1,7 +1,5 @@
 <?php
-
 return [
-
   /*
     |--------------------------------------------------------------------------
     | Cross-Origin Resource Sharing (CORS) Configuration
@@ -14,17 +12,11 @@ return [
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |
     */
-
   'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
   'allowed_methods' => ['*'],
 
-  'allowed_origins' => [
-    'https://expense-manager-two-lac.vercel.app',
-    // Add your local development URL if needed
-    'http://localhost:3000',
-    'http://localhost:5173'
-  ],
+  'allowed_origins' => ['*'],
 
   'allowed_origins_patterns' => [],
 
